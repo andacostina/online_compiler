@@ -1,0 +1,46 @@
+html, body {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    background-color: black;
+}
+
+.container {
+    display:table;
+    width: 100%;
+    height: 100%;
+    margin-top: 0px;
+    padding: 0px 0 0 0;
+    box-sizing: border-box;
+}
+
+#options {
+    width: 100%;
+    display: block;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    margin-top: 4px;
+    margin-left: 15px;
+    color: white;
+}
+
+#code {
+    height: 90%;
+    display: table-row;
+}
+
+.no-float {
+    display: table-cell;
+    float: none;
+}
+
+.ace_editor  {
+    height: 100%;
+}
+
+.form-control {
+    background-color: black;
+    color: white;
+}
