@@ -9,7 +9,7 @@ app.use(bodyParser.urlencoded({'extended': false}));
 app.use(bodyParser.json());
 
 app.get('*', function(req, res) {
-    res.sendFile('./public/index.html');
+    res.sendFile(__dirname + '/public/index.html');
 });
 
 var server = app.listen(8000, function() {

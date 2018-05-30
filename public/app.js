@@ -6,7 +6,7 @@ angular.module("compilerApp", ["ui.ace"])
                     "// Mode Java\n\npublic class HelloWorld {\n    public static void main(String[] args) {\n        System.out.println(\"Hello, World!\");\n    }\n}", 
                     "// Mode C#\n\nnamespace HelloWorld\n{\n    class Hello {\n        static void Main(string[] args)\n        {\n            System.Console.WriteLine(\"Hello, World!\");\n        }\n}"];
     $scope.languages = ["Python", "C", "C++", "Java", "C#"];
-    $scope.themes = ["ambiance", "clouds", "cobalt", "dracula", "dreamweaver", "idle_fingers", "kuroir", "monokai", "terminal", "vibrant_ink", "xcode"];
+    $scope.themes = ["twilight", "ambiance", "clouds", "cobalt", "dracula", "dreamweaver", "idle_fingers", "kuroir", "monokai", "terminal", "vibrant_ink", "xcode"];
 
     $scope.aceModel = $scope.codes[0];
     $scope.langModel = $scope.languages[0];
@@ -37,8 +37,8 @@ angular.module("compilerApp", ["ui.ace"])
     $scope.aceOption = {
         useWrapMode : false,
         showGutter: true,
-        theme: "twilight",
-        mode: "python",
+        theme: $scope.themes[0],
+        mode: getAceMode($scope.languages[0]),
         firstLineNumber: 1,
         onLoad: function(_editor) {
             _editor.setShowPrintMargin(false);
@@ -51,8 +51,12 @@ angular.module("compilerApp", ["ui.ace"])
             };
 
             $scope.themeChanged = function() {
-                var i = getRandomInt(0, $scope.themes.length);
-                _editor.setTheme("ace/theme/" + $scope.themes[i]);
+                var theme = _editor.getTheme().split('/')[2];
+                var i = $scope.themes.indexOf(theme);
+                if (i === $scope.themes.length - 1) {
+                    i = 0;
+                };
+                _editor.setTheme("ace/theme/" + $scope.themes[i + 1]);
             };
 
             $scope.zoomIn = function() {
