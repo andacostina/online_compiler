@@ -1,5 +1,5 @@
-angular.module("compilerApp", ["ui.ace"])
-.controller("mainController", function($scope, $http) {
+angular.module("compilerApp", ["ui.ace", "ui.bootstrap"])
+.controller("mainController", function($scope, $http, $timeout) {
     $scope.codes = ["# Mode Python\n\nprint \"Hello, World!\"", 
                     "// Mode C\n\n#include <stdio.h>\nint main()\n{\n   printf(\"Hello, World!\");\n    return 0;\n};", 
                     "// Mode C++\n\n#include <iostream>\nint main()\n{\n  std::cout << \"Hello, World!\";\n}", 
@@ -12,7 +12,9 @@ angular.module("compilerApp", ["ui.ace"])
     $scope.langModel = $scope.languages[0];
 
     $scope.autoComplete = true;
-    
+    $scope.output = "";
+    $scope.running = false;
+
     function getAceMode(language) {
         switch(language) {
             case "C":
@@ -44,6 +46,15 @@ angular.module("compilerApp", ["ui.ace"])
             _editor.setShowPrintMargin(false);
             _editor.setAutoScrollEditorIntoView(true);
 
+            $scope.runCode = function() {
+                $scope.running = true;
+
+                $timeout(function() {
+                    $scope.output = "Hello, world!";
+                    $scope.running = false;
+                }, 1000);
+            };
+
             $scope.modeChanged = function () {
                 _editor.getSession().setMode("ace/mode/" + getAceMode($scope.langModel));
                 var i = $scope.languages.indexOf($scope.langModel);
@@ -54,7 +65,7 @@ angular.module("compilerApp", ["ui.ace"])
                 var theme = _editor.getTheme().split('/')[2];
                 var i = $scope.themes.indexOf(theme);
                 if (i === $scope.themes.length - 1) {
-                    i = 0;
+                    i = -1;
                 };
                 _editor.setTheme("ace/theme/" + $scope.themes[i + 1]);
             };

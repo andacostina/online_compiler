@@ -8,16 +8,21 @@
 
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
 
         <link rel="stylesheet" href="css/style.css">
 
         <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
-        <!--script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.6.5/angular.min.js"></script-->
 
         <script type="text/javascript" src="bower_components/ace-builds/src-min-noconflict/ace.js"></script>
         <script type="text/javascript" src="bower_components/angular/angular.js"></script>
         <script type="text/javascript" src="bower_components/angular-ui-ace/ui-ace.js"></script>
         <script type="text/javascript" src="bower_components/ace-builds/src-min-noconflict/ext-language_tools.js"></script>
+
+        <script src="//angular-ui.github.io/bootstrap/ui-bootstrap-tpls-2.5.0.js"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular-animate.js"></script>
+        <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular-sanitize.js"></script>
 
         <script src="app.js"></script>
 
@@ -26,14 +31,12 @@
         <div id="options">
             <form>
                 <div class="form-inline">
-                    <button type="button" class="btn btn-primary"><span class="glyphicon glyphicon-play"></span> Run</button>
-                    <label for="lang">Select language:</label>
-                    <select class="form-control" id="lang" ng-model="langModel" ng-options="lang for lang in languages" ng-change="modeChanged()"></select>
-                    <label>Change theme:</label>
-                    <button type="button" class="btn btn-danger" ng-click="themeChanged()"><span class="glyphicon glyphicon-eye-open"></span> </button>
-                    <button type="button" class="btn btn-warning" ng-click="zoomIn()"><span class="glyphicon glyphicon-zoom-in"></span> </button>
-                    <button type="button" class="btn btn-warning" ng-click="zoomOut()"><span class="glyphicon glyphicon-zoom-out"></span> </button>
-                    <button type="button" ng-class="{'btn btn-primary': autoComplete, 'btn btn-outline-primary': !autoComplete}" ng-click="changeAutoComplete()">Auto-complete</button>
+                    <button type="button" class="btn btn-primary" ng-click="runCode()"><span ng-class="{'glyphicon glyphicon-play': !running, 'glyphicon glyphicon-cog gly-spin': running}"></span> Run</button>&nbsp;
+                    <select style="min-width: 150px" class="form-control" id="lang" ng-model="langModel" ng-options="lang for lang in languages" ng-change="modeChanged()"></select>&nbsp;
+                    <button type="button" class="btn btn-custom" ng-click="themeChanged()" tooltip-placement="bottom" uib-tooltip="Change theme"><span class="glyphicon glyphicon-eye-open"></span></button>&nbsp;
+                    <button type="button" class="btn btn-custom" ng-click="zoomIn()" tooltip-placement="bottom" uib-tooltip="Zoom in"><span class="glyphicon glyphicon-zoom-in"></span> </button>&nbsp;
+                    <button type="button" class="btn btn-custom" ng-click="zoomOut()" tooltip-placement="bottom" uib-tooltip="Zoom out"><span class="glyphicon glyphicon-zoom-out"></span> </button>&nbsp;
+                    <button type="button" ng-class="{'btn btn-custom': autoComplete, 'btn btn-default': !autoComplete}" ng-click="changeAutoComplete()">Auto-complete</button>
                 </div>
             </form>
         </div>
@@ -43,7 +46,9 @@
                     <div ui-ace="aceOption" ng-model="aceModel">
                     </div>
                 </div>
-                <div class="col-xs-6 no-float">Ana are mere</div>
+                <div class="col-xs-6 no-float">
+                    {{output}}
+                </div>
             </div>
         </div>
     </body>
