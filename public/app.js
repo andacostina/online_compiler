@@ -1,16 +1,7 @@
 angular.module("compilerApp", ["ui.ace", "ui.bootstrap"])
 .controller("mainController", function($scope, $http, $timeout) {
-    $scope.codes = ["# Mode Python\n\nprint \"Hello, World!\"", 
-                    "// Mode C\n\n#include <stdio.h>\nint main()\n{\n   printf(\"Hello, World!\");\n    return 0;\n};", 
-                    "// Mode C++\n\n#include <iostream>\nint main()\n{\n  std::cout << \"Hello, World!\";\n}", 
-                    "// Mode Java\n\npublic class HelloWorld {\n    public static void main(String[] args) {\n        System.out.println(\"Hello, World!\");\n    }\n}", 
-                    "// Mode C#\n\nnamespace HelloWorld\n{\n    class Hello {\n        static void Main(string[] args)\n        {\n            System.Console.WriteLine(\"Hello, World!\");\n        }\n}"];
-    $scope.languages = ["Python", "C", "C++", "Java", "C#"];
+
     $scope.themes = ["twilight", "ambiance", "clouds", "cobalt", "dracula", "dreamweaver", "idle_fingers", "kuroir", "monokai", "terminal", "vibrant_ink", "xcode"];
-
-    $scope.aceModel = $scope.codes[0];
-    $scope.langModel = $scope.languages[0];
-
     $scope.autoComplete = true;
     $scope.output = "";
     $scope.running = false;
@@ -23,7 +14,9 @@ angular.module("compilerApp", ["ui.ace", "ui.bootstrap"])
                 return "c_cpp"
             case "C#":
                 return "csharp"
-            case "Python":
+            case "Python2":
+                return "python"
+            case "Python3":
                 return "python"
             case "Java":
                 return "java"
@@ -35,6 +28,35 @@ angular.module("compilerApp", ["ui.ace", "ui.bootstrap"])
     function getRandomInt(min, max) {
         return Math.floor(Math.random() * (max - min + 1) + min);
     };
+
+    $scope.languages = ["Python2", "Python3", "C", "C++", "Java", "C#"];
+    $scope.langModel = $scope.languages[0];
+    $http({
+        method: 'GET',
+        url: '/languages'
+    }).then(function success(response) {
+        $scope.languages = response.data.languages;
+        $scope.langModel = $scope.languages[0];
+    }, function error(response) {
+    });
+
+    $scope.codeExamples = [
+        "# Mode Python\n\nprint \"Hello, World!\"",
+        "# Mode Python\n\nprint(\"Hello, World!\")", 
+        "// Mode C\n\n#include <stdio.h>\nint main()\n{\n   printf(\"Hello, World!\");\n    return 0;\n};", 
+        "// Mode C++\n\n#include <iostream>\nint main()\n{\n  std::cout << \"Hello, World!\";\n}", 
+        "// Mode Java\n\npublic class HelloWorld {\n    public static void main(String[] args) {\n        System.out.println(\"Hello, World!\");\n    }\n}", 
+        "// Mode C#\n\nnamespace HelloWorld\n{\n    class Hello {\n        static void Main(string[] args)\n        {\n            System.Console.WriteLine(\"Hello, World!\");\n        }\n}"
+    ];
+    $scope.aceModel = $scope.codeExamples[0];
+    $http({
+        method: 'GET',
+        url: '/code-examples'
+    }).then(function success(response) {
+        $scope.codeExamples = response.data.codeExamples;
+        $scope.aceModel = $scope.codeExamples[0];
+    }, function error(response) {
+    });
     
     $scope.aceOption = {
         useWrapMode : false,
@@ -49,16 +71,34 @@ angular.module("compilerApp", ["ui.ace", "ui.bootstrap"])
             $scope.runCode = function() {
                 $scope.running = true;
 
-                $timeout(function() {
-                    $scope.output = "Hello, world!";
+                $http({
+                    method: 'POST',
+                    url: '/compile',
+                    data: {
+                        'code': $scope.aceModel,
+                        'language': $scope.langModel
+                    }
+                }).then(function success(response) {
+                    if (response.data.error) {
+                        $scope.output = "Error when running code";
+                    }
+                    else {
+                        $scope.output = response.data.stdout;
+                        if (response.data.stderr) {
+                            $scope.output += "\n" + response.data.stderr;
+                        };
+                    };
                     $scope.running = false;
-                }, 1000);
+                }, function error(response) {
+                    $scope.output = "Error running\n" + response.data.message;
+                    $scope.running = false;
+                });
             };
 
             $scope.modeChanged = function () {
                 _editor.getSession().setMode("ace/mode/" + getAceMode($scope.langModel));
                 var i = $scope.languages.indexOf($scope.langModel);
-                $scope.aceModel = $scope.codes[i];
+                $scope.aceModel = $scope.codeExamples[i];
             };
 
             $scope.themeChanged = function() {
