@@ -8,6 +8,7 @@ function DockerManager() {
     this.codeExamples = constants.codeExamples;
     this.extensions = constants.extensions;
     this.commands = constants.commands;
+    this.images = constants.images[i];
 };
 
 DockerManager.prototype.getLanguages = function() {
@@ -66,7 +67,8 @@ DockerManager.prototype.createDockerfile = function(code, language, uuid) {
     const i = this.languages.indexOf(language);
     const filename = "test." + this.extensions[i];
     const command = this.commands[i];
-    var content = "FROM " + uuid + "\nCOPY " + filename + " " + filename + "\nCMD [\"" + command + "\", \"" + filename + "\"]";
+    const baseImage = this.images[i];
+    var content = "FROM " + baseImage + "\nCOPY " + filename + " " + filename + "\nCMD [\"" + command + "\", \"" + filename + "\"]";
     fs.writeFileSync(uuid + '/Dockerfile', content);
 };
 
