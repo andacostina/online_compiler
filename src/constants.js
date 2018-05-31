@@ -9,5 +9,7 @@ module.exports = {
         "// Mode C++\n\n#include <iostream>\nint main()\n{\n  std::cout << \"Hello, World!\";\n}", 
         "// Mode Java\n\npublic class HelloWorld {\n    public static void main(String[] args) {\n        System.out.println(\"Hello, World!\");\n    }\n}", 
         "// Mode C#\n\nnamespace HelloWorld\n{\n    class Hello {\n        static void Main(string[] args)\n        {\n            System.Console.WriteLine(\"Hello, World!\");\n        }\n}"
-    ]
+    ],
+    extensions: ["py", "py", "c", "cpp", "java", "cs"],
+    commands: ["python", "python3", "gcc", "g++", "", ""]
 }

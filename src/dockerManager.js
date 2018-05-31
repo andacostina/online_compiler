@@ -6,6 +6,8 @@ const uuidv1 = require('uuid/v1');
 function DockerManager() {
     this.languages = constants.languages;
     this.codeExamples = constants.codeExamples;
+    this.extensions = constants.extensions;
+    this.commands = constants.commands;
 };
 
 DockerManager.prototype.getLanguages = function() {
@@ -18,11 +20,11 @@ DockerManager.prototype.getCodeExamples = function() {
 
 DockerManager.prototype.run = function(code, language, callback) {
     const dockerImage = this.getDockerImage(language);
-    this.createTempImage(function(error, stderr, stdout, tempImage, tempImageHash) {
+    this.createTempImage(code, language, function(error, stderr, stdout, uuid, tempImageHash) {
         if (error) {
             return callback(error, stderr, stdout);
         };
-        this.runContainer(tempImage, function(error, stdout, stderr) {
+        this.runContainer(uuid, function(error, stdout, stderr) {
             this.deleteImage(tempImageHash);
             return callback(error, stderr, stdout);
         });
@@ -40,9 +42,12 @@ DockerManager.prototype.getDockerImage = function(language) {
     };
 };
 
-DockerManager.prototype.createTempImage = function(callback) {
-    const tempImage = uuidv1();
-    exec("sudo docker build -t " + tempImage + " .", function(error, stdout, stderr) {
+DockerManager.prototype.createTempImage = function(code, language, callback) {
+    const uuid = uuidv1();
+    fs.mkdirSync(uuid);
+    this.createDockerfile(code, language, uuid);
+    exec("sudo docker build -t " + uuid + " .", {cwd: uuid}, function(error, stdout, stderr) {
+        exec("rm -r " + uuid);
         if (error) {
             console.error(error);
             return callback(error, stderr);
@@ -53,8 +58,16 @@ DockerManager.prototype.createTempImage = function(callback) {
         catch(e) {
             return callback(new Error("Couldn\'t find image hash"), stderr);
         };
-        return callback(error, stderr, stdout, tempImage, tempImageHash);
+        return callback(error, stderr, stdout, uuid, tempImageHash);
     });
+};
+
+DockerManager.prototype.createDockerfile = function(code, language, uuid) {
+    const i = this.languages.indexOf(language);
+    const filename = "test." + this.extensions[i];
+    const command = this.commands[i];
+    var content = "FROM " + uuid + "\nCOPY " + filename + " " + filename + "\nCMD [\"" + command + "\", \"" + filename + "\"]";
+    fs.writeFileSync(uuid + '/Dockerfile', content);
 };
 
 DockerManager.prototype.runContainer = function(tempImage, callback) {
