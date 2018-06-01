@@ -69,9 +69,9 @@ DockerManager.prototype.createTempImage = function(code, language, callback) {
 DockerManager.prototype.createDockerfile = function(code, language, uuid) {
     const i = this.languages.indexOf(language);
     const filename = "test." + this.extensions[i];
-    const command = this.commands[i].replace("*", "\"{}\"".format(filename))
+    const command = this.commands[i].replace("*", filename)
     const baseImage = this.images[i];
-    var content = "FROM " + baseImage + "\nCOPY " + filename + " " + filename + "\nCMD [\"sh\", \"-c\", \"" + command + "\"]";
+    var content = "FROM " + baseImage + "\nCOPY " + filename + " " + filename + "\nCMD " + command;
     fs.writeFileSync(uuid + '/Dockerfile', content);
     fs.writeFileSync(uuid + '/' + filename, code);
 };
