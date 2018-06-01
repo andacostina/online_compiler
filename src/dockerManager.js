@@ -55,7 +55,7 @@ DockerManager.prototype.createTempImage = function(code, language, callback) {
             console.error(error);
             return callback(error, stderr);
         };
-	let tempImageHash;
+        let tempImageHash;
         try {
             tempImageHash = /Successfully built ([a-z0-9]{12})/.exec(stdout)[1];
         }
@@ -69,9 +69,9 @@ DockerManager.prototype.createTempImage = function(code, language, callback) {
 DockerManager.prototype.createDockerfile = function(code, language, uuid) {
     const i = this.languages.indexOf(language);
     const filename = "test." + this.extensions[i];
-    const command = this.commands[i];
+    const command = this.commands[i].replace("*", "\"{}\"".format(filename))
     const baseImage = this.images[i];
-    var content = "FROM " + baseImage + "\nCOPY " + filename + " " + filename + "\nCMD [\"" + command + "\", \"" + filename + "\"]";
+    var content = "FROM " + baseImage + "\nCOPY " + filename + " " + filename + "\nCMD [\"sh\", \"-c\", \"" + command + "\"]";
     fs.writeFileSync(uuid + '/Dockerfile', content);
     fs.writeFileSync(uuid + '/' + filename, code);
 };
