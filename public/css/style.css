@@ -102,3 +102,22 @@ html, body {
       transform: rotate(359deg);
     }
   }
+
+#result {
+    position: relative;
+    top: -820px;
+}
+
+.panel > .panel-heading {
+    background-image: none;
+    background-color: black;
+    color: white;
+}
+
+.panel > .panel-body {
+    height: 800px;
+    background-image: none;
+    background-color: #232323;
+    color: white;
+    overflow: auto;
+}

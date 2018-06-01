@@ -46,8 +46,11 @@
                     <div ui-ace="aceOption" ng-model="aceModel">
                     </div>
                 </div>
-                <div class="col-xs-6 no-float">
-                    {{output}}
+                <div class="col-xs-6 no-float" id="result">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">Result</div>
+                        <div class="panel-body">{{output}}</div>
+                    </div>
                 </div>
             </div>
         </div>
