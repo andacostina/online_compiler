@@ -1,6 +1,7 @@
 "use strict";
 const constants = require("./constants.js");
 var exec = require('child_process').exec;
+var fs = require('fs');
 const uuidv1 = require('uuid/v1');
 
 function DockerManager() {
@@ -8,7 +9,7 @@ function DockerManager() {
     this.codeExamples = constants.codeExamples;
     this.extensions = constants.extensions;
     this.commands = constants.commands;
-    this.images = constants.images[i];
+    this.images = constants.images;
 };
 
 DockerManager.prototype.getLanguages = function() {
@@ -20,13 +21,14 @@ DockerManager.prototype.getCodeExamples = function() {
 };
 
 DockerManager.prototype.run = function(code, language, callback) {
+    var self = this;
     const dockerImage = this.getDockerImage(language);
     this.createTempImage(code, language, function(error, stderr, stdout, uuid, tempImageHash) {
         if (error) {
             return callback(error, stderr, stdout);
         };
-        this.runContainer(uuid, function(error, stdout, stderr) {
-            this.deleteImage(tempImageHash);
+        self.runContainer(uuid, function(error, stdout, stderr) {
+            self.deleteImage(tempImageHash);
             return callback(error, stderr, stdout);
         });
     });
@@ -53,8 +55,9 @@ DockerManager.prototype.createTempImage = function(code, language, callback) {
             console.error(error);
             return callback(error, stderr);
         };
+	let tempImageHash;
         try {
-            const tempImageHash = /Successfully built ([a-z0-9]{12})/.exec(stdout)[1];
+            tempImageHash = /Successfully built ([a-z0-9]{12})/.exec(stdout)[1];
         }
         catch(e) {
             return callback(new Error("Couldn\'t find image hash"), stderr);
@@ -70,6 +73,7 @@ DockerManager.prototype.createDockerfile = function(code, language, uuid) {
     const baseImage = this.images[i];
     var content = "FROM " + baseImage + "\nCOPY " + filename + " " + filename + "\nCMD [\"" + command + "\", \"" + filename + "\"]";
     fs.writeFileSync(uuid + '/Dockerfile', content);
+    fs.writeFileSync(uuid + '/' + filename, code);
 };
 
 DockerManager.prototype.runContainer = function(tempImage, callback) {
@@ -81,7 +85,7 @@ DockerManager.prototype.deleteImage = function(imageHash) {
         if (error) {
             console.error(error);
         };
-        exec("sudo docker rmi " + imageHash, function(error, stderr, stdout) {
+        exec("sudo docker rmi " + imageHash + " -f", function(error, stderr, stdout) {
             if (error) {
                 console.error(error);
             };
