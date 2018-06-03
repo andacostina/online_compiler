@@ -70,7 +70,6 @@ angular.module("compilerApp", ["ui.ace", "ui.bootstrap"])
 
             $scope.runCode = function() {
                 $scope.running = true;
-
                 $http({
                     method: 'POST',
                     url: '/compile',

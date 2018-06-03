@@ -1,123 +1,132 @@
 html, body {
+    height:100%;
+    width: 100%;
+}
+
+body {
+    overflow: auto;
+    background-color: #222;
+}
+
+.row {
+    margin-left:0;
+    margin-right:0;
     height: 100%;
     width: 100%;
-    margin: 0;
-    background-color: black;
 }
 
-.container {
-    display:table;
-    width: 100%;
+.row .editor {
     height: 100%;
-    margin-top: 0px;
-    padding: 0px 0 0 0;
-    box-sizing: border-box;
+    min-height:45px;
+    padding-right:0;
+    padding-left: 0;
+    background-color: #222;
+    border-bottom:4px solid #404040;
+    border-right: 8px solid #404040;
 }
 
-#options {
-    width: 99%;
-    display: block;
-    left: 0;
-    position: absolute;
-    right: 0;
-    top: 0;
-    margin-top: 4px;
-    margin-left: 15px;
+.row .org {
+    height: 99%;
+    min-height:45px;
+    padding-right:0;
+    padding-left: 0;
+    background-color: #222;
+    border-bottom:4px solid transparent;
+}
+
+.files {
+    min-height: 50%;
+    max-height: 50%;
+    height: 50%;
     color: white;
+    background-color: #222;
+    border-bottom: 8px solid #404040;
+    margin-bottom:10px;
+    padding: 30px;
 }
 
-#code {
-    height: 90%;
-    display: table-row;
+.output {
+    color: white;
+    height: 50%;
+    background-color: #222;
+    padding: 30px;
 }
 
-.no-float {
-    display: table-cell;
-    float: none;
-}
-
-.ace_editor  {
+.wrapper {
+    width:100%;
+    min-height: 100%;
     height: 100%;
+    overflow:auto;
+    border: 1px white;
 }
 
-.form-control {
-    background-color: black;
-    color: white;
+.ace_editor {
+    overflow-y:auto;
+    overflow-x:auto;
+    min-height: calc(100% - 36px);
 }
 
-.btn-custom {
-    background-color: hsl(0, 2%, 27%) !important;
-    background-repeat: repeat-x;
-    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#989494", endColorstr="#464343");
-    background-image: -khtml-gradient(linear, left top, left bottom, from(#989494), to(#464343));
-    background-image: -moz-linear-gradient(top, #989494, #464343);
-    background-image: -ms-linear-gradient(top, #989494, #464343);
-    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #989494), color-stop(100%, #464343));
-    background-image: -webkit-linear-gradient(top, #989494, #464343);
-    background-image: -o-linear-gradient(top, #989494, #464343);
-    background-image: linear-gradient(#989494, #464343);
-    border-color: #464343 #464343 hsl(0, 2%, 19%);
-    color: #fff !important;
-    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.52);
-    -webkit-font-smoothing: antialiased;
+.toolbar
+{
+    padding:3px;
+    height:40px;
 }
+
+::-webkit-scrollbar {
+    width: 0.9em;
+}
+
+::-webkit-scrollbar-track {
+    box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+}
+
+::-webkit-scrollbar-thumb {
+    background: rgba(100, 100, 100, 0.7);
+}
+
+::-webkit-scrollbar-corner,
+::-webkit-scrollbar-thumb:window-inactive {
+    background: rgba(100, 100, 100, 0.4);
+}
+
 
 .gly-spin {
     -webkit-animation: spin 2s infinite linear;
     -moz-animation: spin 2s infinite linear;
     -o-animation: spin 2s infinite linear;
     animation: spin 2s infinite linear;
-  }
-  @-moz-keyframes spin {
-    0% {
-      -moz-transform: rotate(0deg);
-    }
-    100% {
-      -moz-transform: rotate(359deg);
-    }
-  }
-  @-webkit-keyframes spin {
-    0% {
-      -webkit-transform: rotate(0deg);
-    }
-    100% {
-      -webkit-transform: rotate(359deg);
-    }
-  }
-  @-o-keyframes spin {
-    0% {
-      -o-transform: rotate(0deg);
-    }
-    100% {
-      -o-transform: rotate(359deg);
-    }
-  }
-  @keyframes spin {
-    0% {
-      -webkit-transform: rotate(0deg);
-      transform: rotate(0deg);
-    }
-    100% {
-      -webkit-transform: rotate(359deg);
-      transform: rotate(359deg);
-    }
-  }
-
-#result {
-    position: relative;
-    top: -820px;
 }
-
-.panel > .panel-heading {
-    background-image: none;
-    background-color: black;
-    color: white;
+@-moz-keyframes spin {
+    0% {
+        -moz-transform: rotate(0deg);
+    }
+    100% {
+        -moz-transform: rotate(359deg);
+    }
 }
-
-.panel > .panel-body {
-    height: 800px;
-    background-image: none;
-    background-color: #232323;
-    color: white;
-    overflow: auto;
+@-webkit-keyframes spin {
+    0% {
+        -webkit-transform: rotate(0deg);
+    }
+    100% {
+        -webkit-transform: rotate(359deg);
+    }
+}
+@-o-keyframes spin {
+    0% {
+        -o-transform: rotate(0deg);
+    }
+    100% {
+        -o-transform: rotate(359deg);
+    }
+}
+@keyframes spin {
+    0% {
+        -webkit-transform: rotatex(0deg);
+        transform: rotate(0deg);
+    }
+    100% {
+        -webkit-transform: rotate(359deg);
+        transform: rotate(359deg);
+    }
 }
