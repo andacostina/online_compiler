@@ -1,4 +1,4 @@
-angular.module("compilerApp", ["ui.ace", "ui.bootstrap"])
+angular.module("compilerApp", ["ui.ace", "ui.bootstrap", "treeControl"])
 .controller("mainController", function($scope, $http, $timeout) {
 
     $scope.themes = ["twilight", "ambiance", "clouds", "cobalt", "dracula", "dreamweaver", "idle_fingers", "kuroir", "monokai", "terminal", "vibrant_ink", "xcode"];
@@ -57,7 +57,72 @@ angular.module("compilerApp", ["ui.ace", "ui.bootstrap"])
         $scope.aceModel = $scope.codeExamples[0];
     }, function error(response) {
     });
-    
+
+    $scope.treedata = [
+        {label: "My scripts", type: "folder", id: 0, children: [
+            {label: "main.py", type: "doc", id: 1, content: $scope.aceModel}
+        ]}
+    ];
+    $scope.expandedNodes = [$scope.treedata[0]];
+    $scope.selectedNode = $scope.treedata[0].children[0];
+
+    $scope.showSelected = function(sel) {
+        $scope.selectedNode = sel;
+    };
+
+    $scope.createFolder = function() {
+        if ($scope.selectedNode && $scope.selectedNode.type == 'folder') {
+            var numChildren = $scope.selectedNode.children.length;
+            $scope.selectedNode.children.push({label: 'New folder', type: 'folder', id: $scope.selectedNode.id + "_" + numChildren + 1, children: []});
+        }
+        else {
+            $scope.treedata.push({label: 'New folder', type: 'folder', 'id': $scope.treedata.length + 1, children: []});
+        };
+    };
+
+    $scope.createFile = function() {
+        if ($scope.selectedNode && $scope.selectedNode.type == 'folder') {
+            var numChildren = $scope.selectedNode.children.length;
+            $scope.selectedNode.children.push({label: 'New file', type: 'doc', id: $scope.selectedNode.id + "_" + numChildren + 1, content: ''});
+        }
+        else {
+            $scope.treedata.push({label: 'New file', type: 'doc', 'id': $scope.treedata.length + 1, content: ''});
+        };
+    };
+
+    $scope.editorEnabled = false;
+
+    $scope.isEditorEnabled = function(nodeId) {
+        if ($scope.editorEnabled && nodeId === $scope.selectedNode.id) {
+            return true;
+        };
+        return false;
+    };
+
+    $scope.renameFile = function() {
+        if ($scope.selectedNode) {
+            $scope.selected = $scope.selectedNode;
+            $scope.editorEnabled = true;
+
+            $scope.editableText = $scope.selected.label;
+            $scope.disableEditor = function() {
+                $scope.editorEnabled = false;
+                $scope.editableText = '';
+            };
+            $scope.save = function(editableText) {
+                alert(editableText);
+                $scope.selected.label = editableText;
+                alert($scope.selected.label);
+                $scope.disableEditor();
+            };
+
+        };
+    };
+
+    $scope.uploadFile = function() {
+        
+    };
+
     $scope.aceOption = {
         useWrapMode : false,
         showGutter: true,

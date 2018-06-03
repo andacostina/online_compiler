@@ -24,6 +24,13 @@
         <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular-animate.js"></script>
         <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular-sanitize.js"></script>
 
+        <script type="text/javascript" src="bower_components/angular-tree-control/angular-tree-control.js"></script>
+        <link rel="stylesheet" type="text/css" href="bower_components/angular-tree-control/css/tree-control.css">
+        <link rel="stylesheet" type="text/css" href="bower_components/angular-tree-control/css/tree-control-attribute.css">
+
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
         <script src="app.js"></script>
 
     </head>
@@ -42,8 +49,38 @@
                     <div ui-ace="aceOption" ng-model="aceModel"></div>
                 </div>
                 <div class="col-sm-4 org">
-                    <div class="files">files</div>
-                    <div class="output">{{output}}</div>
+                    <div class="files">
+                        <i class="material-icons" ng-click="createFolder()"  tooltip-placement="bottom" uib-tooltip="Create new folder">create_new_folder</i>
+                        <i class="material-icons" ng-click="createFile()"  tooltip-placement="bottom" uib-tooltip="Create new file">note_add</i>
+                        <i class="material-icons" ng-click="renameFile()"  tooltip-placement="bottom" uib-tooltip="Rename file">description</i>
+                        <i class="material-icons" ng-click="uploadFile()"  tooltip-placement="bottom" uib-tooltip="Upload file">file_upload</i>
+                        <div class="real_files">
+                            <treecontrol class="tree-dark" tree-model="treedata" selected-node="selectedNode" expanded-nodes="expandedNodes" on-selection="showSelected(node)">
+                                <span ng-switch="" on="node.type">
+                                    <span ng-switch-when="folder" class="glyphicon glyphicon-folder-open" aria-hidden="true"></span>
+                                    <span ng-switch-when="pic" class="glyphicon glyphicon-picture" aria-hidden="true"></span>
+                                    <span ng-switch-when="doc" class="glyphicon glyphicon-file" aria-hidden="true"></span>
+                                    <span ng-switch-when="file" class="glyphicon glyphicon-floppy-disk" aria-hidden="true"></span>
+                                    <span ng-switch-when="movie" class="glyphicon glyphicon-film" aria-hidden="true"></span>
+                                    <span ng-switch-when="email" class="glyphicon glyphicon-envelope" aria-hidden="true"></span>
+                                    <span ng-switch-when="home" class="glyphicon glyphicon-home" aria-hidden="true"></span>
+                                    <span ng-switch-when="trash" class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                                </span>
+                                <span ng-hide="isEditorEnabled(node.id)">{{node.label}}</span>
+                                <span ng-show="isEditorEnabled(node.id)">
+                                    <input ng-model="editableText">
+                                    <a ng-click="save(editableText)">Save</a>
+                                    or
+                                    <a ng-click="disableEditor()">cancel</a>.
+                                </span>
+                            </treecontrol>
+                        </div>
+                    </div>
+                    <div class="output">
+                        <div class="real_output">
+                            {{output}}
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
