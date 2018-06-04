@@ -116,9 +116,6 @@ angular.module("compilerApp", ["ui.ace", "ui.bootstrap", "treeControl"])
     $scope.editorEnabled = false;
 
     $scope.isEditorEnabled = function(nodeId) {
-        if (!$scope.selectedNode) {
-            return false;
-        };
         if ($scope.editorEnabled && nodeId === $scope.selectedNode.id) {
             return true;
         };
@@ -139,7 +136,6 @@ angular.module("compilerApp", ["ui.ace", "ui.bootstrap", "treeControl"])
                 $scope.selected.label = editableText;
                 $scope.disableEditor();
             };
-
         };
     };
 
