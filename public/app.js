@@ -40,8 +40,41 @@ angular.module("compilerApp", ["ui.ace", "ui.bootstrap", "treeControl"])
         };
     };
 
-    function getRandomInt(min, max) {
-        return Math.floor(Math.random() * (max - min + 1) + min);
+    function getFileExtension(language) {
+        switch(language) {
+            case "C":
+                return ".c";
+            case "C++":
+                return ".cpp"
+            case "C#":
+                return ".csc"
+            case "Python2":
+                return ".py"
+            case "Python3":
+                return ".py"
+            case "Java":
+                return ".java"
+            default:
+                return "";
+        };
+    };
+
+    function getLanguageFromExtension(filename) {
+        var extension = filename.split('.', 2)[1];
+        switch(extension) {
+            case "c":
+                return "C"
+            case "cpp":
+                return "C++"
+            case "csc":
+                return "C#"
+            case "py":
+                return "Python2"
+            case "java":
+                return "Java"
+            default:
+                return ""
+        };
     };
 
     $scope.languages = ["Python2", "Python3", "C", "C++", "Java", "C#"];
@@ -55,163 +88,190 @@ angular.module("compilerApp", ["ui.ace", "ui.bootstrap", "treeControl"])
     }, function error(response) {
     });
 
-    $scope.codeExamples = [
-        "# Mode Python\n\nprint \"Hello, World!\"",
-        "# Mode Python\n\nprint(\"Hello, World!\")", 
-        "// Mode C\n\n#include <stdio.h>\nint main()\n{\n   printf(\"Hello, World!\");\n    return 0;\n};", 
-        "// Mode C++\n\n#include <iostream>\nint main()\n{\n  std::cout << \"Hello, World!\";\n}", 
-        "// Mode Java\n\npublic class HelloWorld {\n    public static void main(String[] args) {\n        System.out.println(\"Hello, World!\");\n    }\n}", 
-        "// Mode C#\n\nnamespace HelloWorld\n{\n    class Hello {\n        static void Main(string[] args)\n        {\n            System.Console.WriteLine(\"Hello, World!\");\n        }\n}"
-    ];
-    $scope.aceModel = $scope.codeExamples[0];
-    $http({
-        method: 'GET',
-        url: '/code-examples'
-    }).then(function success(response) {
-        $scope.codeExamples = response.data.codeExamples;
-        $scope.aceModel = $scope.codeExamples[0];
-    }, function error(response) {
-    });
-
     $scope.treedata = [
-        {label: "My scripts", type: "folder", id: 0, children: [
-            {label: "main.py", type: "doc", id: 1, content: $scope.aceModel}
+        {label: "My scripts", type: "folder", id: '1', children: [
+            {label: "helloworld_2.py", type: "doc", id: '1_1', content: "print \"Hello, World!\"", lang: "Python2"},
+            {label: "helloworld_3.py", type: "doc", id: '1_2', content: "print(\"Hello, World!\")", lang: "Python3"},
+            {label: "helloworld.c", type: "doc", id: '1_3', content: "#include <stdio.h>\nint main()\n{\n    printf(\"Hello, World!\");\n    return 0;\n};", lang: "C"},
+            {label: "helloworld.cpp", type: "doc", id: '1_4', content: "#include <iostream>\nint main()\n{\n  std::cout << \"Hello, World!\";\n}", lang: "C++"},
+            {label: "HelloWorld.java", type: "doc", id: '1_5', content: "public class HelloWorld {\n    public static void main(String[] args) {\n        System.out.println(\"Hello, World!\");\n    }\n}", lang: "Java"},
+            {label: "Hello.csc", type: "doc", id: '1_6', content: "namespace HelloWorld\n{\n    class Hello {\n        static void Main(string[] args)\n        {\n            System.Console.WriteLine(\"Hello, World!\");\n        }\n}", lang: "C#"}
         ]}
     ];
+    $scope.aceModel = $scope.treedata[0].children[0].content;
+
     $scope.expandedNodes = [$scope.treedata[0]];
     $scope.selectedNode = $scope.treedata[0].children[0];
+    $scope.selectedFile = $scope.selectedNode;
+    
+    $http({
+        method: 'GET',
+        url: '/tree'
+    }).then(function success(response) {
+        $scope.treedata = response.data;
+        $scope.aceModel = $scope.treedata[0].children[0].content;
 
-    $scope.onSelection = function(sel) {
-        $scope.selectedNode = sel;
-        if ($scope.selectedNode.type === 'doc') {
-            $scope.aceModel = $scope.selectedNode.content;
-        };
-    };
+        $scope.expandedNodes = [$scope.treedata[0]];
+        $scope.selectedNode = $scope.treedata[0].children[0];
+        $scope.selectedFile = $scope.selectedNode;
 
-    $scope.createFolder = function() {
-        if ($scope.selectedNode && $scope.selectedNode.type == 'folder') {
-            var numChildren = $scope.selectedNode.children.length;
-            $scope.selectedNode.children.push({label: 'New folder', type: 'folder', id: $scope.selectedNode.id + "_" + numChildren + 1, children: []});
-        }
-        else {
-            $scope.treedata.push({label: 'New folder', type: 'folder', 'id': $scope.treedata.length + 1, children: []});
-        };
-    };
-
-    $scope.createFile = function() {
-        if ($scope.selectedNode && $scope.selectedNode.type == 'folder') {
-            var numChildren = $scope.selectedNode.children.length;
-            $scope.selectedNode.children.push({label: 'New file', type: 'doc', id: $scope.selectedNode.id + "_" + numChildren + 1, content: ''});
-        }
-        else {
-            $scope.treedata.push({label: 'New file', type: 'doc', 'id': $scope.treedata.length + 1, content: ''});
-        };
-    };
-
-    $scope.lastRightClickNode = null;
-    $scope.onRightClick = function(node) {
-        $scope.lastRightClickNode = node.label;
-    };
-
-    $scope.editorEnabled = false;
-
-    $scope.isEditorEnabled = function(nodeId) {
-        if ($scope.editorEnabled && nodeId === $scope.selectedNode.id) {
-            return true;
-        };
-        return false;
-    };
-
-    $scope.rename = function() {
-        if ($scope.selectedNode) {
-            $scope.selected = $scope.selectedNode;
-            $scope.editorEnabled = true;
-
-            $scope.editableText = $scope.selected.label;
-            $scope.disableEditor = function() {
-                $scope.editorEnabled = false;
-                $scope.editableText = '';
-            };
-            $scope.save = function(editableText) {
-                $scope.selected.label = editableText;
-                $scope.disableEditor();
-            };
-        };
-    };
-
-    $scope.myFile = null;
-    $scope.uploadFile = function() {
-        var file = $scope.myFile;
-        var fd = new FormData();
-        fd.append('file', file);
-        $http({
-            method: 'POST',
-            url: '/upload',
-            data: fd,
-            transformRequest: angular.identity,
-            headers: {'Content-Type': undefined}
-        }).then(function success(response) {
-            if (response.data.error) {
-                alert(response.data.error);
+        $scope.createFolder = function() {
+            if ($scope.selectedNode && $scope.selectedNode.type == 'folder') {
+                var children = $scope.selectedNode.children;
+                var lastChildId = 0;
+                if (children.length > 0) {
+                    var ids = children[children.length - 1].id.split('_');
+                    lastChildId = Number(ids[ids.length - 1]);
+                };
+                $scope.selectedNode.children.push({label: 'New folder', type: 'folder', id: $scope.selectedNode.id + "_" + (lastChildId + 1), children: []});
             }
             else {
-                var name = response.data.name;
-                var content = response.data.content;
-                if ($scope.selectedNode && $scope.selectedNode.type === 'folder') {
-                    var numChildren = $scope.selectedNode.children.length;
-                    $scope.selectedNode.children.push({label: name, type: 'doc', id: $scope.selectedNode.id + "_" + numChildren + 1, content: content});
-                }
-                else {
-                    $scope.treedata.push({label: name, type: 'doc', 'id': $scope.treedata.length + 1, content: content});
+                var lastId = 0;
+                if ($scope.treedata.length > 0) {
+                    lastId = Number($scope.treedata[$scope.treedata.length - 1].id);
+                };
+                $scope.treedata.push({label: 'New folder', type: 'folder', 'id': (lastId + 1).toString(), children: []});
+            };
+        };
+    
+        $scope.createFile = function() {
+            if ($scope.selectedNode && $scope.selectedNode.type == 'folder') {
+                var children = $scope.selectedNode.children;
+                var lastChildId = 0;
+                if (children.length > 0) {
+                    var ids = children[children.length - 1].id.split('_');
+                    lastChildId = Number(ids[ids.length - 1]);
+                };
+                $scope.selectedNode.children.push({label: 'New file', type: 'doc', id: $scope.selectedNode.id + "_" + (lastChildId + 1), content: '', lang: '?'});
+            }
+            else {
+                var lastId = 0;
+                if ($scope.treedata.length > 0) {
+                    lastId = Number($scope.treedata[$scope.treedata.length - 1].id);
+                };
+                $scope.treedata.push({label: 'New file', type: 'doc', 'id': (lastId + 1).toString(), content: '', lang: '?'});
+            };
+        };
+
+        $scope.lastRightClickNode = null;
+        $scope.onRightClick = function(node) {
+            $scope.lastRightClickNode = node.label;
+        };
+
+        $scope.editorEnabled = false;
+
+        $scope.isEditorEnabled = function(nodeId) {
+            if ($scope.editorEnabled && nodeId === $scope.selectedNode.id) {
+                return true;
+            };
+            return false;
+        };
+
+        $scope.rename = function() {
+            if ($scope.selectedNode) {
+                $scope.editorEnabled = true;
+
+                $scope.editableText = $scope.selectedFile.label;
+                $scope.disableEditor = function() {
+                    $scope.editorEnabled = false;
+                    $scope.editableText = '';
+                };
+                $scope.save = function(editableText) {
+                    $scope.selectedFile.label = editableText;
+                    $scope.selectedFile.lang = getLanguageFromExtension(editableText);
+                    $scope.disableEditor();
                 };
             };
-        }, function error(response) {
-            alert(response);
+        };
+
+        $scope.myFile = null;
+        $scope.uploadFile = function() {
+            var file = $scope.myFile;
+            var fd = new FormData();
+            fd.append('file', file);
+            $http({
+                method: 'POST',
+                url: '/upload',
+                data: fd,
+                transformRequest: angular.identity,
+                headers: {'Content-Type': undefined}
+            }).then(function success(response) {
+                if (response.data.error) {
+                    alert(response.data.error);
+                }
+                else {
+                    var name = response.data.name;
+                    var content = response.data.content;
+                    if ($scope.selectedNode && $scope.selectedNode.type === 'folder') {
+                        var numChildren = $scope.selectedNode.children.length;
+                        $scope.selectedNode.children.push({label: name, type: 'doc', id: $scope.selectedNode.id + "_" + numChildren + 1, content: content});
+                    }
+                    else {
+                        $scope.treedata.push({label: name, type: 'doc', 'id': $scope.treedata.length + 1, content: content});
+                    };
+                };
+            }, function error(response) {
+                alert(response);
+            });
+        };
+
+        $scope.$watch("myFile", function() {
+            if ($scope.myFile) $scope.uploadFile();
         });
-    };
 
-    $scope.$watch("myFile", function() {
-        if ($scope.myFile) $scope.uploadFile();
+        var saveData = (function () {
+            var a = document.createElement("a");
+            document.body.appendChild(a);
+            a.style = "display: none";
+            return function (data, fileName) {
+                    blob = new Blob([data]),
+                    url = window.URL.createObjectURL(blob);
+                a.href = url;
+                a.download = fileName;
+                a.click();
+                window.URL.revokeObjectURL(url);
+            };
+        }());
+        $scope.downloadFile = function() {
+            if ($scope.selectedNode && $scope.selectedNode.type === 'doc') {
+                saveData($scope.selectedNode.content, $scope.selectedNode.label);
+            };
+        };
+    
+        var removeNode = function(id, tree) {
+            for (var i = 0; i < tree.length; i++) {
+                elem = tree[i];
+                if (elem.id === id) {
+                    tree.splice(i, 1);
+                    return;
+                };
+                if (elem.children && elem.children.length > 0) {
+                    removeNode(id, elem.children);
+                };
+            };
+        };
+        $scope.remove = function() {
+            if ($scope.selectedNode) {
+                removeNode($scope.selectedNode.id, $scope.treedata);
+                $scope.aceModel = '';
+                $scope.selectedNode = null;
+            };
+        };
+
+        $scope.onSelection = function(sel) {
+            $scope.selectedNode = sel;
+            if ($scope.selectedNode.type === 'doc') {
+                $scope.aceModel = $scope.selectedNode.content;
+                $scope.langModel = $scope.selectedNode.lang;
+                $scope.selectedFile = $scope.selectedNode;
+            };
+        };
+    
+
+    }, function error(response) {
+        
     });
-
-    var saveData = (function () {
-        var a = document.createElement("a");
-        document.body.appendChild(a);
-        a.style = "display: none";
-        return function (data, fileName) {
-                blob = new Blob([data]),
-                url = window.URL.createObjectURL(blob);
-            a.href = url;
-            a.download = fileName;
-            a.click();
-            window.URL.revokeObjectURL(url);
-        };
-    }());
-    $scope.downloadFile = function() {
-        if ($scope.selectedNode && $scope.selectedNode.type === 'doc') {
-            saveData($scope.selectedNode.content, $scope.selectedNode.label);
-        };
-    };
-
-    var removeNode = function(id, tree) {
-        for (var i = 0; i < tree.length; i++) {
-            elem = tree[i];
-            if (elem.id === id) {
-                tree.splice(i, 1);
-                return;
-            };
-            if (elem.children && elem.children.length > 0) {
-                removeNode(id, elem.children);
-            };
-        };
-    };
-    $scope.remove = function() {
-        if ($scope.selectedNode) {
-            removeNode($scope.selectedNode.id, $scope.treedata);
-            $scope.aceModel = '';
-        };
-    };
-
+    
     $scope.aceOption = {
         useWrapMode : false,
         showGutter: true,
@@ -250,8 +310,10 @@ angular.module("compilerApp", ["ui.ace", "ui.bootstrap", "treeControl"])
 
             $scope.modeChanged = function () {
                 _editor.getSession().setMode("ace/mode/" + getAceMode($scope.langModel));
-                var i = $scope.languages.indexOf($scope.langModel);
-                $scope.aceModel = $scope.codeExamples[i];
+                var currentName = $scope.selectedFile.label;
+                var splits = currentName.split('.', 2);
+                $scope.selectedFile.label = splits[0] + getFileExtension($scope.langModel);
+                $scope.selectedFile.lang = $scope.langModel;
             };
 
             $scope.themeChanged = function() {
@@ -266,12 +328,12 @@ angular.module("compilerApp", ["ui.ace", "ui.bootstrap", "treeControl"])
             $scope.zoomIn = function() {
                 var size = _editor.getFontSize();
                 _editor.setFontSize(size + 1);
-            }
+            };
 
             $scope.zoomOut = function() {
                 var size = _editor.getFontSize();
                 _editor.setFontSize(size - 1);
-            }
+            };
 
             $scope.changeAutoComplete = function() {
                 $scope.autoComplete = !$scope.autoComplete;
@@ -279,10 +341,10 @@ angular.module("compilerApp", ["ui.ace", "ui.bootstrap", "treeControl"])
                     enableBasicAutocompletion: $scope.autoComplete,
                     enableLiveAutocompletion: $scope.autoComplete
                 });
-            }
+            };
         },
         onChange: function(_editor) {
-
+            $scope.selectedFile.content = $scope.aceModel;
         },
         require: ["ace/ext/language_tools"],
         advanced: {
