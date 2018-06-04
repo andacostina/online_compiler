@@ -25,6 +25,7 @@
         <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular-sanitize.js"></script>
 
         <script type="text/javascript" src="bower_components/angular-tree-control/angular-tree-control.js"></script>
+        <script type="text/javascript" src="bower_components/angular-tree-control/context-menu.js"></script>
         <link rel="stylesheet" type="text/css" href="bower_components/angular-tree-control/css/tree-control.css">
         <link rel="stylesheet" type="text/css" href="bower_components/angular-tree-control/css/tree-control-attribute.css">
 
@@ -52,10 +53,15 @@
                     <div class="files">
                         <i class="material-icons" ng-click="createFolder()"  tooltip-placement="bottom" uib-tooltip="Create new folder">create_new_folder</i>
                         <i class="material-icons" ng-click="createFile()"  tooltip-placement="bottom" uib-tooltip="Create new file">note_add</i>
-                        <i class="material-icons" ng-click="renameFile()"  tooltip-placement="bottom" uib-tooltip="Rename file">description</i>
-                        <i class="material-icons" ng-click="uploadFile()"  tooltip-placement="bottom" uib-tooltip="Upload file">file_upload</i>
+                        <i class="material-icons" ng-click="rename()"  tooltip-placement="bottom" uib-tooltip="Rename">description</i>
+                        <label for="upload">
+                            <i class="material-icons" tooltip-placement="bottom" uib-tooltip="Upload file">file_upload</i>
+                            <input type="file" id="upload" file-model="myFile" style="display:none">
+                        </label>
+                        <i class="material-icons" ng-click="downloadFile()"  tooltip-placement="bottom" uib-tooltip="Download file">file_download</i>
+                        <i class="material-icons" ng-click="remove()"  tooltip-placement="bottom" uib-tooltip="Remove">delete</i>
                         <div class="real_files">
-                            <treecontrol class="tree-dark" tree-model="treedata" selected-node="selectedNode" expanded-nodes="expandedNodes" on-selection="showSelected(node)">
+                            <treecontrol class="tree-dark" tree-model="treedata" selected-node="selectedNode" expanded-nodes="expandedNodes" on-selection="onSelection(node)" on-right-click="onRightClick(node)" menu-id="ctxMenu">
                                 <span ng-switch="" on="node.type">
                                     <span ng-switch-when="folder" class="glyphicon glyphicon-folder-open" aria-hidden="true"></span>
                                     <span ng-switch-when="pic" class="glyphicon glyphicon-picture" aria-hidden="true"></span>
@@ -69,11 +75,22 @@
                                 <span ng-hide="isEditorEnabled(node.id)">{{node.label}}</span>
                                 <span ng-show="isEditorEnabled(node.id)">
                                     <input ng-model="editableText">
-                                    <a ng-click="save(editableText)">Save</a>
-                                    or
-                                    <a ng-click="disableEditor()">cancel</a>.
+                                    <span>
+                                        <span class="glyphicon glyphicon-ok"  ng-click="save(editableText)"></span>
+                                        <span class="glyphicon glyphicon-remove" ng-click="disableEditor()"></span>
+                                    </span>
                                 </span>
                             </treecontrol>
+                            <ul id="ctxMenu" class="dropdown-menu">
+                                <li><a context-submenu-id="ctxSubMenuCreate" ng-show="selectedNode.type === 'folder'" ng-click="createFile()">New..</a></li>
+                                <li class="divider" ng-show="selectedNode.type === 'folder'"></li>  
+                                <li><a ng-click="rename()">Rename</a></li>
+                                <li><a ng-click="remove()">Remove</a></li>
+                            </ul>
+                            <ul id="ctxSubMenuCreate" class="dropdown-menu">
+                                <li><a ng-click="createFolder()">folder</a></li>
+                                <li><a ng-click="createFile()">file</a></li>
+                            </ul>
                         </div>
                     </div>
                     <div class="output">

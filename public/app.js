@@ -1,5 +1,20 @@
 angular.module("compilerApp", ["ui.ace", "ui.bootstrap", "treeControl"])
-.controller("mainController", function($scope, $http, $timeout) {
+.directive('fileModel', ['$parse', function($parse) {
+    return {
+        restrict: 'A',
+        link: function(scope, element, attrs) {
+            var model = $parse(attrs.fileModel);
+            var modelSetter = model.assign;
+            
+            element.bind('change', function(){
+                scope.$apply(function() {
+                    modelSetter(scope, element[0].files[0]);
+                });
+            });
+        }
+    };
+}])
+.controller("mainController", ['$scope', '$http', '$timeout', function($scope, $http, $timeout) {
 
     $scope.themes = ["twilight", "ambiance", "clouds", "cobalt", "dracula", "dreamweaver", "idle_fingers", "kuroir", "monokai", "terminal", "vibrant_ink", "xcode"];
     $scope.autoComplete = true;
@@ -66,8 +81,11 @@ angular.module("compilerApp", ["ui.ace", "ui.bootstrap", "treeControl"])
     $scope.expandedNodes = [$scope.treedata[0]];
     $scope.selectedNode = $scope.treedata[0].children[0];
 
-    $scope.showSelected = function(sel) {
+    $scope.onSelection = function(sel) {
         $scope.selectedNode = sel;
+        if ($scope.selectedNode.type === 'doc') {
+            $scope.aceModel = $scope.selectedNode.content;
+        };
     };
 
     $scope.createFolder = function() {
@@ -90,16 +108,24 @@ angular.module("compilerApp", ["ui.ace", "ui.bootstrap", "treeControl"])
         };
     };
 
+    $scope.lastRightClickNode = null;
+    $scope.onRightClick = function(node) {
+        $scope.lastRightClickNode = node.label;
+    };
+
     $scope.editorEnabled = false;
 
     $scope.isEditorEnabled = function(nodeId) {
+        if (!$scope.selectedNode) {
+            return false;
+        };
         if ($scope.editorEnabled && nodeId === $scope.selectedNode.id) {
             return true;
         };
         return false;
     };
 
-    $scope.renameFile = function() {
+    $scope.rename = function() {
         if ($scope.selectedNode) {
             $scope.selected = $scope.selectedNode;
             $scope.editorEnabled = true;
@@ -110,17 +136,84 @@ angular.module("compilerApp", ["ui.ace", "ui.bootstrap", "treeControl"])
                 $scope.editableText = '';
             };
             $scope.save = function(editableText) {
-                alert(editableText);
                 $scope.selected.label = editableText;
-                alert($scope.selected.label);
                 $scope.disableEditor();
             };
 
         };
     };
 
+    $scope.myFile = null;
     $scope.uploadFile = function() {
-        
+        var file = $scope.myFile;
+        var fd = new FormData();
+        fd.append('file', file);
+        $http({
+            method: 'POST',
+            url: '/upload',
+            data: fd,
+            transformRequest: angular.identity,
+            headers: {'Content-Type': undefined}
+        }).then(function success(response) {
+            if (response.data.error) {
+                alert(response.data.error);
+            }
+            else {
+                var name = response.data.name;
+                var content = response.data.content;
+                if ($scope.selectedNode && $scope.selectedNode.type === 'folder') {
+                    var numChildren = $scope.selectedNode.children.length;
+                    $scope.selectedNode.children.push({label: name, type: 'doc', id: $scope.selectedNode.id + "_" + numChildren + 1, content: content});
+                }
+                else {
+                    $scope.treedata.push({label: name, type: 'doc', 'id': $scope.treedata.length + 1, content: content});
+                };
+            };
+        }, function error(response) {
+            alert(response);
+        });
+    };
+
+    $scope.$watch("myFile", function() {
+        if ($scope.myFile) $scope.uploadFile();
+    });
+
+    var saveData = (function () {
+        var a = document.createElement("a");
+        document.body.appendChild(a);
+        a.style = "display: none";
+        return function (data, fileName) {
+                blob = new Blob([data]),
+                url = window.URL.createObjectURL(blob);
+            a.href = url;
+            a.download = fileName;
+            a.click();
+            window.URL.revokeObjectURL(url);
+        };
+    }());
+    $scope.downloadFile = function() {
+        if ($scope.selectedNode && $scope.selectedNode.type === 'doc') {
+            saveData($scope.selectedNode.content, $scope.selectedNode.label);
+        };
+    };
+
+    var removeNode = function(id, tree) {
+        for (var i = 0; i < tree.length; i++) {
+            elem = tree[i];
+            if (elem.id === id) {
+                tree.splice(i, 1);
+                return;
+            };
+            if (elem.children && elem.children.length > 0) {
+                removeNode(id, elem.children);
+            };
+        };
+    };
+    $scope.remove = function() {
+        if ($scope.selectedNode) {
+            removeNode($scope.selectedNode.id, $scope.treedata);
+            $scope.aceModel = '';
+        };
     };
 
     $scope.aceOption = {
@@ -201,4 +294,4 @@ angular.module("compilerApp", ["ui.ace", "ui.bootstrap", "treeControl"])
             enableLiveAutocompletion: $scope.autoComplete
         }}
     ;
-});
+}]);
