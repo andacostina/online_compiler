@@ -26,7 +26,7 @@ app.get('/code-examples', function(req, res) {
 
 app.get('/tree', function(req, res) {
     res.json([
-        {label: "My scripts2", type: "folder", id: '1', children: [
+        {label: "My scripts", type: "folder", id: '1', children: [
             {label: "helloworld_2.py", type: "doc", id: '1_1', content: "print \"Hello, World!\"", lang: 'Python2'},
             {label: "helloworld_3.py", type: "doc", id: '1_2', content: "print(\"Hello, World!\")", lang: "Python3"},
             {label: "helloworld.c", type: "doc", id: '1_3', content: "#include <stdio.h>\nint main()\n{\n    printf(\"Hello, World!\");\n    return 0;\n};", lang: "C"},

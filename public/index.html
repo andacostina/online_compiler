@@ -35,13 +35,13 @@
         <script src="app.js"></script>
 
     </head>
-    <body ng-controller="mainController">
-        <div class="wrapper">
+    <body ng-controller="mainController" ng-style="{'background-color': designThemes[themeIndex].color2}">
+        <div class="wrapper" ng-style="{'border': '1px ' + designThemes[themeIndex].color1}">
             <div class="row">
-                <div class="col-sm-8 editor">
+                <div class="col-sm-8 editor" ng-style="{'background-color': designThemes[themeIndex].color2, 'border-bottom': '4px solid ' + designThemes[themeIndex].color3, 'border-right': '8px solid ' + designThemes[themeIndex].color3}">
                     <div class="toolbar">
-                        <button type="button" class="btn btn-primary" ng-click="runCode()"><span ng-class="{'glyphicon glyphicon-play': !running, 'glyphicon glyphicon-cog gly-spin': running}"></span> Run</button>&nbsp;
-                        <select style="min-width: 150px; color: grey;" id="lang" ng-model="langModel" ng-options="lang for lang in languages" ng-change="modeChanged()"></select>&nbsp;
+                        <button type="button" class="btn btn-primary" ng-disabled="runDisabled()" ng-click="runCode()"><span ng-class="{'glyphicon glyphicon-play': !running, 'glyphicon glyphicon-cog gly-spin': running}"></span> Run</button>&nbsp;
+                        <select style="min-width: 150px;" id="lang" ng-model="langModel" ng-options="lang for lang in languages" ng-change="modeChanged()"></select>&nbsp;
                         <button type="button" class="btn btn-primary btn-xs" ng-click="themeChanged()" tooltip-placement="bottom" uib-tooltip="Change theme"><span class="glyphicon glyphicon-eye-open"></span></button>&nbsp;
                         <button type="button" class="btn btn-primary btn-xs" ng-click="zoomIn()" tooltip-placement="bottom" uib-tooltip="Zoom in"><span class="glyphicon glyphicon-zoom-in"></span> </button>&nbsp;
                         <button type="button" class="btn btn-primary btn-xs" ng-click="zoomOut()" tooltip-placement="bottom" uib-tooltip="Zoom out"><span class="glyphicon glyphicon-zoom-out"></span> </button>&nbsp;
@@ -49,8 +49,8 @@
                     Shown file: {{selectedFile.label}}</div>
                     <div ui-ace="aceOption" ng-model="aceModel"></div>
                 </div>
-                <div class="col-sm-4 org">
-                    <div class="files">
+                <div class="col-sm-4 org" ng-style="{'background-color': designThemes[themeIndex].color2}">
+                    <div class="files" ng-style="{'border-bottom': '8px solid ' + designThemes[themeIndex].color3, 'color': designThemes[themeIndex].color1}">
                         <i class="material-icons" ng-click="createFolder()"  tooltip-placement="bottom" uib-tooltip="Create new folder">create_new_folder</i>
                         <i class="material-icons" ng-click="createFile()"  tooltip-placement="bottom" uib-tooltip="Create new file">note_add</i>
                         <i class="material-icons" ng-click="rename()"  tooltip-placement="bottom" uib-tooltip="Rename">description</i>
@@ -60,8 +60,8 @@
                         </label>
                         <i class="material-icons" ng-click="downloadFile()"  tooltip-placement="bottom" uib-tooltip="Download file">file_download</i>
                         <i class="material-icons" ng-click="remove()"  tooltip-placement="bottom" uib-tooltip="Remove">delete</i>
-                        <div class="real_files">
-                            <treecontrol class="tree-dark" tree-model="treedata" selected-node="selectedNode" expanded-nodes="expandedNodes" on-selection="onSelection(node)" on-right-click="onRightClick(node)" menu-id="ctxMenu">
+                        <div class="real_files" ng-style="{'background-color': designThemes[themeIndex].color4}">
+                            <treecontrol ng-class="{'tree-dark': themeIndex === 0, 'tree-light': themeIndex === 1}" tree-model="treedata" selected-node="selectedNode" expanded-nodes="expandedNodes" on-selection="onSelection(node)" on-right-click="onRightClick(node)" menu-id="ctxMenu">
                                 <span ng-switch="" on="node.type">
                                     <span ng-switch-when="folder" class="glyphicon glyphicon-folder-open" aria-hidden="true"></span>
                                     <span ng-switch-when="pic" class="glyphicon glyphicon-picture" aria-hidden="true"></span>
@@ -93,8 +93,8 @@
                             </ul>
                         </div>
                     </div>
-                    <div class="output">
-                        <div class="real_output">
+                    <div class="output" ng-style="{'background-color': designThemes[themeIndex].color2, 'color': designThemes[themeIndex].color1}">
+                        <div class="real_output" ng-style="{'background-color': designThemes[themeIndex].color4}">
                             {{output}}
                         </div>
                     </div>

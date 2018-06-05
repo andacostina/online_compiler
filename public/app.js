@@ -16,7 +16,24 @@ angular.module("compilerApp", ["ui.ace", "ui.bootstrap", "treeControl"])
 }])
 .controller("mainController", ['$scope', '$http', '$timeout', function($scope, $http, $timeout) {
 
-    $scope.themes = ["twilight", "ambiance", "clouds", "cobalt", "dracula", "dreamweaver", "idle_fingers", "kuroir", "monokai", "terminal", "vibrant_ink", "xcode"];
+    $scope.designThemes = [
+        {
+            editor: 'twilight',
+            color1: 'white',
+            color2: '#222',
+            color3: '#404040',
+            color4: 'black'
+        },
+        {
+            editor: 'github',
+            color1: 'black',
+            color2: '#f2f2f2',
+            color3: '#d9d9d9',
+            color4: 'white'
+        }
+    ];
+    $scope.themeIndex = 0;
+
     $scope.autoComplete = true;
     $scope.output = "";
     $scope.running = false;
@@ -89,7 +106,7 @@ angular.module("compilerApp", ["ui.ace", "ui.bootstrap", "treeControl"])
     });
 
     $scope.treedata = [
-        {label: "My scripts", type: "folder", id: '1', children: [
+        {label: "Scripts", type: "folder", id: '1', children: [
             {label: "helloworld_2.py", type: "doc", id: '1_1', content: "print \"Hello, World!\"", lang: "Python2"},
             {label: "helloworld_3.py", type: "doc", id: '1_2', content: "print(\"Hello, World!\")", lang: "Python3"},
             {label: "helloworld.c", type: "doc", id: '1_3', content: "#include <stdio.h>\nint main()\n{\n    printf(\"Hello, World!\");\n    return 0;\n};", lang: "C"},
@@ -110,6 +127,83 @@ angular.module("compilerApp", ["ui.ace", "ui.bootstrap", "treeControl"])
     }).then(function success(response) {
         $scope.treedata = response.data;
         $scope.aceModel = $scope.treedata[0].children[0].content;
+
+        $scope.aceOption = {
+            useWrapMode : false,
+            showGutter: true,
+            theme: $scope.designThemes[$scope.themeIndex].editor,
+            mode: getAceMode($scope.languages[0]),
+            firstLineNumber: 1,
+            onLoad: function(_editor) {
+                _editor.setShowPrintMargin(false);
+                _editor.setAutoScrollEditorIntoView(true);
+    
+                $scope.runCode = function() {
+                    $scope.running = true;
+                    $http({
+                        method: 'POST',
+                        url: '/compile',
+                        data: {
+                            'code': $scope.aceModel,
+                            'language': $scope.langModel
+                        }
+                    }).then(function success(response) {
+                        if (response.data.error) {
+                            $scope.output = "Error when running code";
+                        }
+                        else {
+                            $scope.output = response.data.stdout;
+                            if (response.data.stderr) {
+                                $scope.output += "\n" + response.data.stderr;
+                            };
+                        };
+                        $scope.running = false;
+                    }, function error(response) {
+                        $scope.output = "Error running\n" + response.data.message;
+                        $scope.running = false;
+                    });
+                };
+    
+                $scope.modeChanged = function () {
+                    _editor.getSession().setMode("ace/mode/" + getAceMode($scope.langModel));
+                    var currentName = $scope.selectedFile.label;
+                    var splits = currentName.split('.', 2);
+                    $scope.selectedFile.label = splits[0] + getFileExtension($scope.langModel);
+                    $scope.selectedFile.lang = $scope.langModel;
+                };
+    
+                $scope.themeChanged = function() {
+                    $scope.themeIndex = 1 - $scope.themeIndex;
+                    _editor.setTheme("ace/theme/" + $scope.designThemes[$scope.themeIndex].editor);
+                };
+    
+                $scope.zoomIn = function() {
+                    var size = _editor.getFontSize();
+                    _editor.setFontSize(size + 1);
+                };
+    
+                $scope.zoomOut = function() {
+                    var size = _editor.getFontSize();
+                    _editor.setFontSize(size - 1);
+                };
+    
+                $scope.changeAutoComplete = function() {
+                    $scope.autoComplete = !$scope.autoComplete;
+                    _editor.setOptions({
+                        enableBasicAutocompletion: $scope.autoComplete,
+                        enableLiveAutocompletion: $scope.autoComplete
+                    });
+                };
+            },
+            onChange: function(_editor) {
+                $scope.selectedFile.content = $scope.aceModel;
+            },
+            require: ["ace/ext/language_tools"],
+            advanced: {
+                enableBasicAutocompletion: $scope.autoComplete,
+                enableLiveAutocompletion: $scope.autoComplete
+            }
+        };
 
         $scope.expandedNodes = [$scope.treedata[0]];
         $scope.selectedNode = $scope.treedata[0].children[0];
@@ -202,12 +296,13 @@ angular.module("compilerApp", ["ui.ace", "ui.bootstrap", "treeControl"])
                 else {
                     var name = response.data.name;
                     var content = response.data.content;
+                    var language = getLanguageFromExtension(name);
                     if ($scope.selectedNode && $scope.selectedNode.type === 'folder') {
                         var numChildren = $scope.selectedNode.children.length;
-                        $scope.selectedNode.children.push({label: name, type: 'doc', id: $scope.selectedNode.id + "_" + numChildren + 1, content: content});
+                        $scope.selectedNode.children.push({label: name, type: 'doc', id: $scope.selectedNode.id + "_" + numChildren + 1, content: content, lang: language});
                     }
                     else {
-                        $scope.treedata.push({label: name, type: 'doc', 'id': $scope.treedata.length + 1, content: content});
+                        $scope.treedata.push({label: name, type: 'doc', 'id': $scope.treedata.length + 1, content: content, lang: language});
                     };
                 };
             }, function error(response) {
@@ -266,90 +361,15 @@ angular.module("compilerApp", ["ui.ace", "ui.bootstrap", "treeControl"])
                 $scope.selectedFile = $scope.selectedNode;
             };
         };
-    
 
+        $scope.runDisabled = function() {
+            if ($scope.languages.indexOf($scope.langModel) > -1) {
+                return false;
+            };
+            return true;
+        };
     }, function error(response) {
-        
     });
     
-    $scope.aceOption = {
-        useWrapMode : false,
-        showGutter: true,
-        theme: $scope.themes[0],
-        mode: getAceMode($scope.languages[0]),
-        firstLineNumber: 1,
-        onLoad: function(_editor) {
-            _editor.setShowPrintMargin(false);
-            _editor.setAutoScrollEditorIntoView(true);
-
-            $scope.runCode = function() {
-                $scope.running = true;
-                $http({
-                    method: 'POST',
-                    url: '/compile',
-                    data: {
-                        'code': $scope.aceModel,
-                        'language': $scope.langModel
-                    }
-                }).then(function success(response) {
-                    if (response.data.error) {
-                        $scope.output = "Error when running code";
-                    }
-                    else {
-                        $scope.output = response.data.stdout;
-                        if (response.data.stderr) {
-                            $scope.output += "\n" + response.data.stderr;
-                        };
-                    };
-                    $scope.running = false;
-                }, function error(response) {
-                    $scope.output = "Error running\n" + response.data.message;
-                    $scope.running = false;
-                });
-            };
-
-            $scope.modeChanged = function () {
-                _editor.getSession().setMode("ace/mode/" + getAceMode($scope.langModel));
-                var currentName = $scope.selectedFile.label;
-                var splits = currentName.split('.', 2);
-                $scope.selectedFile.label = splits[0] + getFileExtension($scope.langModel);
-                $scope.selectedFile.lang = $scope.langModel;
-            };
-
-            $scope.themeChanged = function() {
-                var theme = _editor.getTheme().split('/')[2];
-                var i = $scope.themes.indexOf(theme);
-                if (i === $scope.themes.length - 1) {
-                    i = -1;
-                };
-                _editor.setTheme("ace/theme/" + $scope.themes[i + 1]);
-            };
-
-            $scope.zoomIn = function() {
-                var size = _editor.getFontSize();
-                _editor.setFontSize(size + 1);
-            };
-
-            $scope.zoomOut = function() {
-                var size = _editor.getFontSize();
-                _editor.setFontSize(size - 1);
-            };
-
-            $scope.changeAutoComplete = function() {
-                $scope.autoComplete = !$scope.autoComplete;
-                _editor.setOptions({
-                    enableBasicAutocompletion: $scope.autoComplete,
-                    enableLiveAutocompletion: $scope.autoComplete
-                });
-            };
-        },
-        onChange: function(_editor) {
-            $scope.selectedFile.content = $scope.aceModel;
-        },
-        require: ["ace/ext/language_tools"],
-        advanced: {
-            enableBasicAutocompletion: $scope.autoComplete,
-            enableLiveAutocompletion: $scope.autoComplete
-        }}
-    ;
+    
 }]);
