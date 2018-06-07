@@ -11,6 +11,6 @@ module.exports = {
         "// Mode C#\n\nnamespace HelloWorld\n{\n    class Hello {\n        static void Main(string[] args)\n        {\n            System.Console.WriteLine(\"Hello, World!\");\n        }\n}"
     ],
     extensions: ["py", "py", "c", "cpp", "java", "cs"],
-    commands: ["python *", "python3 *", "gcc * ; ./a.out", "g++ * ; ./a.out", "", ""],
+    commands: ["python *", "python3 *", "gcc * ; ./a.out", "g++ * ; ./a.out", "javac * ; java **", ""],
     images: ["python2-image", "python3-image", "c-image", "cpp-image", "java-image", "csharp-image"]
 }

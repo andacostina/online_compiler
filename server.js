@@ -40,8 +40,9 @@ app.get('/tree', function(req, res) {
 
 app.post("/compile", function(req, res) {
     var language = req.body.language;
+    var filename = req.body.filename;
     var code = req.body.code;
-    dockerManager.run(code, language, function(error, stderr, stdout) {
+    dockerManager.run(code, filename, language, function(error, stderr, stdout) {
         res.json({'error': error, 'stdout': stdout, 'stderr': stderr});
         res.end();
     });

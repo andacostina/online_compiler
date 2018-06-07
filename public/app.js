@@ -145,7 +145,8 @@ angular.module("compilerApp", ["ui.ace", "ui.bootstrap", "treeControl"])
                         url: '/compile',
                         data: {
                             'code': $scope.aceModel,
-                            'language': $scope.langModel
+                            'filename': $scope.selectedFile.label,
+                            'language': $scope.selectedFile.lang
                         }
                     }).then(function success(response) {
                         if (response.data.error) {
