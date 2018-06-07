@@ -6,6 +6,7 @@ var bodyParser = require('body-parser');
 var fs = require('fs');
 const fileUpload = require('express-fileupload');
 
+var constants = require('./src/constants.js');
 var DockerManager = require('./src/dockerManager.js');
 var dockerManager = new DockerManager();
 
@@ -54,6 +55,11 @@ app.post("/upload", function(req, res) {
         return res.status(400).send('No files were uploaded.');
     };
     res.json({'name': req.files.file.name, 'content': req.files.file.data.toString('utf8')});
+    res.end();
+});
+
+app.get('/memory_limit', function(req, res) {
+    res.json({'memoryLimit': constants.memoryLimit});
     res.end();
 });
 

@@ -14,7 +14,7 @@ angular.module("compilerApp", ["ui.ace", "ui.bootstrap", "treeControl"])
         }
     };
 }])
-.controller("mainController", ['$scope', '$http', '$timeout', function($scope, $http, $timeout) {
+.controller("mainController", ['$scope', '$http', '$interval', function($scope, $http, $interval) {
 
     $scope.designThemes = [
         {
@@ -115,11 +115,39 @@ angular.module("compilerApp", ["ui.ace", "ui.bootstrap", "treeControl"])
             {label: "Hello.csc", type: "doc", id: '1_6', content: "namespace HelloWorld\n{\n    class Hello {\n        static void Main(string[] args)\n        {\n            System.Console.WriteLine(\"Hello, World!\");\n        }\n    }\n}", lang: "C#"}
         ]}
     ];
+    $scope.memory = 0;
+    $scope.memoryLimit = 10 ** 9;
     $scope.aceModel = $scope.treedata[0].children[0].content;
 
     $scope.expandedNodes = [$scope.treedata[0]];
     $scope.selectedNode = $scope.treedata[0].children[0];
     $scope.selectedFile = $scope.selectedNode;
+
+    $http({
+        method: 'GET',
+        url: '/memory_limit'
+    }).then(function success(response) {
+        $scope.memoryLimit = response.data.memoryLimit;
+    }, function error(response) {
+    });
+
+    var memoryTemp = 0;
+    function computeMemory(data) {
+        for (var i = 0; i < data.length; i++) {
+            var elem = data[i];
+            if (elem.type === 'doc') {
+                memoryTemp += elem.content.length;
+            }
+            else if (elem.type === 'folder') {
+                computeMemory(elem.children);
+            };
+        };
+    };
+    $interval(function() {
+        computeMemory($scope.treedata);
+        $scope.memory = memoryTemp;
+        memoryTemp = 0;
+    }, 10000);
     
     $http({
         method: 'GET',
@@ -282,6 +310,10 @@ angular.module("compilerApp", ["ui.ace", "ui.bootstrap", "treeControl"])
         $scope.myFile = null;
         $scope.uploadFile = function() {
             var file = $scope.myFile;
+            if ($scope.memory + file.size > $scope.memoryLimit) {
+                alert('You cannot upload any more files. The size limit has been exceeded.');
+                return;
+            };
             var fd = new FormData();
             fd.append('file', file);
             $http({
@@ -305,6 +337,7 @@ angular.module("compilerApp", ["ui.ace", "ui.bootstrap", "treeControl"])
                     else {
                         $scope.treedata.push({label: name, type: 'doc', 'id': $scope.treedata.length + 1, content: content, lang: language});
                     };
+                    $scope.memory += content.length;
                 };
             }, function error(response) {
                 alert(response);
@@ -348,6 +381,7 @@ angular.module("compilerApp", ["ui.ace", "ui.bootstrap", "treeControl"])
         };
         $scope.remove = function() {
             if ($scope.selectedNode) {
+                $scope.memory -= $scope.selectedNode.content.length;
                 removeNode($scope.selectedNode.id, $scope.treedata);
                 $scope.aceModel = '';
                 $scope.selectedNode = null;
