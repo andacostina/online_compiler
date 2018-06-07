@@ -12,5 +12,6 @@ module.exports = {
     ],
     extensions: ["py", "py", "c", "cpp", "java", "cs"],
     commands: ["python *", "python3 *", "gcc * ; ./a.out", "g++ * ; ./a.out", "javac * ; java **", "mcs * ; mono **.exe"],
-    images: ["python2-image", "python3-image", "c-image", "cpp-image", "java-image", "csharp-image"]
+    images: ["python2-image", "python3-image", "c-image", "cpp-image", "java-image", "csharp-image"],
+    timeout: 60
 }

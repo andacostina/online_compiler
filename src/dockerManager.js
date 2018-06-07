@@ -10,6 +10,7 @@ function DockerManager() {
     this.extensions = constants.extensions;
     this.commands = constants.commands;
     this.images = constants.images;
+    this.timeout = constants.timeout;
 };
 
 DockerManager.prototype.getLanguages = function() {
@@ -77,7 +78,7 @@ DockerManager.prototype.createDockerfile = function(code, filename, language, uu
 };
 
 DockerManager.prototype.runContainer = function(tempImage, callback) {
-    exec("sudo docker run " + tempImage, callback);
+    exec("sudo timeout --signal KILL " + this.timeout + " docker run " + tempImage, callback);
 };
 
 DockerManager.prototype.deleteImage = function(imageHash) {
