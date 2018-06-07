@@ -112,7 +112,7 @@ angular.module("compilerApp", ["ui.ace", "ui.bootstrap", "treeControl"])
             {label: "helloworld.c", type: "doc", id: '1_3', content: "#include <stdio.h>\nint main()\n{\n    printf(\"Hello, World!\");\n    return 0;\n};", lang: "C"},
             {label: "helloworld.cpp", type: "doc", id: '1_4', content: "#include <iostream>\nint main()\n{\n  std::cout << \"Hello, World!\";\n}", lang: "C++"},
             {label: "HelloWorld.java", type: "doc", id: '1_5', content: "public class HelloWorld {\n    public static void main(String[] args) {\n        System.out.println(\"Hello, World!\");\n    }\n}", lang: "Java"},
-            {label: "Hello.csc", type: "doc", id: '1_6', content: "namespace HelloWorld\n{\n    class Hello {\n        static void Main(string[] args)\n        {\n            System.Console.WriteLine(\"Hello, World!\");\n        }\n}", lang: "C#"}
+            {label: "Hello.csc", type: "doc", id: '1_6', content: "namespace HelloWorld\n{\n    class Hello {\n        static void Main(string[] args)\n        {\n            System.Console.WriteLine(\"Hello, World!\");\n        }\n    }\n}", lang: "C#"}
         ]}
     ];
     $scope.aceModel = $scope.treedata[0].children[0].content;
@@ -150,7 +150,7 @@ angular.module("compilerApp", ["ui.ace", "ui.bootstrap", "treeControl"])
                         }
                     }).then(function success(response) {
                         if (response.data.error) {
-                            $scope.output = "Error when running code";
+                            $scope.output = "Error when running code\n" + response.data.error;
                         }
                         else {
                             $scope.output = response.data.stdout;

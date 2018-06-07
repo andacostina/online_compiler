@@ -23,7 +23,7 @@ DockerManager.prototype.getCodeExamples = function() {
 DockerManager.prototype.run = function(code, filename, language, callback) {
     var self = this;
     const dockerImage = this.getDockerImage(language);
-    this.createTempImage(code, language, function(error, stderr, stdout, uuid, tempImageHash) {
+    this.createTempImage(code, filename, language, function(error, stderr, stdout, uuid, tempImageHash) {
         if (error) {
             self.deleteImage(tempImageHash);
             return callback(error, stderr, stdout);
@@ -46,7 +46,7 @@ DockerManager.prototype.getDockerImage = function(language) {
     };
 };
 
-DockerManager.prototype.createTempImage = function(code, language, callback) {
+DockerManager.prototype.createTempImage = function(code, filename, language, callback) {
     const uuid = uuidv1();
     fs.mkdirSync(uuid);
     this.createDockerfile(code, filename, language, uuid);
@@ -69,7 +69,7 @@ DockerManager.prototype.createTempImage = function(code, language, callback) {
 
 DockerManager.prototype.createDockerfile = function(code, filename, language, uuid) {
     const i = this.languages.indexOf(language);
-    const command = this.commands[i].replace("*", filename).replace("**", filename.split('.')[0]);
+    const command = this.commands[i].replace('**', filename.split('.')[0]).replace("*", filename);
     const baseImage = this.images[i];
     var content = "FROM " + baseImage + "\nCOPY " + filename + " " + filename + "\nCMD " + command;
     fs.writeFileSync(uuid + '/Dockerfile', content);

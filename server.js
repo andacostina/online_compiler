@@ -32,7 +32,7 @@ app.get('/tree', function(req, res) {
             {label: "helloworld.c", type: "doc", id: '1_3', content: "#include <stdio.h>\nint main()\n{\n    printf(\"Hello, World!\");\n    return 0;\n};", lang: "C"},
             {label: "helloworld.cpp", type: "doc", id: '1_4', content: "#include <iostream>\nint main()\n{\n  std::cout << \"Hello, World!\";\n}", lang: "C++"},
             {label: "HelloWorld.java", type: "doc", id: '1_5', content: "public class HelloWorld {\n    public static void main(String[] args) {\n        System.out.println(\"Hello, World!\");\n    }\n}", lang: "Java"},
-            {label: "Hello.csc", type: "doc", id: '1_6', content: "namespace HelloWorld\n{\n    class Hello {\n        static void Main(string[] args)\n        {\n            System.Console.WriteLine(\"Hello, World!\");\n        }\n}", lang: "C#"}
+            {label: "Hello.csc", type: "doc", id: '1_6', content: "namespace HelloWorld\n{\n    class Hello {\n        static void Main(string[] args)\n        {\n            System.Console.WriteLine(\"Hello, World!\");\n        }\n    }\n}", lang: "C#"}
         ]}
     ]);
     res.end();
@@ -43,6 +43,7 @@ app.post("/compile", function(req, res) {
     var filename = req.body.filename;
     var code = req.body.code;
     dockerManager.run(code, filename, language, function(error, stderr, stdout) {
+        console.log('Error: ' + error + '\nStdout: ' + stdout + '\nStderr: ' + stderr);        
         res.json({'error': error, 'stdout': stdout, 'stderr': stderr});
         res.end();
     });
