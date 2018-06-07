@@ -54,6 +54,7 @@ body {
     height: 100%;
     overflow: auto;
     padding: 10px 20px;
+    white-space: pre-line;
 }
 
 .wrapper {

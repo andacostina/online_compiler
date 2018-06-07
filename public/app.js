@@ -150,7 +150,7 @@ angular.module("compilerApp", ["ui.ace", "ui.bootstrap", "treeControl"])
                         }
                     }).then(function success(response) {
                         if (response.data.error) {
-                            $scope.output = "Error when running code\n" + response.data.error;
+                            $scope.output = response.data.error;
                         }
                         else {
                             $scope.output = response.data.stdout;
