@@ -44,8 +44,8 @@ app.post("/compile", function(req, res) {
     var filename = req.body.filename;
     var code = req.body.code;
     dockerManager.run(code, filename, language, function(error, stderr, stdout) {
-        //console.log('Error: ' + error + '\nStdout: ' + stdout + '\nStderr: ' + stderr);
-        res.json({'error': error.message, 'stdout': stdout, 'stderr': stderr});
+        if (error) error = error.message;
+        res.json({'error': error, 'stdout': stdout, 'stderr': stderr});
         res.end();
     });
 });
