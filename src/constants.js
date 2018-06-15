@@ -14,5 +14,8 @@ module.exports = {
     commands: ["python *", "python3 *", "gcc * ; ./a.out", "g++ * ; ./a.out", "javac * ; java **", "mcs * ; mono **.exe"],
     images: ["python2-image", "python3-image", "c-image", "cpp-image", "java-image", "csharp-image"],
     timeout: 60,
-    memoryLimit: 10 ** 9
+    memoryLimit: 10 ** 9,
+    mongoHost: "mongodb://localhost:27017/sessions",
+    databaseName: "sessions",
+    collectionName: "data"
 }

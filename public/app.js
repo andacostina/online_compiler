@@ -223,6 +223,18 @@ angular.module("compilerApp", ["ui.ace", "ui.bootstrap", "treeControl"])
                         enableLiveAutocompletion: $scope.autoComplete
                     });
                 };
+
+                $scope.lastRefreshed = new Date();
+                $interval(function() {
+                    $http({
+                        method: 'POST',
+                        url: '/refresh',
+                        data: {tree: $scope.treedata}
+                    }).then(function success(response) {
+                        $scope.lastRefreshed = new Date();
+                    }, function error(response) {
+                    });
+                }, 1000 * 30);
             },
             onChange: function(_editor) {
                 $scope.selectedFile.content = $scope.aceModel;

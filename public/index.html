@@ -46,7 +46,8 @@
                         <button type="button" class="btn btn-primary btn-xs" ng-click="zoomIn()" tooltip-placement="bottom" uib-tooltip="Zoom in"><span class="glyphicon glyphicon-zoom-in"></span> </button>&nbsp;
                         <button type="button" class="btn btn-primary btn-xs" ng-click="zoomOut()" tooltip-placement="bottom" uib-tooltip="Zoom out"><span class="glyphicon glyphicon-zoom-out"></span> </button>&nbsp;
                         <button type="button" ng-class="{'btn btn-primary btn-xs': autoComplete, 'btn btn-default btn-xs': !autoComplete}" ng-click="changeAutoComplete()">Auto-complete</button>
-                    Shown file: {{selectedFile.label}}</div>
+                    Shown file: {{selectedFile.label}}
+                    Last refreshed: {{lastRefreshed}}</div>
                     <div ui-ace="aceOption" ng-model="aceModel"></div>
                 </div>
                 <div class="col-sm-4 org" ng-style="{'background-color': designThemes[themeIndex].color2}">
