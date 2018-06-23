@@ -48,12 +48,12 @@ var sessionManager = new SessionManager(function(err) {
             else {
                 const tree = [
                     {label: "My scripts", type: "folder", id: '1', children: [
-                        {label: "helloworld_2.7.py", type: "doc", id: '1_1', content: "print \"Hello, World!\"", lang: 'Python2.7'},
-                        {label: "helloworld_3.6.py", type: "doc", id: '1_2', content: "print(\"Hello, World!\")", lang: "Python3.6"},
-                        {label: "helloworld.c", type: "doc", id: '1_3', content: "#include <stdio.h>\nint main()\n{\n    printf(\"Hello, World!\");\n    return 0;\n};", lang: "C"},
-                        {label: "helloworld.cpp", type: "doc", id: '1_4', content: "#include <iostream>\nint main()\n{\n  std::cout << \"Hello, World!\";\n}", lang: "C++"},
-                        {label: "HelloWorld.java", type: "doc", id: '1_5', content: "public class HelloWorld {\n    public static void main(String[] args) {\n        System.out.println(\"Hello, World!\");\n    }\n}", lang: "Java"},
-                        {label: "Hello.csc", type: "doc", id: '1_6', content: "namespace HelloWorld\n{\n    class Hello {\n        static void Main(string[] args)\n        {\n            System.Console.WriteLine(\"Hello, World!\");\n        }\n    }\n}", lang: "C#"}
+                        {label: "helloworld_2.py", type: "doc", id: '1_4', content: "print \"Hello, World!\"", lang: 'Python2.7'},
+                        {label: "helloworld_3.py", type: "doc", id: '1_13', content: "print(\"Hello, World!\")", lang: "Python3.6"},
+                        {label: "helloworld.c", type: "doc", id: '1_14', content: "#include <stdio.h>\nint main()\n{\n    printf(\"Hello, World!\");\n    return 0;\n};", lang: "C"},
+                        {label: "helloworld.cpp", type: "doc", id: '1_15', content: "#include <iostream>\nint main()\n{\n  std::cout << \"Hello, World!\";\n}", lang: "C++"},
+                        {label: "HelloWorld.java", type: "doc", id: '1_16', content: "public class HelloWorld {\n    public static void main(String[] args) {\n        System.out.println(\"Hello, World!\");\n    }\n}", lang: "Java"},
+                        {label: "Hello.csc", type: "doc", id: '1_17', content: "namespace HelloWorld\n{\n    class Hello {\n        static void Main(string[] args)\n        {\n            System.Console.WriteLine(\"Hello, World!\");\n        }\n    }\n}", lang: "C#"}
                     ]}
                 ];
                 var myUUID = uuid();

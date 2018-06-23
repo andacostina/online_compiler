@@ -46,7 +46,29 @@ angular.module("compilerApp", ["ui.ace", "ui.bootstrap", "treeControl"])
                 return "c_cpp"
             case "C#":
                 return "csharp"
+            case "Python2.4":
+                return "python"
+            case "Python2.5":
+                return "python"
+            case "Python2.6":
+                return "python"
             case "Python2.7":
+                return "python"
+            case "Python2.8":
+                return "python"
+            case "Python2.9":
+                return "python"
+            case "Python3.0":
+                return "python"
+            case "Python3.1":
+                return "python"
+            case "Python3.2":
+                return "python"
+            case "Python3.3":
+                return "python"
+            case "Python3.4":
+                return "python"
+            case "Python3.5":
                 return "python"
             case "Python3.6":
                 return "python"
@@ -65,7 +87,29 @@ angular.module("compilerApp", ["ui.ace", "ui.bootstrap", "treeControl"])
                 return ".cpp"
             case "C#":
                 return ".csc"
+            case "Python2.4":
+                return ".py"
+            case "Python2.5":
+                return ".py"
+            case "Python2.6":
+                return ".py"
             case "Python2.7":
+                return ".py"
+            case "Python2.8":
+                return ".py"
+            case "Python2.9":
+                return ".py"
+            case "Python3.0":
+                return ".py"
+            case "Python3.1":
+                return ".py"
+            case "Python3.2":
+                return ".py"
+            case "Python3.3":
+                return ".py"
+            case "Python3.4":
+                return ".py"
+            case "Python3.5":
                 return ".py"
             case "Python3.6":
                 return ".py"
@@ -115,8 +159,8 @@ angular.module("compilerApp", ["ui.ace", "ui.bootstrap", "treeControl"])
 
     $scope.treedata = [
         {label: "Scripts", type: "folder", id: '1', children: [
-            {label: "helloworld_2.7.py", type: "doc", id: '1_1', content: "print \"Hello, World!\"", lang: "Python2.7"},
-            {label: "helloworld_3.6.py", type: "doc", id: '1_2', content: "print(\"Hello, World!\")", lang: "Python3.6"},
+            {label: "helloworld_2.py", type: "doc", id: '1_1', content: "print \"Hello, World!\"", lang: "Python2.7"},
+            {label: "helloworld_3.py", type: "doc", id: '1_2', content: "print(\"Hello, World!\")", lang: "Python3.6"},
             {label: "helloworld.c", type: "doc", id: '1_3', content: "#include <stdio.h>\nint main()\n{\n    printf(\"Hello, World!\");\n    return 0;\n};", lang: "C"},
             {label: "helloworld.cpp", type: "doc", id: '1_4', content: "#include <iostream>\nint main()\n{\n  std::cout << \"Hello, World!\";\n}", lang: "C++"},
             {label: "HelloWorld.java", type: "doc", id: '1_5', content: "public class HelloWorld {\n    public static void main(String[] args) {\n        System.out.println(\"Hello, World!\");\n    }\n}", lang: "Java"},
@@ -210,8 +254,8 @@ angular.module("compilerApp", ["ui.ace", "ui.bootstrap", "treeControl"])
                 $scope.modeChanged = function () {
                     _editor.getSession().setMode("ace/mode/" + getAceMode($scope.langModel));
                     var currentName = $scope.selectedFile.label;
-                    var splits = currentName.split('.', 2);
-                    $scope.selectedFile.label = splits[0] + getFileExtension($scope.langModel);
+                    var pointPos = currentName.lastIndexOf('.');
+                    $scope.selectedFile.label = currentName.substring(0, pointPos) + getFileExtension($scope.langModel);
                     $scope.selectedFile.lang = $scope.langModel;
                 };
     
