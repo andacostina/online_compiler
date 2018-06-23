@@ -46,9 +46,9 @@ angular.module("compilerApp", ["ui.ace", "ui.bootstrap", "treeControl"])
                 return "c_cpp"
             case "C#":
                 return "csharp"
-            case "Python2":
+            case "Python2.7":
                 return "python"
-            case "Python3":
+            case "Python3.6":
                 return "python"
             case "Java":
                 return "java"
@@ -65,9 +65,9 @@ angular.module("compilerApp", ["ui.ace", "ui.bootstrap", "treeControl"])
                 return ".cpp"
             case "C#":
                 return ".csc"
-            case "Python2":
+            case "Python2.7":
                 return ".py"
-            case "Python3":
+            case "Python3.6":
                 return ".py"
             case "Java":
                 return ".java"
@@ -86,7 +86,7 @@ angular.module("compilerApp", ["ui.ace", "ui.bootstrap", "treeControl"])
             case "csc":
                 return "C#"
             case "py":
-                return "Python2"
+                return "Python2.7"
             case "java":
                 return "Java"
             default:
@@ -94,7 +94,7 @@ angular.module("compilerApp", ["ui.ace", "ui.bootstrap", "treeControl"])
         };
     };
 
-    $scope.languages = ["Python2", "Python3", "C", "C++", "Java", "C#"];
+    $scope.languages = ["Python2.7", "Python3.6", "C", "C++", "Java", "C#"];
     $scope.langModel = $scope.languages[0];
     $http({
         method: 'GET',
@@ -115,8 +115,8 @@ angular.module("compilerApp", ["ui.ace", "ui.bootstrap", "treeControl"])
 
     $scope.treedata = [
         {label: "Scripts", type: "folder", id: '1', children: [
-            {label: "helloworld_2.py", type: "doc", id: '1_1', content: "print \"Hello, World!\"", lang: "Python2"},
-            {label: "helloworld_3.py", type: "doc", id: '1_2', content: "print(\"Hello, World!\")", lang: "Python3"},
+            {label: "helloworld_2.py", type: "doc", id: '1_1', content: "print \"Hello, World!\"", lang: "Python2.7"},
+            {label: "helloworld_3.py", type: "doc", id: '1_2', content: "print(\"Hello, World!\")", lang: "Python3.6"},
             {label: "helloworld.c", type: "doc", id: '1_3', content: "#include <stdio.h>\nint main()\n{\n    printf(\"Hello, World!\");\n    return 0;\n};", lang: "C"},
             {label: "helloworld.cpp", type: "doc", id: '1_4', content: "#include <iostream>\nint main()\n{\n  std::cout << \"Hello, World!\";\n}", lang: "C++"},
             {label: "HelloWorld.java", type: "doc", id: '1_5', content: "public class HelloWorld {\n    public static void main(String[] args) {\n        System.out.println(\"Hello, World!\");\n    }\n}", lang: "Java"},
