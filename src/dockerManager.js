@@ -54,7 +54,6 @@ DockerManager.prototype.createTempImage = function(code, filename, language, cal
     exec("sudo docker build -t " + uuid + " .", {cwd: uuid}, function(error, stdout, stderr) {
         exec("rm -r " + uuid);
         if (error) {
-            console.error(error);
             return callback(error, stderr);
         };
         let tempImageHash;

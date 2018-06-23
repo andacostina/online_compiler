@@ -27,7 +27,7 @@ class SessionManager {
     }
 
     update(cookie, tree, callback) {
-        this.collection.updateOne({_id: cookie}, {$set: {tree: tree}}), callback;
+        this.collection.updateOne({_id: cookie}, {$set: {tree: tree}}, callback);
     }
 
     destroy(cookie, callback) {

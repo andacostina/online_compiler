@@ -105,6 +105,14 @@ angular.module("compilerApp", ["ui.ace", "ui.bootstrap", "treeControl"])
     }, function error(response) {
     });
 
+    $http({
+        method: 'GET',
+        url: '/documentation'
+    }).then(function success(response) {
+        $scope.documentationLinks = response.data.documentation_links;
+    }, function error(response) {
+    });
+
     $scope.treedata = [
         {label: "Scripts", type: "folder", id: '1', children: [
             {label: "helloworld_2.py", type: "doc", id: '1_1', content: "print \"Hello, World!\"", lang: "Python2"},
@@ -192,6 +200,12 @@ angular.module("compilerApp", ["ui.ace", "ui.bootstrap", "treeControl"])
                         $scope.running = false;
                     });
                 };
+
+                angular.element(document).bind('keyup', function (e) {
+                    if (e.keyCode === 115) {
+                        $scope.runCode();
+                    };
+                });
     
                 $scope.modeChanged = function () {
                     _editor.getSession().setMode("ace/mode/" + getAceMode($scope.langModel));
@@ -224,6 +238,11 @@ angular.module("compilerApp", ["ui.ace", "ui.bootstrap", "treeControl"])
                     });
                 };
 
+                $scope.getDocumentationLink = function() {
+                    var index = $scope.languages.indexOf($scope.langModel);
+                    window.open($scope.documentationLinks[index], '_blank');
+                };
+
                 $scope.lastRefreshed = new Date();
                 $interval(function() {
                     $http({
@@ -234,7 +253,7 @@ angular.module("compilerApp", ["ui.ace", "ui.bootstrap", "treeControl"])
                         $scope.lastRefreshed = new Date();
                     }, function error(response) {
                     });
-                }, 1000 * 30);
+                }, 1000 * 10);
             },
             onChange: function(_editor) {
                 $scope.selectedFile.content = $scope.aceModel;

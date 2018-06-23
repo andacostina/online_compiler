@@ -28,6 +28,11 @@ var sessionManager = new SessionManager(function(err) {
         res.end();
     });
 
+    app.get('/documentation', function(req, res) {
+        res.json({'documentation_links': constants.documentationLinks});
+        res.end();
+    });
+
     // app.get('/code-examples', function(req, res) {
     //     res.json({'codeExamples': dockerManager.getCodeExamples()});
     //     res.end();
@@ -66,11 +71,18 @@ var sessionManager = new SessionManager(function(err) {
 
     app.post('/refresh', function(req, res) {
         if (!req.body.hasOwnProperty('tree')) {
+            res.json({'ok': 0});
             return res.end();
         };
         let cookie = req.cookies.cookie;
         sessionManager.update(cookie, req.body.tree, function(err) {
-            res.end();
+            if (err) {
+                console.error(err);
+                res.json({'ok': 0});
+                return res.end();
+            };
+            res.json({'ok': 1});
+            return res.end();
         });
     });
 
@@ -79,7 +91,12 @@ var sessionManager = new SessionManager(function(err) {
         var filename = req.body.filename;
         var code = req.body.code;
         dockerManager.run(code, filename, language, function(error, stderr, stdout) {
-            if (error) error = error.message;
+            if (error) {
+                error = error.message;
+                let error_split = error.split('\n');
+                error_split.shift();
+                error = error_split.join('\n');
+            };
             res.json({'error': error, 'stdout': stdout, 'stderr': stderr});
             res.end();
         });

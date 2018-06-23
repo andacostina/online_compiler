@@ -39,27 +39,29 @@
         <div class="wrapper" ng-style="{'border': '1px ' + designThemes[themeIndex].color1}">
             <div class="row">
                 <div class="col-sm-8 editor" ng-style="{'background-color': designThemes[themeIndex].color2, 'border-bottom': '4px solid ' + designThemes[themeIndex].color3, 'border-right': '8px solid ' + designThemes[themeIndex].color3}">
-                    <div class="toolbar">
+                    <div class="toolbar" ng-style="{'border-bottom': designThemes[themeIndex].color1 + ' dotted', 'border-width': '2px'}">&nbsp;&nbsp;&nbsp;&nbsp;
+                        <span ng-style="{'color': designThemes[themeIndex].color1, 'min-width': '100px', 'display': 'inline-block'}">{{selectedFile.label}}</span>
                         <button type="button" class="btn btn-primary" ng-disabled="runDisabled()" ng-click="runCode()"><span ng-class="{'glyphicon glyphicon-play': !running, 'glyphicon glyphicon-cog gly-spin': running}"></span> Run</button>&nbsp;
                         <select style="min-width: 150px;" id="lang" ng-model="langModel" ng-options="lang for lang in languages" ng-change="modeChanged()"></select>&nbsp;
                         <button type="button" class="btn btn-primary btn-xs" ng-click="themeChanged()" tooltip-placement="bottom" uib-tooltip="Change theme"><span class="glyphicon glyphicon-eye-open"></span></button>&nbsp;
                         <button type="button" class="btn btn-primary btn-xs" ng-click="zoomIn()" tooltip-placement="bottom" uib-tooltip="Zoom in"><span class="glyphicon glyphicon-zoom-in"></span> </button>&nbsp;
                         <button type="button" class="btn btn-primary btn-xs" ng-click="zoomOut()" tooltip-placement="bottom" uib-tooltip="Zoom out"><span class="glyphicon glyphicon-zoom-out"></span> </button>&nbsp;
-                        <button type="button" ng-class="{'btn btn-primary btn-xs': autoComplete, 'btn btn-default btn-xs': !autoComplete}" ng-click="changeAutoComplete()">Auto-complete</button>
-                    Shown file: {{selectedFile.label}}
-                    Last refreshed: {{lastRefreshed}}</div>
+                        <button type="button" ng-class="{'btn btn-primary btn-xs': autoComplete, 'btn btn-default btn-xs': !autoComplete}" ng-click="changeAutoComplete()">Auto-complete</button>&nbsp;
+                        <button type="button" class="btn btn-primary btn-xs" ng-click="getDocumentationLink()" tooltip-placement="bottom" uib-tooltip="Go to documentation"><span class="glyphicon glyphicon-question-sign"></span> </button>&nbsp;
+                        <span ng-style="{'color': designThemes[themeIndex].color1}">Last synced on: {{lastRefreshed | date : "mediumTime"}}</span>
+                    </div>
                     <div ui-ace="aceOption" ng-model="aceModel"></div>
                 </div>
                 <div class="col-sm-4 org" ng-style="{'background-color': designThemes[themeIndex].color2}">
                     <div class="files" ng-style="{'border-bottom': '8px solid ' + designThemes[themeIndex].color3, 'color': designThemes[themeIndex].color1}">
-                        <i class="material-icons" ng-click="createFolder()"  tooltip-placement="bottom" uib-tooltip="Create new folder">create_new_folder</i>
-                        <i class="material-icons" ng-click="createFile()"  tooltip-placement="bottom" uib-tooltip="Create new file">note_add</i>
-                        <i class="material-icons" ng-click="rename()"  tooltip-placement="bottom" uib-tooltip="Rename">description</i>
+                        <i class="material-icons" ng-click="createFolder()"  tooltip-placement="bottom" uib-tooltip="Create new folder">create_new_folder</i>&nbsp;&nbsp;
+                        <i class="material-icons" ng-click="createFile()"  tooltip-placement="bottom" uib-tooltip="Create new file">note_add</i>&nbsp;&nbsp;
+                        <i class="material-icons" ng-click="rename()"  tooltip-placement="bottom" uib-tooltip="Rename">description</i>&nbsp;&nbsp;
                         <label for="upload">
                             <i class="material-icons" tooltip-placement="bottom" uib-tooltip="Upload file">file_upload</i>
                             <input type="file" id="upload" file-model="myFile" style="display:none">
-                        </label>
-                        <i class="material-icons" ng-click="downloadFile()"  tooltip-placement="bottom" uib-tooltip="Download file">file_download</i>
+                        </label>&nbsp;&nbsp;
+                        <i class="material-icons" ng-click="downloadFile()"  tooltip-placement="bottom" uib-tooltip="Download file">file_download</i>&nbsp;&nbsp;
                         <i class="material-icons" ng-click="remove()"  tooltip-placement="bottom" uib-tooltip="Remove">delete</i>
                         <div class="real_files" ng-style="{'background-color': designThemes[themeIndex].color4}">
                             <treecontrol ng-class="{'tree-dark': themeIndex === 0, 'tree-light': themeIndex === 1}" tree-model="treedata" selected-node="selectedNode" expanded-nodes="expandedNodes" on-selection="onSelection(node)" on-right-click="onRightClick(node)" menu-id="ctxMenu">
@@ -75,7 +77,7 @@
                                 </span>
                                 <span ng-hide="isEditorEnabled(node.id)">{{node.label}}</span>
                                 <span ng-show="isEditorEnabled(node.id)">
-                                    <input ng-model="editableText">
+                                    <input ng-model="editableText" ng-keydown="$event.keyCode === 13 && save(editableText)">
                                     <span>
                                         <span class="glyphicon glyphicon-ok"  ng-click="save(editableText)"></span>
                                         <span class="glyphicon glyphicon-remove" ng-click="disableEditor()"></span>
