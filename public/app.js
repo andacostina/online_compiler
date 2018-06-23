@@ -54,12 +54,6 @@ angular.module("compilerApp", ["ui.ace", "ui.bootstrap", "treeControl"])
                 return "python"
             case "Python2.7":
                 return "python"
-            case "Python2.8":
-                return "python"
-            case "Python2.9":
-                return "python"
-            case "Python3.0":
-                return "python"
             case "Python3.1":
                 return "python"
             case "Python3.2":
@@ -94,12 +88,6 @@ angular.module("compilerApp", ["ui.ace", "ui.bootstrap", "treeControl"])
             case "Python2.6":
                 return ".py"
             case "Python2.7":
-                return ".py"
-            case "Python2.8":
-                return ".py"
-            case "Python2.9":
-                return ".py"
-            case "Python3.0":
                 return ".py"
             case "Python3.1":
                 return ".py"
