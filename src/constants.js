@@ -23,7 +23,7 @@ module.exports = {
         "http://devdocs.io/c/",
         "http://devdocs.io/c/",
         "http://www.open-std.org/jtc1/sc22/wg14/www/docs/n1256.pdf",
-        "http://www.open-std.org/jtc1/sc22/wg14/www/docs/n1570.pdf"
+        "http://www.open-std.org/jtc1/sc22/wg14/www/docs/n1570.pdf",
         "https://en.cppreference.com/w/cpp/header",
         "https://docs.oracle.com/javase/specs/jls/se10/html/index.html",
         "https://docs.microsoft.com/en-us/dotnet/csharp/"
