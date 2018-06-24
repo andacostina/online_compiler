@@ -39,33 +39,30 @@ angular.module("compilerApp", ["ui.ace", "ui.bootstrap", "treeControl"])
     $scope.running = false;
 
     function getAceMode(language) {
+        if (language.startsWith('Python')) {
+            return "python";
+        };
         switch(language) {
-            case "C":
+            case "C90":
+                return "c_cpp";
+            case "C95":
+                return "c_cpp";
+            case "C99":
+                return "c_cpp";
+            case "C11":
+                return "c_cpp";
+            case "C17":
+                return "c_cpp";
+            case "C-GNU90":
+                return "c_cpp";
+            case "C-GNU99":
+                return "c_cpp";
+            case "C-GNU11":
                 return "c_cpp";
             case "C++":
                 return "c_cpp"
             case "C#":
                 return "csharp"
-            case "Python2.4":
-                return "python"
-            case "Python2.5":
-                return "python"
-            case "Python2.6":
-                return "python"
-            case "Python2.7":
-                return "python"
-            case "Python3.1":
-                return "python"
-            case "Python3.2":
-                return "python"
-            case "Python3.3":
-                return "python"
-            case "Python3.4":
-                return "python"
-            case "Python3.5":
-                return "python"
-            case "Python3.6":
-                return "python"
             case "Java":
                 return "java"
             default:
@@ -74,33 +71,30 @@ angular.module("compilerApp", ["ui.ace", "ui.bootstrap", "treeControl"])
     };
 
     function getFileExtension(language) {
+        if (language.startsWith('Python')) {
+            return ".py";
+        };
         switch(language) {
-            case "C":
+            case "C90":
+                return ".c";
+            case "C95":
+                return ".c";
+            case "C99":
+                return ".c";
+            case "C11":
+                return ".c";
+            case "C17":
+                return ".c";
+            case "C-GNU90":
+                return ".c";
+            case "C-GNU99":
+                return ".c";
+            case "C-GNU11":
                 return ".c";
             case "C++":
                 return ".cpp"
             case "C#":
                 return ".csc"
-            case "Python2.4":
-                return ".py"
-            case "Python2.5":
-                return ".py"
-            case "Python2.6":
-                return ".py"
-            case "Python2.7":
-                return ".py"
-            case "Python3.1":
-                return ".py"
-            case "Python3.2":
-                return ".py"
-            case "Python3.3":
-                return ".py"
-            case "Python3.4":
-                return ".py"
-            case "Python3.5":
-                return ".py"
-            case "Python3.6":
-                return ".py"
             case "Java":
                 return ".java"
             default:
@@ -112,7 +106,7 @@ angular.module("compilerApp", ["ui.ace", "ui.bootstrap", "treeControl"])
         var extension = filename.split('.', 2)[1];
         switch(extension) {
             case "c":
-                return "C"
+                return "C-GNU11"
             case "cpp":
                 return "C++"
             case "csc":
@@ -126,7 +120,10 @@ angular.module("compilerApp", ["ui.ace", "ui.bootstrap", "treeControl"])
         };
     };
 
-    $scope.languages = ["Python2.7", "Python3.6", "C", "C++", "Java", "C#"];
+    $scope.languages = ["Python2.4", "Python2.5", "Python2.6", "Python2.7", "Python3.1", "Python3.2", 
+                        "Python3.3", "Python3.4", "Python3.5", "Python3.6", "C90", "C95", "C99", "C11", 
+                        "C17", "C-GNU90", "C-GNU99", "C-GNU11", "C++", "Java", "C#"
+    ];
     $scope.langModel = $scope.languages[0];
     $http({
         method: 'GET',
@@ -149,7 +146,7 @@ angular.module("compilerApp", ["ui.ace", "ui.bootstrap", "treeControl"])
         {label: "Scripts", type: "folder", id: '1', children: [
             {label: "helloworld_2.py", type: "doc", id: '1_1', content: "print \"Hello, World!\"", lang: "Python2.7"},
             {label: "helloworld_3.py", type: "doc", id: '1_2', content: "print(\"Hello, World!\")", lang: "Python3.6"},
-            {label: "helloworld.c", type: "doc", id: '1_3', content: "#include <stdio.h>\nint main()\n{\n    printf(\"Hello, World!\");\n    return 0;\n};", lang: "C"},
+            {label: "helloworld.c", type: "doc", id: '1_3', content: "#include <stdio.h>\nint main()\n{\n    printf(\"Hello, World!\");\n    return 0;\n};", lang: "C-GNU11"},
             {label: "helloworld.cpp", type: "doc", id: '1_4', content: "#include <iostream>\nint main()\n{\n  std::cout << \"Hello, World!\";\n}", lang: "C++"},
             {label: "HelloWorld.java", type: "doc", id: '1_5', content: "public class HelloWorld {\n    public static void main(String[] args) {\n        System.out.println(\"Hello, World!\");\n    }\n}", lang: "Java"},
             {label: "Hello.csc", type: "doc", id: '1_6', content: "namespace HelloWorld\n{\n    class Hello {\n        static void Main(string[] args)\n        {\n            System.Console.WriteLine(\"Hello, World!\");\n        }\n    }\n}", lang: "C#"}
