@@ -45,6 +45,9 @@ angular.module("compilerApp", ["ui.ace", "ui.bootstrap", "treeControl"])
         if (language.startsWith('C++')) {
             return "c_cpp";
         };
+        if (language.startsWith('Java')) {
+            return "java";
+        };
         switch(language) {
             case "C90":
                 return "c_cpp";
@@ -62,8 +65,6 @@ angular.module("compilerApp", ["ui.ace", "ui.bootstrap", "treeControl"])
                 return "c_cpp";
             case "C#":
                 return "csharp"
-            case "Java":
-                return "java"
             default:
                 return language.toLowerCase();
         };
@@ -75,6 +76,9 @@ angular.module("compilerApp", ["ui.ace", "ui.bootstrap", "treeControl"])
         };
         if (language.startsWith('C++')) {
             return ".cpp";
+        };
+        if (language.startsWith('Java')) {
+            return ".java";
         };
         switch(language) {
             case "C90":
@@ -93,8 +97,6 @@ angular.module("compilerApp", ["ui.ace", "ui.bootstrap", "treeControl"])
                 return ".c";
             case "C#":
                 return ".csc"
-            case "Java":
-                return ".java"
             default:
                 return "";
         };
@@ -112,7 +114,7 @@ angular.module("compilerApp", ["ui.ace", "ui.bootstrap", "treeControl"])
             case "py":
                 return "Python2.7"
             case "java":
-                return "Java"
+                return "Java8"
             default:
                 return ""
         };
