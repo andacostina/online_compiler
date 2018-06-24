@@ -51,8 +51,6 @@ angular.module("compilerApp", ["ui.ace", "ui.bootstrap", "treeControl"])
                 return "c_cpp";
             case "C11":
                 return "c_cpp";
-            case "C17":
-                return "c_cpp";
             case "C-GNU90":
                 return "c_cpp";
             case "C-GNU99":
@@ -82,8 +80,6 @@ angular.module("compilerApp", ["ui.ace", "ui.bootstrap", "treeControl"])
             case "C99":
                 return ".c";
             case "C11":
-                return ".c";
-            case "C17":
                 return ".c";
             case "C-GNU90":
                 return ".c";
