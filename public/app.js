@@ -48,6 +48,9 @@ angular.module("compilerApp", ["ui.ace", "ui.bootstrap", "treeControl"])
         if (language.startsWith('Java')) {
             return "java";
         };
+        if (language.startsWith('C#')) {
+            return "csharp";
+        };
         switch(language) {
             case "C90":
                 return "c_cpp";
@@ -63,8 +66,6 @@ angular.module("compilerApp", ["ui.ace", "ui.bootstrap", "treeControl"])
                 return "c_cpp";
             case "C-GNU11":
                 return "c_cpp";
-            case "C#":
-                return "csharp"
             default:
                 return language.toLowerCase();
         };
@@ -80,6 +81,9 @@ angular.module("compilerApp", ["ui.ace", "ui.bootstrap", "treeControl"])
         if (language.startsWith('Java')) {
             return ".java";
         };
+        if (language.startsWith('C#')) {
+            return ".csc";
+        };
         switch(language) {
             case "C90":
                 return ".c";
@@ -95,8 +99,6 @@ angular.module("compilerApp", ["ui.ace", "ui.bootstrap", "treeControl"])
                 return ".c";
             case "C-GNU11":
                 return ".c";
-            case "C#":
-                return ".csc"
             default:
                 return "";
         };
@@ -110,7 +112,7 @@ angular.module("compilerApp", ["ui.ace", "ui.bootstrap", "treeControl"])
             case "cpp":
                 return "C++-GNU14"
             case "csc":
-                return "C#"
+                return "C#7.0"
             case "py":
                 return "Python2.7"
             case "java":
@@ -124,7 +126,8 @@ angular.module("compilerApp", ["ui.ace", "ui.bootstrap", "treeControl"])
         "Python2.4", "Python2.5", "Python2.6", "Python2.7", "Python3.1", "Python3.2",
         "Python3.3", "Python3.4", "Python3.5", "Python3.6", "C90", "C95", "C99", "C11",
         "C-GNU90", "C-GNU99", "C-GNU11", "C++98", "C++03", "C++11", "C++14", "C++17",
-        "C++-GNU98", "C++-GNU03", "C++-GNU11", "C++-GNU14", "C++-GNU17", "Java8", "Java10", "C#"
+        "C++-GNU98", "C++-GNU03", "C++-GNU11", "C++-GNU14", "C++-GNU17", "Java8", "Java10", 
+        "C#1.0", "C#2.0", "C#3.0", "C#4.0", "C#5.0", "C#6.0", "C#7.0"
     ];
     $scope.langModel = $scope.languages[0];
     $http({
@@ -151,7 +154,7 @@ angular.module("compilerApp", ["ui.ace", "ui.bootstrap", "treeControl"])
             {label: "helloworld.c", type: "doc", id: '1_3', content: "#include <stdio.h>\nint main()\n{\n    printf(\"Hello, World!\");\n    return 0;\n};", lang: "C-GNU11"},
             {label: "helloworld.cpp", type: "doc", id: '1_4', content: "#include <iostream>\nint main()\n{\n  std::cout << \"Hello, World!\";\n}", lang: "C++-GNU14"},
             {label: "HelloWorld.java", type: "doc", id: '1_5', content: "public class HelloWorld {\n    public static void main(String[] args) {\n        System.out.println(\"Hello, World!\");\n    }\n}", lang: "Java8"},
-            {label: "Hello.csc", type: "doc", id: '1_6', content: "namespace HelloWorld\n{\n    class Hello {\n        static void Main(string[] args)\n        {\n            System.Console.WriteLine(\"Hello, World!\");\n        }\n    }\n}", lang: "C#"}
+            {label: "Hello.csc", type: "doc", id: '1_6', content: "namespace HelloWorld\n{\n    class Hello {\n        static void Main(string[] args)\n        {\n            System.Console.WriteLine(\"Hello, World!\");\n        }\n    }\n}", lang: "C#7.0"}
         ]}
     ];
     $scope.memory = 0;

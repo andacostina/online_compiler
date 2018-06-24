@@ -4,7 +4,8 @@ module.exports = {
     languages: ["Python2.4", "Python2.5", "Python2.6", "Python2.7", "Python3.1", "Python3.2",
                 "Python3.3", "Python3.4", "Python3.5", "Python3.6", "C90", "C95", "C99", "C11",
                 "C-GNU90", "C-GNU99", "C-GNU11", "C++98", "C++03", "C++11", "C++14", "C++17",
-                "C++-GNU98", "C++-GNU03", "C++-GNU11", "C++-GNU14", "C++-GNU17", "Java8", "Java10", "C#"
+                "C++-GNU98", "C++-GNU03", "C++-GNU11", "C++-GNU14", "C++-GNU17", "Java8", "Java10", 
+                "C#1.0", "C#2.0", "C#3.0", "C#4.0", "C#5.0", "C#6.0", "C#7.0"
     ],
     documentationLinks: [
         "https://docs.python.org/2.4/",
@@ -36,10 +37,17 @@ module.exports = {
         "https://en.cppreference.com/w/cpp/header",
         "https://docs.oracle.com/javase/specs/jls/se8/html/index.html",
         "https://docs.oracle.com/javase/specs/jls/se10/html/index.html",
+        "https://docs.microsoft.com/en-us/dotnet/csharp/",
+        "https://docs.microsoft.com/en-us/dotnet/csharp/",
+        "https://docs.microsoft.com/en-us/dotnet/csharp/",
+        "https://docs.microsoft.com/en-us/dotnet/csharp/",
+        "https://docs.microsoft.com/en-us/dotnet/csharp/",
+        "https://docs.microsoft.com/en-us/dotnet/csharp/",
         "https://docs.microsoft.com/en-us/dotnet/csharp/"
     ],
     extensions: ["py", "py", "py", "py", "py", "py", "py", "py", "py", "py", "c", "c", "c", "c", "c",
-                 "c", "c", "cpp", "cpp", "cpp", "cpp", "cpp", "cpp", "cpp", "cpp", "cpp", "cpp", "java", "java", "cs"],
+                 "c", "c", "cpp", "cpp", "cpp", "cpp", "cpp", "cpp", "cpp", "cpp", "cpp", "cpp", "java", "java", 
+                 "cs", "cs", "cs", "cs", "cs", "cs", "cs"],
     commands: ["python2.4 *", "python2.5 *", "python2.6 *", "python2.7 *", "python3.1 *",
                "python3.2 *", "python3.3 *", "python3.4 *", "python3.5 *", "python3 *",
               "gcc * -std=c90 ; ./a.out", "gcc * -std=iso9899:199409 ; ./a.out", "gcc * -std=c99 ; ./a.out",
@@ -47,12 +55,17 @@ module.exports = {
               "gcc * -std=gnu11 ; ./a.out", "g++ * -std=c++98 ; ./a.out", "g++ * -std=c++03 ; ./a.out",
               "g++ * -std=c++11 ; ./a.out", "g++ * -std=c++14 ; ./a.out", "g++ * -std=c++17 ; ./a.out",
               "g++ * -std=gnu++98 ; ./a.out", "g++ * -std=gnu++03 ; ./a.out", "g++ * -std=gnu++11 ; ./a.out", 
-              "g++ * -std=gnu++14 ; ./a.out", "g++ * -std=gnu++17 ; ./a.out", "javac * ; java **", "javac * ; java **", "mcs * ; mono **.exe"],
+              "g++ * -std=gnu++14 ; ./a.out", "g++ * -std=gnu++17 ; ./a.out", "javac * ; java **", "javac * ; java **", 
+              "mcs -langversion:1 * ; mono **.exe", "mcs -langversion:2 * ; mono **.exe", "mcs -langversion:3 * ; mono **.exe", 
+              "mcs -langversion:4 * ; mono **.exe", "mcs -langversion:5 * ; mono **.exe","mcs -langversion:6 * ; mono **.exe", 
+              "mcs -langversion:7 * ; mono **.exe"
+    ],
     images: ["python2.4-image", "python2.5-image", "python2.6-image", "python2.7-image",
              "python3.1-image", "python3.2-image", "python3.3-image", "python3.4-image", "python3.5-image",
              "python3.6-image", "c-image", "c-image", "c-image", "c-image", "c-image", "c-image", "c-image",
              "cpp-image", "cpp-image", "cpp-image", "cpp-image", "cpp-image", "cpp-image", "cpp-image",
-             "cpp-image", "cpp-image", "cpp-image", "java8-image", "java10-image", "csharp-image"
+             "cpp-image", "cpp-image", "cpp-image", "java8-image", "java10-image", "csharp-image", "csharp-image",
+             "csharp-image", "csharp-image", "csharp-image", "csharp-image", "csharp-image"
     ],
     timeout: 60,
     memoryLimit: 10 ** 9,
