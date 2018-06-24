@@ -52,7 +52,7 @@ var sessionManager = new SessionManager(function(err) {
                         {label: "helloworld_3.py", type: "doc", id: '1_13', content: "print(\"Hello, World!\")", lang: "Python3.6"},
                         {label: "helloworld.c", type: "doc", id: '1_14', content: "#include <stdio.h>\nint main()\n{\n    printf(\"Hello, World!\");\n    return 0;\n};", lang: "C-GNU11"},
                         {label: "helloworld.cpp", type: "doc", id: '1_15', content: "#include <iostream>\nint main()\n{\n  std::cout << \"Hello, World!\";\n}", lang: "C++-GNU14"},
-                        {label: "HelloWorld.java", type: "doc", id: '1_16', content: "public class HelloWorld {\n    public static void main(String[] args) {\n        System.out.println(\"Hello, World!\");\n    }\n}", lang: "Java"},
+                        {label: "HelloWorld.java", type: "doc", id: '1_16', content: "public class HelloWorld {\n    public static void main(String[] args) {\n        System.out.println(\"Hello, World!\");\n    }\n}", lang: "Java8"},
                         {label: "Hello.csc", type: "doc", id: '1_17', content: "namespace HelloWorld\n{\n    class Hello {\n        static void Main(string[] args)\n        {\n            System.Console.WriteLine(\"Hello, World!\");\n        }\n    }\n}", lang: "C#"}
                     ]}
                 ];
