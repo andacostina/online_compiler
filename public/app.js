@@ -218,6 +218,20 @@ angular.module("compilerApp", ["ui.ace", "ui.bootstrap", "treeControl"])
     }, function error(response) {
     });
 
+    $scope.compiled_languages = [
+        "C 90", "C 95", "C 99", "C 11", "C GNU 90", "C GNU 99", "C GNU 11", "C++ 98", "C++ 03", 
+        "C++ 11", "C++ 14", "C++ 17", "C++ GNU 98", "C++ GNU 03", "C++ GNU 11", "C++ GNU 14", 
+        "C++ GNU 17", "Java 8", "Java 10", "C# 1.0", "C# 2.0", "C# 3.0", "C# 4.0", "C# 5.0", 
+        "C# 6.0", "C# 7.0", "Go 1.10", "Ada", "Cobol", "Fortran", "Pascal"
+    ];
+    $http({
+        method: 'GET',
+        url: '/compiled_languages'
+    }).then(function success(response) {
+        $scope.compiled_languages = response.data.languages;
+    }, function error(response) {
+    });
+
     $http({
         method: 'GET',
         url: '/documentation'
@@ -322,6 +336,33 @@ angular.module("compilerApp", ["ui.ace", "ui.bootstrap", "treeControl"])
                     }, function error(response) {
                         $scope.output = "Error running\n" + response.data.message;
                         $scope.running = false;
+                    });
+                };
+
+                $scope.runCodeAndGetBinary = function() {
+                    $scope.running2 = true;
+                    $http({
+                        method: 'POST',
+                        url: '/get_binary',
+                        data: {
+                            'code': $scope.aceModel,
+                            'filename': $scope.selectedFile.label,
+                            'language': $scope.selectedFile.lang
+                        }
+                    }).then(function success(response) {
+                        if (response.data.error) {
+                            $scope.output = response.data.error;
+                        }
+                        else {
+                            $scope.output = response.data.stdout;
+                            if (response.data.stderr) {
+                                $scope.output += "\n" + response.data.stderr;
+                            };
+                        };
+                        $scope.running2 = false;
+                    }, function error(response) {
+                        $scope.output = "Error running\n" + response.data.message;
+                        $scope.running2 = false;
                     });
                 };
 
@@ -559,6 +600,13 @@ angular.module("compilerApp", ["ui.ace", "ui.bootstrap", "treeControl"])
 
         $scope.runDisabled = function() {
             if ($scope.languages.indexOf($scope.langModel) > -1) {
+                return false;
+            };
+            return true;
+        };
+
+        $scope.downloadBinaryDisabled = function() {
+            if ($scope.compiled_languages.indexOf($scope.langModel) > -1) {
                 return false;
             };
             return true;

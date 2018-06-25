@@ -28,6 +28,11 @@ var sessionManager = new SessionManager(function(err) {
         res.end();
     });
 
+    app.get('/compiled_languages', function(req, res) {
+        res.json({'languages': dockerManager.getCompiledLanguages()});
+        res.end();
+    });
+
     app.get('/documentation', function(req, res) {
         res.json({'documentation_links': constants.documentationLinks});
         res.end();
@@ -110,6 +115,26 @@ var sessionManager = new SessionManager(function(err) {
             };
             res.json({'error': error, 'stdout': stdout, 'stderr': stderr});
             res.end();
+        });
+    });
+
+    app.post("/get_binary", function(req, res) {
+        var language = req.body.language;
+        var filename = req.body.filename;
+        var code = req.body.code;
+        dockerManager.runAndGetBinary(code, filename, language, function(error, stderr, stdout, uuid, filename) {
+            if (error) {
+                error = error.message;
+                let error_split = error.split('\n');
+                error_split.shift();
+                error = error_split.join('\n');
+            };
+            res.json({'error': error, 'stdout': stdout, 'stderr': stderr});
+            if (uuid && filename) {
+                res.download(uuid + '/' + filename, filename);
+            };
+            res.end();
+            exec("rm -r " + uuid);
         });
     });
 

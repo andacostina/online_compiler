@@ -10,6 +10,12 @@ module.exports = {
                 "Node.js 5.12.0", "Node.js 4.9.1", "Node.js 0.12.18", "Node.js 0.10.48", "PHP 7.2", "Ada", "Common Lisp",
                 "Cobol", "Fortran", "Pascal"
     ],
+    compiled_languages: [
+        "C 90", "C 95", "C 99", "C 11", "C GNU 90", "C GNU 99", "C GNU 11", "C++ 98", "C++ 03",
+        "C++ 11", "C++ 14", "C++ 17", "C++ GNU 98", "C++ GNU 03", "C++ GNU 11", "C++ GNU 14",
+        "C++ GNU 17", "Java 8", "Java 10", "C# 1.0", "C# 2.0", "C# 3.0", "C# 4.0", "C# 5.0",
+        "C# 6.0", "C# 7.0", "Go 1.10", "Ada", "Cobol", "Fortran", "Pascal"
+    ],
     documentationLinks: [
         "https://docs.python.org/2.4/",
         "https://docs.python.org/2.5/",

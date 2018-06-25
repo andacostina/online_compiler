@@ -6,6 +6,7 @@ const uuidv1 = require('uuid/v1');
 
 function DockerManager() {
     this.languages = constants.languages;
+    this.compiled_languages = constants.compiled_languages;
     this.codeExamples = constants.codeExamples;
     this.extensions = constants.extensions;
     this.commands = constants.commands;
@@ -17,34 +18,28 @@ DockerManager.prototype.getLanguages = function() {
     return this.languages;
 };
 
+DockerManager.prototype.getCompiledLanguages = function() {
+    return this.compiled_languages;
+};
+
 DockerManager.prototype.getCodeExamples = function() {
     return this.codeExamples;
 };
 
 DockerManager.prototype.run = function(code, filename, language, callback) {
     var self = this;
-    const dockerImage = this.getDockerImage(language);
     this.createTempImage(code, filename, language, function(error, stderr, stdout, uuid, tempImageHash) {
         if (error) {
+            exec("rm -r " + uuid);
             self.deleteImage(tempImageHash);
             return callback(error, stderr, stdout);
         };
         self.runContainer(uuid, function(error, stdout, stderr) {
+            exec("rm -r " + uuid);
             self.deleteImage(tempImageHash);
             return callback(error, stderr, stdout);
         });
     });
-};
-
-DockerManager.prototype.getDockerImage = function(language) {
-    switch(language) {
-        case "C++":
-            return "cpp-image"
-        case "C#":
-            return "csharp-image"
-        default:
-            return language.toLowerCase() + "-image"
-    };
 };
 
 DockerManager.prototype.createTempImage = function(code, filename, language, callback) {
@@ -52,16 +47,15 @@ DockerManager.prototype.createTempImage = function(code, filename, language, cal
     fs.mkdirSync(uuid);
     this.createDockerfile(code, filename, language, uuid);
     exec("sudo docker build -t " + uuid + " .", {cwd: uuid}, function(error, stdout, stderr) {
-        exec("rm -r " + uuid);
         if (error) {
-            return callback(error, stderr);
+            return callback(error, stderr, null, uuid);
         };
         let tempImageHash;
         try {
             tempImageHash = /Successfully built ([a-z0-9]{12})/.exec(stdout)[1];
         }
         catch(e) {
-            return callback(new Error("Couldn\'t find image hash"), stderr);
+            return callback(new Error("Couldn\'t find image hash"), stderr, null, uuid);
         };
         return callback(error, stderr, stdout, uuid, tempImageHash);
     });
@@ -77,7 +71,7 @@ DockerManager.prototype.createDockerfile = function(code, filename, language, uu
 };
 
 DockerManager.prototype.runContainer = function(tempImage, callback) {
-    exec("sudo timeout --signal KILL " + this.timeout + " docker run " + tempImage, callback);
+    exec("sudo timeout --signal KILL " + this.timeout + " docker run --name " + tempImage + " " + tempImage, callback);
 };
 
 DockerManager.prototype.deleteImage = function(imageHash) {
@@ -95,6 +89,35 @@ DockerManager.prototype.deleteImage = function(imageHash) {
 
 DockerManager.prototype.deleteExitedContainers = function(callback) {
     exec("sudo docker rm $(sudo docker ps -a -f status=exited -q)", callback);
+};
+
+DockerManager.prototype.runAndGetBinary = function(code, filename, language, callback) {
+    var self = this;
+    this.createTempImage(code, filename, language, function(error, stderr, stdout, uuid, tempImageHash) {
+        if (error) {
+            exec("rm -r " + uuid);
+            self.deleteImage(tempImageHash);
+            return callback(error, stderr, stdout);
+        };
+        self.runContainer(uuid, function(error, stdout, stderr) {
+            self.getBinary(uuid, filename, language, function(error, binary_name) {
+                self.deleteImage(tempImageHash);
+                return callback(error, stderr, stdout, uuid, binary_name);
+            });
+        });
+    });
+
+    DockerManager.prototype.getBinary = function(uuid, filename, language, callback) {
+        const command = this.commands[i].replace('**', filename.split('.')[0]).replace("*", filename);
+        const splits = command.split(' ');
+        var binary_name = splits[splits.length - 1];
+        exec("sudo docker cp " + uuid + ":/" + binary_name + " " + uuid + "/" + binary_name, function(error) {
+            if (error) {
+                return callback(error);
+            };
+            return callback(error, binary_name);
+        });
+    };
 };
 
 module.exports = DockerManager;
