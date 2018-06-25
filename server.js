@@ -48,12 +48,13 @@ var sessionManager = new SessionManager(function(err) {
             else {
                 const tree = [
                     {label: "My scripts", type: "folder", id: '1', children: [
-                        {label: "helloworld_2.py", type: "doc", id: '1_4', content: "print \"Hello, World!\"", lang: 'Python2.7'},
-                        {label: "helloworld_3.py", type: "doc", id: '1_13', content: "print(\"Hello, World!\")", lang: "Python3.6"},
-                        {label: "helloworld.c", type: "doc", id: '1_14', content: "#include <stdio.h>\nint main()\n{\n    printf(\"Hello, World!\");\n    return 0;\n};", lang: "C-GNU11"},
-                        {label: "helloworld.cpp", type: "doc", id: '1_15', content: "#include <iostream>\nint main()\n{\n  std::cout << \"Hello, World!\";\n}", lang: "C++-GNU14"},
-                        {label: "HelloWorld.java", type: "doc", id: '1_16', content: "public class HelloWorld {\n    public static void main(String[] args) {\n        System.out.println(\"Hello, World!\");\n    }\n}", lang: "Java8"},
-                        {label: "Hello.csc", type: "doc", id: '1_17', content: "namespace HelloWorld\n{\n    class Hello {\n        static void Main(string[] args)\n        {\n            System.Console.WriteLine(\"Hello, World!\");\n        }\n    }\n}", lang: "C#7.0"}
+                        {label: "helloworld_2.py", type: "doc", id: '1_1', content: "print \"Hello, World!\"", lang: 'Python2.7'},
+                        {label: "helloworld_3.py", type: "doc", id: '1_2', content: "print(\"Hello, World!\")", lang: "Python3.6"},
+                        {label: "helloworld.c", type: "doc", id: '1_3', content: "#include <stdio.h>\nint main()\n{\n    printf(\"Hello, World!\");\n    return 0;\n};", lang: "C-GNU11"},
+                        {label: "helloworld.cpp", type: "doc", id: '1_4', content: "#include <iostream>\nint main()\n{\n  std::cout << \"Hello, World!\";\n}", lang: "C++-GNU14"},
+                        {label: "HelloWorld.java", type: "doc", id: '1_5', content: "public class HelloWorld {\n    public static void main(String[] args) {\n        System.out.println(\"Hello, World!\");\n    }\n}", lang: "Java8"},
+                        {label: "Hello.csc", type: "doc", id: '1_6', content: "namespace HelloWorld\n{\n    class Hello {\n        static void Main(string[] args)\n        {\n            System.Console.WriteLine(\"Hello, World!\");\n        }\n    }\n}", lang: "C#7.0"},
+                        {label: "while.pl", type: "doc", id: '1_7', content: "use strict;\n\nmy $a = 5;\nwhile($a > 0) {\n    print \"$a \";\n    $a--;\n}\nprint \"\n\";", lang: "Perl"}
                     ]}
                 ];
                 var myUUID = uuid();
