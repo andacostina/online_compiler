@@ -298,7 +298,12 @@ angular.module("compilerApp", ["ui.ace", "ui.bootstrap", "treeControl"])
                     _editor.getSession().setMode("ace/mode/" + getAceMode($scope.langModel));
                     var currentName = $scope.selectedFile.label;
                     var pointPos = currentName.lastIndexOf('.');
-                    $scope.selectedFile.label = currentName.substring(0, pointPos) + getFileExtension($scope.langModel);
+                    if (pointPos > -1) {
+                        $scope.selectedFile.label = currentName.substring(0, pointPos) + getFileExtension($scope.langModel);
+                    }
+                    else {
+                        $scope.selectedFile.label = currentName + getFileExtension($scope.langModel);
+                    };
                     $scope.selectedFile.lang = $scope.langModel;
                 };
     
