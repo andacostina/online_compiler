@@ -79,6 +79,8 @@ angular.module("compilerApp", ["ui.ace", "ui.bootstrap", "treeControl"])
                 return "lua"
             case "PHP 7.2":
                 return "php"
+            case "Ada":
+                return "ada"
             default:
                 return language.toLowerCase();
         };
@@ -125,6 +127,8 @@ angular.module("compilerApp", ["ui.ace", "ui.bootstrap", "treeControl"])
                 return ".lua"
             case "PHP 7.2":
                 return ".php"
+            case "Ada":
+                return ".adb"
             default:
                 return "";
         };
@@ -155,6 +159,8 @@ angular.module("compilerApp", ["ui.ace", "ui.bootstrap", "treeControl"])
                 return "Node.js 10.5.0"
             case "php":
                 return "PHP 7.2"
+            case "adb":
+                return "Ada"
             default:
                 return ""
         };
@@ -167,7 +173,7 @@ angular.module("compilerApp", ["ui.ace", "ui.bootstrap", "treeControl"])
         "C++ GNU 98", "C++ GNU 03", "C++ GNU 11", "C++ GNU 14", "C++ GNU 17", "Java 8", "Java 10", 
         "C# 1.0", "C# 2.0", "C# 3.0", "C# 4.0", "C# 5.0", "C# 6.0", "C# 7.0", "Perl 5.26", "Ruby 2.5", "Go 1.10",
         "Lua 5.3", "Node.js 10.5.0", "Node.js 9.11.2", "Node.js 7.10.1", "Node.js 6.14.3",
-        "Node.js 5.12.0", "Node.js 4.9.1", "Node.js 0.12.18", "Node.js 0.10.48", "PHP 7.2"
+        "Node.js 5.12.0", "Node.js 4.9.1", "Node.js 0.12.18", "Node.js 0.10.48", "PHP 7.2", "Ada"
     ];
     $scope.langModel = $scope.languages[0];
     $http({
@@ -200,7 +206,8 @@ angular.module("compilerApp", ["ui.ace", "ui.bootstrap", "treeControl"])
             {label: "structs.go", type: "doc", id: '1_9', content: "package main\nimport \"fmt\"\n\ntype person struct {\n    name string\n    age  int\n}\nfunc main() {\n\n    fmt.Println(person{\"Bob\", 20})\n\n    fmt.Println(person{name: \"Alice\", age: 30})\n\n    fmt.Println(person{name: \"Fred\"})\n\n    fmt.Println(&person{name: \"Ann\", age: 40})\n\n    s := person{name: \"Sean\", age: 50}\n    fmt.Println(s.name)\n\n    sp := &s\n    fmt.Println(sp.age)\n\n    sp.age = 51\n    fmt.Println(sp.age)\n}", lang: 'Go 1.10'},
             {label: "max.lua", type: "doc", id: '1_10', content: "function max(num1, num2)\n\n   if (num1 > num2) then\n      result = num1;\n   else\n      result = num2;\n   end\n\n   return result; \nend\n\n-- calling a function\nprint(\"The maximum of the two numbers is \",max(10,4))\nprint(\"The maximum of the two numbers is \",max(5,6))", lang: "Lua 5.3"},
             {label: "url_parse.js", type: "doc", id: '1_11', content: "// include url module\nvar url = require('url');\nvar address = 'http://localhost:8080/index.php?type=page&action=update&id=5221';\nvar q = url.parse(address, true);\n \nconsole.log(q.host); //returns 'localhost:8080'\nconsole.log(q.pathname); //returns '/index.php'\nconsole.log(q.search); //returns '?type=page&action=update&id=5221'\n \nvar qdata = q.query; // returns an object: { type: page, action: 'update',id='5221' }\nconsole.log(qdata.type); //returns 'page'\nconsole.log(qdata.action); //returns 'update'\nconsole.log(qdata.id); //returns '5221'", lang: 'Node.js 10.5.0'},
-            {label: "hellp.php", type: "doc", id: '1_12', content: "<?php\n  // Declare the variable 'string' and assign it a value.\n  // The <br> is the HTML equivalent to a new line.\n  $string = 'Hello World!<br>';\n\n  // You can echo the variable, similar to the way you would echo a string.\n  echo $string;\n\n  // You could also use print.\n  print $string;\n\n  // Or, if you are familiar with C, printf can be used too.\n  printf('%s', $string);\n?>", lang: 'PHP 7.2'}
+            {label: "hello.php", type: "doc", id: '1_12', content: "<?php\n  // Declare the variable 'string' and assign it a value.\n  // The <br> is the HTML equivalent to a new line.\n  $string = 'Hello World!<br>';\n\n  // You can echo the variable, similar to the way you would echo a string.\n  echo $string;\n\n  // You could also use print.\n  print $string;\n\n  // Or, if you are familiar with C, printf can be used too.\n  printf('%s', $string);\n?>", lang: 'PHP 7.2'},
+            {label: "structures.adb", type: "doc", id: '1_13', content: "-- while a is not equal to b, loop.\nwhile a /= b loop\n  Ada.Text_IO.Put_Line (\"Waiting\");\nend loop;\n\nif a > b then\n  Ada.Text_IO.Put_Line (\"Condition met\");\nelse\n  Ada.Text_IO.Put_Line (\"Condition not met\");\nend if;\n\nfor i in 1 .. 10 loop\n  Ada.Text_IO.Put (\"Iteration: \");\n  Ada.Text_IO.Put (i);\n  Ada.Text_IO.Put_Line;\nend loop;\n\nloop\n  a := a + 1;\n  exit when a = 10;\nend loop;\n\ncase i is\n  when 0 => Ada.Text_IO.Put (\"zero\");\n  when 1 => Ada.Text_IO.Put (\"one\");\n  when 2 => Ada.Text_IO.Put (\"two\");\n  -- case statements have to cover all possible cases:\n  when others => Ada.Text_IO.Put (\"none of the above\");\nend case;\n\nfor aWeekday in Weekday'Range loop               -- loop over an enumeration\n   Put_Line ( Weekday'Image(aWeekday) );         -- output string representation of an enumeration\n   if aWeekday in Working_Day then               -- check of a subtype of an enumeration\n      Put_Line ( \" to work for \" &\n               Working_Hours'Image (Work_Load(aWeekday)) ); -- access into a lookup table\n   end if;\nend loop;", lang: 'Ada'}
         ]}
     ];
     $scope.memory = 0;
