@@ -8,7 +8,7 @@ module.exports = {
                 "C# 1.0", "C# 2.0", "C# 3.0", "C# 4.0", "C# 5.0", "C# 6.0", "C# 7.0", "Perl 5.26", "Ruby 2.5", 
                 "Go 1.10", "Lua 5.3", "Node.js 10.5.0", "Node.js 9.11.2", "Node.js 7.10.1", "Node.js 6.14.3",
                 "Node.js 5.12.0", "Node.js 4.9.1", "Node.js 0.12.18", "Node.js 0.10.48", "PHP 7.2", "Ada", "Common Lisp",
-                "Cobol", "Fortran"
+                "Cobol", "Fortran", "Pascal"
     ],
     documentationLinks: [
         "https://docs.python.org/2.4/",
@@ -63,12 +63,13 @@ module.exports = {
         "http://www.adaic.org/resources/add_content/standards/05rm/RM-Final.pdf",
         "http://www.lispworks.com/documentation/HyperSpec/Front/index.htm",
         "https://supportline.microfocus.com/documentation/books/nx50/lrpubb.htm",
-        "http://www.fortran90.org/"
+        "http://www.fortran90.org/",
+        "https://freepascal.org/docs-html/current/ref/ref.html"
     ],
     extensions: ["py", "py", "py", "py", "py", "py", "py", "py", "py", "py", "c", "c", "c", "c", "c",
                  "c", "c", "cpp", "cpp", "cpp", "cpp", "cpp", "cpp", "cpp", "cpp", "cpp", "cpp", "java", "java", 
                  "cs", "cs", "cs", "cs", "cs", "cs", "cs", "pl", "rb", "go", "lua", "js", "js", "js", "js",
-                 "js", "js", "js", "js", "php", "adb", "lisp", "cob", "f"],
+                 "js", "js", "js", "js", "php", "adb", "lisp", "cob", "f", "pas"],
     commands: ["python2.4 *", "python2.5 *", "python2.6 *", "python2.7 *", "python3.1 *",
                "python3.2 *", "python3.3 *", "python3.4 *", "python3.5 *", "python3 *",
               "gcc * -std=c90 ; ./a.out", "gcc * -std=iso9899:199409 ; ./a.out", "gcc * -std=c99 ; ./a.out",
@@ -84,7 +85,7 @@ module.exports = {
               "export PATH=$PATH:/usr/local/node/bin ; node *", "export PATH=$PATH:/usr/local/node/bin ; node *", 
               "export PATH=$PATH:/usr/local/node/bin ; node *", "export PATH=$PATH:/usr/local/node/bin ; node *", 
               "export PATH=$PATH:/usr/local/node/bin ; node *", "export PATH=$PATH:/usr/local/node/bin ; node *",
-              "php *", "gnat make * -q ; ./**", "clisp *", "cobc -x -free * ; ./**", "gfortran * ; ./a.out"
+              "php *", "gnat make * -q ; ./**", "clisp *", "cobc -x -free * ; ./**", "gfortran * ; ./a.out", "fpc * ; ./**"
     ],
     images: ["python2.4-image", "python2.5-image", "python2.6-image", "python2.7-image",
              "python3.1-image", "python3.2-image", "python3.3-image", "python3.4-image", "python3.5-image",
@@ -94,7 +95,7 @@ module.exports = {
              "csharp-image", "csharp-image", "csharp-image", "csharp-image", "csharp-image", "perl-image", "ruby-image",
              "go-image", "lua-image", "nodejs10.5.0-image", "nodejs9.11.2-image", "nodejs7.10.1-image", "nodejs6.14.3-image",
              "nodejs5.12.0-image", "nodejs4.9.1-image", "nodejs0.12.18-image", "nodejs0.10.48-image", "php-image", "ada-image",
-             "lisp-image", "cobol-image", "fortran-image"
+             "lisp-image", "cobol-image", "fortran-image", "pascal-image"
     ],
     timeout: 60,
     memoryLimit: 10 ** 9,
