@@ -83,6 +83,8 @@ angular.module("compilerApp", ["ui.ace", "ui.bootstrap", "treeControl"])
                 return "ada"
             case "Common Lisp":
                 return "lisp"
+            case "Cobol":
+                return "cobol"
             default:
                 return language.toLowerCase();
         };
@@ -133,6 +135,8 @@ angular.module("compilerApp", ["ui.ace", "ui.bootstrap", "treeControl"])
                 return ".adb"
             case "Common Lisp":
                 return ".lisp"
+            case "Cobol":
+                return ".cob"
             default:
                 return "";
         };
@@ -167,6 +171,8 @@ angular.module("compilerApp", ["ui.ace", "ui.bootstrap", "treeControl"])
                 return "Ada"
             case "lisp":
                 return "Common Lisp"
+            case "cob":
+                return "Cobol"
             default:
                 return ""
         };
@@ -180,7 +186,7 @@ angular.module("compilerApp", ["ui.ace", "ui.bootstrap", "treeControl"])
         "C# 1.0", "C# 2.0", "C# 3.0", "C# 4.0", "C# 5.0", "C# 6.0", "C# 7.0", "Perl 5.26", "Ruby 2.5", "Go 1.10",
         "Lua 5.3", "Node.js 10.5.0", "Node.js 9.11.2", "Node.js 7.10.1", "Node.js 6.14.3",
         "Node.js 5.12.0", "Node.js 4.9.1", "Node.js 0.12.18", "Node.js 0.10.48", "PHP 7.2", "Ada",
-        "Common Lisp"
+        "Common Lisp", "Cobol"
     ];
     $scope.langModel = $scope.languages[0];
     $http({
@@ -215,7 +221,8 @@ angular.module("compilerApp", ["ui.ace", "ui.bootstrap", "treeControl"])
             {label: "url_parse.js", type: "doc", id: '1_11', content: "// include url module\nvar url = require('url');\nvar address = 'http://localhost:8080/index.php?type=page&action=update&id=5221';\nvar q = url.parse(address, true);\n \nconsole.log(q.host); //returns 'localhost:8080'\nconsole.log(q.pathname); //returns '/index.php'\nconsole.log(q.search); //returns '?type=page&action=update&id=5221'\n \nvar qdata = q.query; // returns an object: { type: page, action: 'update',id='5221' }\nconsole.log(qdata.type); //returns 'page'\nconsole.log(qdata.action); //returns 'update'\nconsole.log(qdata.id); //returns '5221'", lang: 'Node.js 10.5.0'},
             {label: "hello.php", type: "doc", id: '1_12', content: "<?php\n  // Declare the variable 'string' and assign it a value.\n  // The <br> is the HTML equivalent to a new line.\n  $string = 'Hello World!<br>';\n\n  // You can echo the variable, similar to the way you would echo a string.\n  echo $string;\n\n  // You could also use print.\n  print $string;\n\n  // Or, if you are familiar with C, printf can be used too.\n  printf('%s', $string);\n?>", lang: 'PHP 7.2'},
             {label: "f1.adb", type: "doc", id: '1_13', content: "--\n-- Trivial function.\n--\nwith Gnat.Io; use Gnat.Io;\nprocedure f1 is\n   -- A small function.\n   function Sumsqr(X, Y: Integer) return Integer is\n   begin\n      return X*X + Y*Y;\n   end;\n\n   -- How 'bout a nice, tender variable?\n   I: Integer;\nbegin\n   I := Sumsqr(3, 14);\n   Put(I);\n   New_Line;\n\n   Put(Sumsqr(I, 4));\n   New_Line;\nend f1;", lang: 'Ada'},
-            {label: "structures.lisp", type: "doc", id: '1_14', content: "(defstruct book \n   title \n   author \n   subject \n   book-id \n)\n\n( setq book1 (make-book :title \"C Programming\"\n   :author \"Nuha Ali\" \n   :subject \"C-Programming Tutorial\"\n   :book-id \"478\")\n)\n\n( setq book2 (make-book :title \"Telecom Billing\"\n   :author \"Zara Ali\" \n   :subject \"C-Programming Tutorial\"\n   :book-id \"501\")\n) \n\n(write book1)\n(terpri)\n(write book2)\n(setq book3( copy-book book1))\n(setf (book-book-id book3) 100) \n(terpri)\n(write book3)", lang: 'Common Lisp'}
+            {label: "structures.lisp", type: "doc", id: '1_14', content: "(defstruct book \n   title \n   author \n   subject \n   book-id \n)\n\n( setq book1 (make-book :title \"C Programming\"\n   :author \"Nuha Ali\" \n   :subject \"C-Programming Tutorial\"\n   :book-id \"478\")\n)\n\n( setq book2 (make-book :title \"Telecom Billing\"\n   :author \"Zara Ali\" \n   :subject \"C-Programming Tutorial\"\n   :book-id \"501\")\n) \n\n(write book1)\n(terpri)\n(write book2)\n(setq book3( copy-book book1))\n(setf (book-book-id book3) 100) \n(terpri)\n(write book3)", lang: 'Common Lisp'},
+            {label: "hello.cob", type: "doc", id: '1_15', content: "     *> Sample GnuCOBOL program\n     identification division.\n     program-id. hellonew.\n     procedure division.\n     display\n        \"Hello, new world!\"\n     end-display\n     goback.", lang: "Cobol"}
         ]}
     ];
     $scope.memory = 0;
