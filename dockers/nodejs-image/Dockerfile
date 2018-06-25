@@ -1,2 +1,0 @@
-FROM ubuntu
-RUN apt-get update && apt-get install -y wget && wget -qO- https://raw.githubusercontent.com/creationix/nvm/v0.33.4/install.sh | bash && source /root/.bashrc && npm install 10.5.0 && npm install  9.11.2 && npm install 7.10.1 && npm install 6.14.3 && npm install 5.12.0 && npm install 4.9.1 && npm install 0.12.18 && npm install 0.10.48

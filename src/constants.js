@@ -75,8 +75,7 @@ module.exports = {
               "mcs -langversion:1 * ; mono **.exe", "mcs -langversion:2 * ; mono **.exe", "mcs -langversion:3 * ; mono **.exe", 
               "mcs -langversion:4 * ; mono **.exe", "mcs -langversion:5 * ; mono **.exe","mcs -langversion:6 * ; mono **.exe", 
               "mcs -langversion:7 * ; mono **.exe", "perl *", "ruby *", "export PATH=$PATH:/usr/local/go/bin; go build; ./_", 
-              "lua5.3 *", "nvm use 10.5.0 ; node *", "nvm use 9.11.2 ; node *", "nvm use 7.10.1 ; node *", "nvm use 6.14.3 ; node *",
-              "nvm use 5.12.0 ; node *", "nvm use 4.9.1 ; node *", "nvm use 0.12.18 ; node *", "nvm use 0.10.48 ; node *"
+              "lua5.3 *", "node *", "node *", "node *", "node *", "node *", "node *", "node *", "node *"
     ],
     images: ["python2.4-image", "python2.5-image", "python2.6-image", "python2.7-image",
              "python3.1-image", "python3.2-image", "python3.3-image", "python3.4-image", "python3.5-image",
@@ -84,8 +83,8 @@ module.exports = {
              "cpp-image", "cpp-image", "cpp-image", "cpp-image", "cpp-image", "cpp-image", "cpp-image",
              "cpp-image", "cpp-image", "cpp-image", "java8-image", "java10-image", "csharp-image", "csharp-image",
              "csharp-image", "csharp-image", "csharp-image", "csharp-image", "csharp-image", "perl-image", "ruby-image",
-             "go-image", "lua-image", "nodejs-image", "nodejs-image", "nodejs-image", "nodejs-image", "nodejs-image", "nodejs-image",
-             "nodejs-image", "nodejs-image"
+             "go-image", "lua-image", "nodejs10.5.0-image", "nodejs9.11.2-image", "nodejs7.10.1-image", "nodejs 6.14.3-image",
+             "nodejs5.12.0-image", "nodejs4.9.1-image", "nodejs0.12.18-image", "nodejs0.10.48-image"
     ],
     timeout: 60,
     memoryLimit: 10 ** 9,
