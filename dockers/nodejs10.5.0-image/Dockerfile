@@ -1,2 +1,2 @@
 FROM ubuntu
-RUN apt-get update && apt-get install -y curl && curl -o https://nodejs.org/download/release/v10.5.0/node-v10.5.0-linux-x64.tar.gz && tar -C /usr/local -xzf node-v10.5.0-linux-x64.tar.gz && mv /usr/local/node-v10.5.0-linux-x64 /usr/loca/node && export PATH=$PATH:/usr/local/node/bin
+RUN apt-get update && apt-get install -y curl && curl -O https://nodejs.org/download/release/v10.5.0/node-v10.5.0-linux-x64.tar.gz && tar -C /usr/local -xzf node-v10.5.0-linux-x64.tar.gz && mv /usr/local/node-v10.5.0-linux-x64 /usr/local/node && export PATH=$PATH:/usr/local/node/bin

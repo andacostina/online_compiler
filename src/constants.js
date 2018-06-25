@@ -75,7 +75,10 @@ module.exports = {
               "mcs -langversion:1 * ; mono **.exe", "mcs -langversion:2 * ; mono **.exe", "mcs -langversion:3 * ; mono **.exe", 
               "mcs -langversion:4 * ; mono **.exe", "mcs -langversion:5 * ; mono **.exe","mcs -langversion:6 * ; mono **.exe", 
               "mcs -langversion:7 * ; mono **.exe", "perl *", "ruby *", "export PATH=$PATH:/usr/local/go/bin; go build; ./_", 
-              "lua5.3 *", "node *", "node *", "node *", "node *", "node *", "node *", "node *", "node *"
+              "lua5.3 *", "export PATH=$PATH:/usr/local/node/bin ; node *", "export PATH=$PATH:/usr/local/node/bin ; node *", 
+              "export PATH=$PATH:/usr/local/node/bin ; node *", "export PATH=$PATH:/usr/local/node/bin ; node *", 
+              "export PATH=$PATH:/usr/local/node/bin ; node *", "export PATH=$PATH:/usr/local/node/bin ; node *", 
+              "export PATH=$PATH:/usr/local/node/bin ; node *", "export PATH=$PATH:/usr/local/node/bin ; node *"
     ],
     images: ["python2.4-image", "python2.5-image", "python2.6-image", "python2.7-image",
              "python3.1-image", "python3.2-image", "python3.3-image", "python3.4-image", "python3.5-image",

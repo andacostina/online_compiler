@@ -1,0 +1,2 @@
+FROM ubuntu
+RUN apt-get update && apt-get install -y curl && curl -O https://nodejs.org/download/release/v6.14.3/node-v6.14.3-linux-x64.tar.gz && tar -C /usr/local -xzf node-v6.14.3-linux-x64.tar.gz && mv /usr/local/node-v6.14.3-linux-x64 /usr/local/node && export PATH=$PATH:/usr/local/node/bin
