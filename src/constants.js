@@ -5,7 +5,7 @@ module.exports = {
                 "Python3.3", "Python3.4", "Python3.5", "Python3.6", "C90", "C95", "C99", "C11",
                 "C-GNU90", "C-GNU99", "C-GNU11", "C++98", "C++03", "C++11", "C++14", "C++17",
                 "C++-GNU98", "C++-GNU03", "C++-GNU11", "C++-GNU14", "C++-GNU17", "Java8", "Java10", 
-                "C#1.0", "C#2.0", "C#3.0", "C#4.0", "C#5.0", "C#6.0", "C#7.0", "Perl", "Ruby", "G0"
+                "C#1.0", "C#2.0", "C#3.0", "C#4.0", "C#5.0", "C#6.0", "C#7.0", "Perl", "Ruby", "Go"
     ],
     documentationLinks: [
         "https://docs.python.org/2.4/",
