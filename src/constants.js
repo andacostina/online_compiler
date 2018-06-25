@@ -86,7 +86,7 @@ module.exports = {
              "cpp-image", "cpp-image", "cpp-image", "cpp-image", "cpp-image", "cpp-image", "cpp-image",
              "cpp-image", "cpp-image", "cpp-image", "java8-image", "java10-image", "csharp-image", "csharp-image",
              "csharp-image", "csharp-image", "csharp-image", "csharp-image", "csharp-image", "perl-image", "ruby-image",
-             "go-image", "lua-image", "nodejs10.5.0-image", "nodejs9.11.2-image", "nodejs7.10.1-image", "nodejs 6.14.3-image",
+             "go-image", "lua-image", "nodejs10.5.0-image", "nodejs9.11.2-image", "nodejs7.10.1-image", "nodejs6.14.3-image",
              "nodejs5.12.0-image", "nodejs4.9.1-image", "nodejs0.12.18-image", "nodejs0.10.48-image"
     ],
     timeout: 60,
