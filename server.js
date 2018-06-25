@@ -123,6 +123,7 @@ var sessionManager = new SessionManager(function(err) {
         var language = req.body.language;
         var filename = req.body.filename;
         var code = req.body.code;
+
         dockerManager.runAndGetBinary(code, filename, language, function(error, stderr, stdout, uuid, filename) {
             if (error) {
                 error = error.message;
@@ -130,12 +131,17 @@ var sessionManager = new SessionManager(function(err) {
                 error_split.shift();
                 error = error_split.join('\n');
             };
-            res.json({'error': error, 'stdout': stdout, 'stderr': stderr});
             if (uuid && filename) {
-                res.download(uuid + '/' + filename, filename);
+                res.download(uuid + '/' + filename, filename, function(err) {
+                    if (err) {
+                        console.error(err);
+                    };
+                });
+            }
+            else {
+                res.end();
             };
-            res.end();
-            exec("rm -r " + uuid);
+            exec("rm -r -f" + uuid);
         });
     });
 

@@ -339,7 +339,7 @@ angular.module("compilerApp", ["ui.ace", "ui.bootstrap", "treeControl"])
                     });
                 };
 
-                $scope.runCodeAndGetBinary = function() {
+                $scope.getBinary = function() {
                     $scope.running2 = true;
                     $http({
                         method: 'POST',
@@ -350,18 +350,22 @@ angular.module("compilerApp", ["ui.ace", "ui.bootstrap", "treeControl"])
                             'language': $scope.selectedFile.lang
                         }
                     }).then(function success(response) {
-                        if (response.data.error) {
-                            $scope.output = response.data.error;
+                        var binaryName = $scope.selectedFile.label;
+                        var pointPos = binaryName.lastIndexOf('.');
+                        if (pointPos > -1) {
+                            binaryName = binaryName.substring(0, pointPos) + '.o';
                         }
                         else {
-                            $scope.output = response.data.stdout;
-                            if (response.data.stderr) {
-                                $scope.output += "\n" + response.data.stderr;
-                            };
+                            binaryName = binaryName + '.exe';
                         };
+                        var element = angular.element('<a/>');
+                        element.attr({
+                            href: 'data:application/octet-stream;charset=binary,' + encodeURI(response.data),
+                            target: '_self',
+                            download:binaryName
+                        })[0].click();
                         $scope.running2 = false;
                     }, function error(response) {
-                        $scope.output = "Error running\n" + response.data.message;
                         $scope.running2 = false;
                     });
                 };
