@@ -5,6 +5,7 @@ var app = express();
 var bodyParser = require('body-parser');
 var cookieParser = require('cookie-parser');
 var fs = require('fs');
+var exec = require('child_process').exec;
 const fileUpload = require('express-fileupload');
 var uuid = require('uuid/v4');
 var constants = require('./src/constants.js');
