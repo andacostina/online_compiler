@@ -80,7 +80,7 @@ module.exports = {
               "export PATH=$PATH:/usr/local/node/bin ; node *", "export PATH=$PATH:/usr/local/node/bin ; node *", 
               "export PATH=$PATH:/usr/local/node/bin ; node *", "export PATH=$PATH:/usr/local/node/bin ; node *", 
               "export PATH=$PATH:/usr/local/node/bin ; node *", "export PATH=$PATH:/usr/local/node/bin ; node *",
-              "php *", "gnat make * ; ./**"
+              "php *", "gnat make * -q ; ./**"
     ],
     images: ["python2.4-image", "python2.5-image", "python2.6-image", "python2.7-image",
              "python3.1-image", "python3.2-image", "python3.3-image", "python3.4-image", "python3.5-image",
