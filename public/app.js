@@ -52,26 +52,28 @@ angular.module("compilerApp", ["ui.ace", "ui.bootstrap", "treeControl"])
             return "csharp";
         };
         switch(language) {
-            case "C90":
+            case "C 90":
                 return "c_cpp";
-            case "C95":
+            case "C 95":
                 return "c_cpp";
-            case "C99":
+            case "C 99":
                 return "c_cpp";
-            case "C11":
+            case "C 11":
                 return "c_cpp";
-            case "C-GNU90":
+            case "C GNU 90":
                 return "c_cpp";
-            case "C-GNU99":
+            case "C GNU 99":
                 return "c_cpp";
-            case "C-GNU11":
+            case "C GNU 11":
                 return "c_cpp";
-            case "Perl":
+            case "Perl 5.26":
                 return "perl"
-            case "Ruby":
+            case "Ruby 2.5":
                 return "ruby"
-            case "Go":
+            case "Go 1.10":
                 return "go"
+            case "Lua 5.3":
+                return "lua"
             default:
                 return language.toLowerCase();
         };
@@ -91,26 +93,28 @@ angular.module("compilerApp", ["ui.ace", "ui.bootstrap", "treeControl"])
             return ".csc";
         };
         switch(language) {
-            case "C90":
+            case "C 90":
                 return ".c";
-            case "C95":
+            case "C 95":
                 return ".c";
-            case "C99":
+            case "C 99":
                 return ".c";
-            case "C11":
+            case "C 11":
                 return ".c";
-            case "C-GNU90":
+            case "C GNU 90":
                 return ".c";
-            case "C-GNU99":
+            case "C GNU 99":
                 return ".c";
-            case "C-GNU11":
+            case "C GNU 11":
                 return ".c";
-            case "Perl":
+            case "Perl 5.26":
                 return ".pl";
-            case "Ruby":
+            case "Ruby 2.5":
                 return ".rb"
-            case "Go":
+            case "Go 1.10":
                 return ".go"
+            case "Lua 5.3":
+                return ".lua"
             default:
                 return "";
         };
@@ -120,32 +124,35 @@ angular.module("compilerApp", ["ui.ace", "ui.bootstrap", "treeControl"])
         var extension = filename.split('.', 2)[1];
         switch(extension) {
             case "c":
-                return "C-GNU11"
+                return "C GNU 11"
             case "cpp":
-                return "C++-GNU14"
+                return "C++ GNU 14"
             case "csc":
-                return "C#7.0"
+                return "C# 7.0"
             case "py":
-                return "Python2.7"
+                return "Python 2.7"
             case "java":
-                return "Java8"
+                return "Java 8"
             case "pl":
-                return "Perl"
+                return "Perl 5.26"
             case "rb":
-                return "Ruby"
+                return "Ruby 2.5"
             case "go":
-                return "Go"
+                return "Go 1.10"
+            case "lua":
+                return "Lua 5.3"
             default:
                 return ""
         };
     };
 
     $scope.languages = [
-        "Python2.4", "Python2.5", "Python2.6", "Python2.7", "Python3.1", "Python3.2",
-        "Python3.3", "Python3.4", "Python3.5", "Python3.6", "C90", "C95", "C99", "C11",
-        "C-GNU90", "C-GNU99", "C-GNU11", "C++98", "C++03", "C++11", "C++14", "C++17",
-        "C++-GNU98", "C++-GNU03", "C++-GNU11", "C++-GNU14", "C++-GNU17", "Java8", "Java10", 
-        "C#1.0", "C#2.0", "C#3.0", "C#4.0", "C#5.0", "C#6.0", "C#7.0", 'Perl', "Ruby", "Go"
+        "Python 2.4", "Python 2.5", "Python 2.6", "Python 2.7", "Python 3.1", "Python 3.2",
+        "Python 3.3", "Python 3.4", "Python 3.5", "Python 3.6", "C 90", "C 95", "C 99", "C 11",
+        "C GNU 90", "C GNU 99", "C GNU 11", "C++ 98", "C++ 03", "C++ 11", "C++ 14", "C++ 17",
+        "C++ GNU 98", "C++ GNU 03", "C++ GNU 11", "C++ GNU 14", "C++ GNU 17", "Java 8", "Java 10", 
+        "C# 1.0", "C# 2.0", "C# 3.0", "C# 4.0", "C# 5.0", "C# 6.0", "C# 7.0", "Perl 5.26", "Ruby 2.5", "Go 1.10",
+        "Lua 5.3"
     ];
     $scope.langModel = $scope.languages[0];
     $http({
@@ -167,15 +174,16 @@ angular.module("compilerApp", ["ui.ace", "ui.bootstrap", "treeControl"])
 
     $scope.treedata = [
         {label: "Scripts", type: "folder", id: '1', children: [
-            {label: "helloworld_2.py", type: "doc", id: '1_1', content: "print \"Hello, World!\"", lang: "Python2.7"},
-            {label: "helloworld_3.py", type: "doc", id: '1_2', content: "print(\"Hello, World!\")", lang: "Python3.6"},
-            {label: "helloworld.c", type: "doc", id: '1_3', content: "#include <stdio.h>\nint main()\n{\n    printf(\"Hello, World!\");\n    return 0;\n};", lang: "C-GNU11"},
-            {label: "helloworld.cpp", type: "doc", id: '1_4', content: "#include <iostream>\nint main()\n{\n  std::cout << \"Hello, World!\";\n}", lang: "C++-GNU14"},
-            {label: "HelloWorld.java", type: "doc", id: '1_5', content: "public class HelloWorld {\n    public static void main(String[] args) {\n        System.out.println(\"Hello, World!\");\n    }\n}", lang: "Java8"},
-            {label: "Hello.csc", type: "doc", id: '1_6', content: "namespace HelloWorld\n{\n    class Hello {\n        static void Main(string[] args)\n        {\n            System.Console.WriteLine(\"Hello, World!\");\n        }\n    }\n}", lang: "C#7.0"},
-            {label: "while.pl", type: "doc", id: '1_7', content: "use strict;\n\nmy $a = 5;\nwhile($a > 0) {\n    print \"$a \";\n    $a--;\n}\nprint \"\n\";", lang: "Perl"},
-            {label: "iter.rb", type: "doc", id: '1_8', content: "# Here's a different way to add up an array.\nfred = [ 4, 19, 3, 7, 32 ]\nsum = 0\nfred.each { |i| sum += i }\nprint \"Sum of [\", fred.join(\" \"), \"] is #{sum}\n\"\n\n# Or create a secret message.\nkey = { 'A' => 'U', 'B' => 'Q', 'C' => 'A', 'D' => 'F', 'E' => 'D', 'F' => 'K',\n        'G' => 'P', 'H' => 'W', 'I' => 'N', 'J' => 'L', 'K' => 'J', 'L' => 'M',\n        'M' => 'S', 'N' => 'V', 'O' => 'Y', 'P' => 'O', 'Q' => 'Z', 'R' => 'T',\n        'S' => 'E', 'T' => 'I', 'U' => 'X', 'V' => 'B', 'W' => 'G', 'X' => 'H',\n        'Y' => 'R', 'Z' => 'C' }\nprint \"\nThe encoded message is: \"\n\"The secret message\".each_byte do | b |\n    b = b.chr.upcase\n    if key.has_key?(b) then\n        print key[b]\n    else\n        print b\n    end\nend\nprint \"\n\"\n\n# But give us the info to read it anyway.\nprint \"The key is: \"\nct = 8\nkey.each { | k, v | \n    if ct == 8 then \n        print \"\n   \"\n        ct = 0\n    else\n        print \", \"\n    end\n    ct = ct + 1\n    print \"#{v} => #{k}\"  \n}\nprint \"\n\n\"\n\n# Some interesting things from Integer.\n3.times { print \"Hi! \" }\nprint \"\n\"\n\nprint \"Count: \"\n3.upto(7) { |n| print n, \" \" }\nprint \"\n\"", lang: "Ruby"},
-            {label: "structs.go", type: "doc", id: '1_9', content: "package main\nimport \"fmt\"\n\ntype person struct {\n    name string\n    age  int\n}\nfunc main() {\n\n    fmt.Println(person{\"Bob\", 20})\n\n    fmt.Println(person{name: \"Alice\", age: 30})\n\n    fmt.Println(person{name: \"Fred\"})\n\n    fmt.Println(&person{name: \"Ann\", age: 40})\n\n    s := person{name: \"Sean\", age: 50}\n    fmt.Println(s.name)\n\n    sp := &s\n    fmt.Println(sp.age)\n\n    sp.age = 51\n    fmt.Println(sp.age)\n}", lang: 'Go'},
+            {label: "helloworld_2.py", type: "doc", id: '1_1', content: "print \"Hello, World!\"", lang: "Python 2.7"},
+            {label: "helloworld_3.py", type: "doc", id: '1_2', content: "print(\"Hello, World!\")", lang: "Python 3.6"},
+            {label: "helloworld.c", type: "doc", id: '1_3', content: "#include <stdio.h>\nint main()\n{\n    printf(\"Hello, World!\");\n    return 0;\n};", lang: "C GNU 11"},
+            {label: "helloworld.cpp", type: "doc", id: '1_4', content: "#include <iostream>\nint main()\n{\n  std::cout << \"Hello, World!\";\n}", lang: "C++ GNU 14"},
+            {label: "HelloWorld.java", type: "doc", id: '1_5', content: "public class HelloWorld {\n    public static void main(String[] args) {\n        System.out.println(\"Hello, World!\");\n    }\n}", lang: "Java 8"},
+            {label: "Hello.csc", type: "doc", id: '1_6', content: "namespace HelloWorld\n{\n    class Hello {\n        static void Main(string[] args)\n        {\n            System.Console.WriteLine(\"Hello, World!\");\n        }\n    }\n}", lang: "C# 7.0"},
+            {label: "while.pl", type: "doc", id: '1_7', content: "use strict;\n\nmy $a = 5;\nwhile($a > 0) {\n    print \"$a \";\n    $a--;\n}\nprint \"\n\";", lang: "Perl 5.26"},
+            {label: "iter.rb", type: "doc", id: '1_8', content: "# Here's a different way to add up an array.\nfred = [ 4, 19, 3, 7, 32 ]\nsum = 0\nfred.each { |i| sum += i }\nprint \"Sum of [\", fred.join(\" \"), \"] is #{sum}\n\"\n\n# Or create a secret message.\nkey = { 'A' => 'U', 'B' => 'Q', 'C' => 'A', 'D' => 'F', 'E' => 'D', 'F' => 'K',\n        'G' => 'P', 'H' => 'W', 'I' => 'N', 'J' => 'L', 'K' => 'J', 'L' => 'M',\n        'M' => 'S', 'N' => 'V', 'O' => 'Y', 'P' => 'O', 'Q' => 'Z', 'R' => 'T',\n        'S' => 'E', 'T' => 'I', 'U' => 'X', 'V' => 'B', 'W' => 'G', 'X' => 'H',\n        'Y' => 'R', 'Z' => 'C' }\nprint \"\nThe encoded message is: \"\n\"The secret message\".each_byte do | b |\n    b = b.chr.upcase\n    if key.has_key?(b) then\n        print key[b]\n    else\n        print b\n    end\nend\nprint \"\n\"\n\n# But give us the info to read it anyway.\nprint \"The key is: \"\nct = 8\nkey.each { | k, v | \n    if ct == 8 then \n        print \"\n   \"\n        ct = 0\n    else\n        print \", \"\n    end\n    ct = ct + 1\n    print \"#{v} => #{k}\"  \n}\nprint \"\n\n\"\n\n# Some interesting things from Integer.\n3.times { print \"Hi! \" }\nprint \"\n\"\n\nprint \"Count: \"\n3.upto(7) { |n| print n, \" \" }\nprint \"\n\"", lang: "Ruby 2.5"},
+            {label: "structs.go", type: "doc", id: '1_9', content: "package main\nimport \"fmt\"\n\ntype person struct {\n    name string\n    age  int\n}\nfunc main() {\n\n    fmt.Println(person{\"Bob\", 20})\n\n    fmt.Println(person{name: \"Alice\", age: 30})\n\n    fmt.Println(person{name: \"Fred\"})\n\n    fmt.Println(&person{name: \"Ann\", age: 40})\n\n    s := person{name: \"Sean\", age: 50}\n    fmt.Println(s.name)\n\n    sp := &s\n    fmt.Println(sp.age)\n\n    sp.age = 51\n    fmt.Println(sp.age)\n}", lang: 'Go 1.10'},
+            {label: "max.lua", type: "doc", id: '1_10', content: "function max(num1, num2)\n\n   if (num1 > num2) then\n      result = num1;\n   else\n      result = num2;\n   end\n\n   return result; \nend\n\n-- calling a function\nprint(\"The maximum of the two numbers is \",max(10,4))\nprint(\"The maximum of the two numbers is \",max(5,6))", lang: "Lua 5.3"}
         ]}
     ];
     $scope.memory = 0;
