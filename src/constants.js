@@ -63,7 +63,7 @@ module.exports = {
               "g++ * -std=gnu++14 ; ./a.out", "g++ * -std=gnu++17 ; ./a.out", "javac * ; java **", "javac * ; java **", 
               "mcs -langversion:1 * ; mono **.exe", "mcs -langversion:2 * ; mono **.exe", "mcs -langversion:3 * ; mono **.exe", 
               "mcs -langversion:4 * ; mono **.exe", "mcs -langversion:5 * ; mono **.exe","mcs -langversion:6 * ; mono **.exe", 
-              "mcs -langversion:7 * ; mono **.exe", "perl *", "ruby *", "mkdir test; cd test; go build; ./test", 
+              "mcs -langversion:7 * ; mono **.exe", "perl *", "ruby *", "export PATH=$PATH:/usr/local/go/bin; go build; ./_", 
               "lua5.3 *"
     ],
     images: ["python2.4-image", "python2.5-image", "python2.6-image", "python2.7-image",
