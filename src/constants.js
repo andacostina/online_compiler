@@ -6,7 +6,8 @@ module.exports = {
                 "C GNU 90", "C GNU 99", "C GNU 11", "C++ 98", "C++ 03", "C++ 11", "C++ 14", "C++ 17",
                 "C++ GNU 98", "C++ GNU 03", "C++ GNU 11", "C++ GNU 14", "C++ GNU 17", "Java 8", "Java 10", 
                 "C# 1.0", "C# 2.0", "C# 3.0", "C# 4.0", "C# 5.0", "C# 6.0", "C# 7.0", "Perl 5.26", "Ruby 2.5", 
-                "Go 1.10", "Lua 5.3"
+                "Go 1.10", "Lua 5.3", "Node.js 10.5.0", "Node.js 9.11.2", "Node.js 7.10.1", "Node.js 6.14.3",
+                "Node.js 5.12.0", "Node.js 4.9.1", "Node.js 0.12.18", "Node.js 0.10.48"
     ],
     documentationLinks: [
         "https://docs.python.org/2.4/",
@@ -48,11 +49,21 @@ module.exports = {
         "https://perldoc.perl.org/",
         "https://ruby-doc.org/stdlib-2.5.1/",
         "https://golang.org/ref/spec",
-        "https://www.lua.org/docs.html"
+        "https://www.lua.org/docs.html",
+        "https://nodejs.org/api/",
+        "https://nodejs.org/docs/latest-v9.x/api/",
+        "https://nodejs.org/docs/latest-v7.x/api/",
+        "https://nodejs.org/docs/latest-v6.x/api/",
+        "https://nodejs.org/docs/latest-v5.x/api/",
+        "https://nodejs.org/docs/latest-v4.x/api/",
+        "https://nodejs.org/docs/latest-v0.12.x/api/",
+        "https://nodejs.org/docs/latest-v0.10.x/api/"
+
     ],
     extensions: ["py", "py", "py", "py", "py", "py", "py", "py", "py", "py", "c", "c", "c", "c", "c",
                  "c", "c", "cpp", "cpp", "cpp", "cpp", "cpp", "cpp", "cpp", "cpp", "cpp", "cpp", "java", "java", 
-                 "cs", "cs", "cs", "cs", "cs", "cs", "cs", "pl", "rb", "go", "lua"],
+                 "cs", "cs", "cs", "cs", "cs", "cs", "cs", "pl", "rb", "go", "lua", "js", "js", "js", "js",
+                 "js", "js", "js", "js"],
     commands: ["python2.4 *", "python2.5 *", "python2.6 *", "python2.7 *", "python3.1 *",
                "python3.2 *", "python3.3 *", "python3.4 *", "python3.5 *", "python3 *",
               "gcc * -std=c90 ; ./a.out", "gcc * -std=iso9899:199409 ; ./a.out", "gcc * -std=c99 ; ./a.out",
@@ -64,7 +75,8 @@ module.exports = {
               "mcs -langversion:1 * ; mono **.exe", "mcs -langversion:2 * ; mono **.exe", "mcs -langversion:3 * ; mono **.exe", 
               "mcs -langversion:4 * ; mono **.exe", "mcs -langversion:5 * ; mono **.exe","mcs -langversion:6 * ; mono **.exe", 
               "mcs -langversion:7 * ; mono **.exe", "perl *", "ruby *", "export PATH=$PATH:/usr/local/go/bin; go build; ./_", 
-              "lua5.3 *"
+              "lua5.3 *", "nvm use 10.5.0 ; node *", "nvm use 9.11.2 ; node *", "nvm use 7.10.1 ; node *", "nvm use 6.14.3 ; node *",
+              "nvm use 5.12.0 ; node *", "nvm use 4.9.1 ; node *", "nvm use 0.12.18 ; node *", "nvm use 0.10.48 ; node *"
     ],
     images: ["python2.4-image", "python2.5-image", "python2.6-image", "python2.7-image",
              "python3.1-image", "python3.2-image", "python3.3-image", "python3.4-image", "python3.5-image",
@@ -72,7 +84,8 @@ module.exports = {
              "cpp-image", "cpp-image", "cpp-image", "cpp-image", "cpp-image", "cpp-image", "cpp-image",
              "cpp-image", "cpp-image", "cpp-image", "java8-image", "java10-image", "csharp-image", "csharp-image",
              "csharp-image", "csharp-image", "csharp-image", "csharp-image", "csharp-image", "perl-image", "ruby-image",
-             "go-image", "lua-image"
+             "go-image", "lua-image", "nodejs-image", "nodejs-image", "nodejs-image", "nodejs-image", "nodejs-image", "nodejs-image",
+             "nodejs-image", "nodejs-image"
     ],
     timeout: 60,
     memoryLimit: 10 ** 9,
