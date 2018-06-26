@@ -37,6 +37,7 @@ angular.module("compilerApp", ["ui.ace", "ui.bootstrap", "treeControl"])
     $scope.autoComplete = true;
     $scope.output = "";
     $scope.running = false;
+    $scope.includeInput = false;
 
     function getAceMode(language) {
         if (language.startsWith('Python')) {
@@ -90,7 +91,7 @@ angular.module("compilerApp", ["ui.ace", "ui.bootstrap", "treeControl"])
             case "Pascal":
                 return "pascal"
             default:
-                return language.toLowerCase();
+                return "text";
         };
     };
 
@@ -232,6 +233,19 @@ angular.module("compilerApp", ["ui.ace", "ui.bootstrap", "treeControl"])
     }, function error(response) {
     });
 
+    $scope.inputable_languages = [
+        "C 90", "C 95", "C 99", "C 11", "C GNU 90", "C GNU 99", "C GNU 11", "C++ 98", "C++ 03", 
+        "C++ 11", "C++ 14", "C++ 17", "C++ GNU 98", "C++ GNU 03", "C++ GNU 11", "C++ GNU 14", 
+        "C++ GNU 17"
+    ];
+    $http({
+        method: 'GET',
+        url: '/inputable_languages'
+    }).then(function success(response) {
+        $scope.inputable_languages = response.data.languages;
+    }, function error(response) {
+    });
+
     $http({
         method: 'GET',
         url: '/documentation'
@@ -259,7 +273,8 @@ angular.module("compilerApp", ["ui.ace", "ui.bootstrap", "treeControl"])
             {label: "hello.cob", type: "doc", id: '1_15', content: "     *> Sample GnuCOBOL program\n     identification division.\n     program-id. hellonew.\n     procedure division.\n     display\n        \"Hello, new world!\"\n     end-display\n     goback.\n", lang: "Cobol"},
             {label: "gcd.f", type: "doc", id: '1_16', content: "*     euclid.f (FORTRAN 77)\n*     Find greatest common divisor using the Euclidean algorithm\n\n      PROGRAM EUCLID\n        NA = 123\n        IF (NA.LE.0) THEN\n          PRINT *, 'A must be a positive integer.'\n          STOP\n        END IF\n        NB = 34\n        IF (NB.LE.0) THEN\n          PRINT *, 'B must be a positive integer.'\n          STOP\n        END IF\n        PRINT *, 'The GCD of', NA, ' and', NB, ' is', NGCD(NA, NB), '.'\n        STOP\n      END\n\n      FUNCTION NGCD(NA, NB)\n        IA = NA\n        IB = NB\n    1   IF (IB.NE.0) THEN\n          ITEMP = IA\n          IA = IB\n          IB = MOD(ITEMP, IB)\n          GOTO 1\n        END IF\n        NGCD = IA\n        RETURN\n      END", lang: "Fortran"},
             {label: "sets.pas", type: "doc", id: '1_17', content: "program setColors;\ntype  \ncolor = (red, blue, yellow, green, white, black, orange);  \ncolors = set of color;  \n \nprocedure displayColors(c : colors);  \nconst  \nnames : array [color] of String[7]  \n  = ('red', 'blue', 'yellow', 'green', 'white', 'black', 'orange');  \nvar  \n   cl : color;  \n   s : String;  \n\nbegin  \n   s:= ' ';  \n   for cl:=red to orange do  \n      if cl in c then  \n      begin  \n         if (s<>' ') then s :=s +' , ';  \n         s:=s+names[cl];  \n      end;  \n   writeln('[',s,']');  \nend;  \n \nvar  \n   c : colors;  \n \nbegin  \n   c:= [red, blue, yellow, green, white, black, orange];\n   displayColors(c);\n\n   c:=[red, blue]+[yellow, green]; \n   displayColors(c);  \n\n   c:=[red, blue, yellow, green, white, black, orange] - [green, white];     \n   displayColors(c);    \n\n   c:= [red, blue, yellow, green, white, black, orange]*[green, white];     \n   displayColors(c);  \n\n   c:= [red, blue, yellow, green]><[yellow, green, white, black]; \n   displayColors(c);  \nend.", lang: 'Pascal'}
-        ]}
+        ]},
+        {label: "input.txt", type: "doc", id: "2", content: "", lang: "Text"}
     ];
     $scope.memory = 0;
     $scope.memoryLimit = 10 ** 9;
@@ -313,6 +328,15 @@ angular.module("compilerApp", ["ui.ace", "ui.bootstrap", "treeControl"])
                 _editor.setAutoScrollEditorIntoView(true);
     
                 $scope.runCode = function() {
+                    let input = '';
+                    if ($scope.includeInput) {
+                        for (var i = 0; i < $scope.treedata.length; i++) {
+                            let tree = $scope.treedata[i];
+                            if (tree.label === 'input.txt' && tree.type === 'doc') {
+                                input = tree.content;
+                            };
+                        };
+                    };
                     $scope.running = true;
                     $http({
                         method: 'POST',
@@ -320,7 +344,8 @@ angular.module("compilerApp", ["ui.ace", "ui.bootstrap", "treeControl"])
                         data: {
                             'code': $scope.aceModel,
                             'filename': $scope.selectedFile.label,
-                            'language': $scope.selectedFile.lang
+                            'language': $scope.selectedFile.lang,
+                            'input': input
                         }
                     }).then(function success(response) {
                         if (response.data.error) {
@@ -340,6 +365,15 @@ angular.module("compilerApp", ["ui.ace", "ui.bootstrap", "treeControl"])
                 };
 
                 $scope.getBinary = function() {
+                    let input = '';
+                    if ($scope.includeInput) {
+                        for (var i = 0; i < $scope.treedata.length; i++) {
+                            let tree = $scope.treedata[i];
+                            if (tree.label === 'input.txt' && tree.type === 'doc') {
+                                input = tree.content;
+                            };
+                        };
+                    };
                     $scope.running2 = true;
                     $http({
                         method: 'POST',
@@ -350,7 +384,8 @@ angular.module("compilerApp", ["ui.ace", "ui.bootstrap", "treeControl"])
                         data: {
                             'code': $scope.aceModel,
                             'filename': $scope.selectedFile.label,
-                            'language': $scope.selectedFile.lang
+                            'language': $scope.selectedFile.lang,
+                            'input': input
                         }
                     }).then(function success(response) {
                         let getFile = function(path) {
@@ -406,6 +441,10 @@ angular.module("compilerApp", ["ui.ace", "ui.bootstrap", "treeControl"])
                         enableBasicAutocompletion: $scope.autoComplete,
                         enableLiveAutocompletion: $scope.autoComplete
                     });
+                };
+
+                $scope.changeIncludeInput = function() {
+                    $scope.includeInput = !$scope.includeInput;
                 };
 
                 $scope.getDocumentationLink = function() {
@@ -607,6 +646,13 @@ angular.module("compilerApp", ["ui.ace", "ui.bootstrap", "treeControl"])
 
         $scope.downloadBinaryDisabled = function() {
             if ($scope.compiled_languages.indexOf($scope.langModel) > -1) {
+                return false;
+            };
+            return true;
+        };
+
+        $scope.withoutInput = function() {
+            if ($scope.inputable_languages.indexOf($scope.langModel) > -1) {
                 return false;
             };
             return true;

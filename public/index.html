@@ -48,6 +48,7 @@
                         <button type="button" class="btn btn-primary btn-xs" ng-click="themeChanged()" tooltip-placement="bottom" uib-tooltip="Change theme"><span class="glyphicon glyphicon-eye-open"></span></button>&nbsp;
                         <button type="button" class="btn btn-primary btn-xs" ng-click="zoomIn()" tooltip-placement="bottom" uib-tooltip="Zoom in"><span class="glyphicon glyphicon-zoom-in"></span> </button>&nbsp;
                         <button type="button" class="btn btn-primary btn-xs" ng-click="zoomOut()" tooltip-placement="bottom" uib-tooltip="Zoom out"><span class="glyphicon glyphicon-zoom-out"></span> </button>&nbsp;
+                        <button type="button" ng-disabled="withoutInput()" ng-class="{'btn btn-primary btn-xs': includeInput, 'btn btn-default btn-xs': !includeInput}" tooltip-placement="bottom" uib-tooltip="Include input file" ng-click="changeIncludeInput()"><span class="glyphicon glyphicon-asterisk"></span></button>&nbsp;
                         <button type="button" ng-class="{'btn btn-primary btn-xs': autoComplete, 'btn btn-default btn-xs': !autoComplete}" ng-click="changeAutoComplete()">Auto-complete</button>&nbsp;
                         <button type="button" class="btn btn-primary btn-xs" ng-click="getDocumentationLink()" tooltip-placement="bottom" uib-tooltip="Go to documentation"><span class="glyphicon glyphicon-question-sign"></span> </button>&nbsp;
                         <span ng-style="{'color': designThemes[themeIndex].color1}">Last synced on: {{lastRefreshed | date : "mediumTime"}}</span>

@@ -34,6 +34,11 @@ var sessionManager = new SessionManager(function(err) {
         res.end();
     });
 
+    app.get('/inputable_languages', function(req, res) {
+        res.json({'languages': dockerManager.getInputableLanguages()});
+        res.end();
+    });
+
     app.get('/documentation', function(req, res) {
         res.json({'documentation_links': constants.documentationLinks});
         res.end();
@@ -71,7 +76,8 @@ var sessionManager = new SessionManager(function(err) {
                         {label: "hello.cob", type: "doc", id: '1_15', content: "     *> Sample GnuCOBOL program\n     identification division.\n     program-id. hellonew.\n     procedure division.\n     display\n        \"Hello, new world!\"\n     end-display\n     goback.\n", lang: "Cobol"},
                         {label: "gcd.f", type: "doc", id: '1_16', content: "*     euclid.f (FORTRAN 77)\n*     Find greatest common divisor using the Euclidean algorithm\n\n      PROGRAM EUCLID\n        NA = 123\n        IF (NA.LE.0) THEN\n          PRINT *, 'A must be a positive integer.'\n          STOP\n        END IF\n        NB = 34\n        IF (NB.LE.0) THEN\n          PRINT *, 'B must be a positive integer.'\n          STOP\n        END IF\n        PRINT *, 'The GCD of', NA, ' and', NB, ' is', NGCD(NA, NB), '.'\n        STOP\n      END\n\n      FUNCTION NGCD(NA, NB)\n        IA = NA\n        IB = NB\n    1   IF (IB.NE.0) THEN\n          ITEMP = IA\n          IA = IB\n          IB = MOD(ITEMP, IB)\n          GOTO 1\n        END IF\n        NGCD = IA\n        RETURN\n      END", lang: "Fortran"},
                         {label: "sets.pas", type: "doc", id: '1_17', content: "program setColors;\ntype  \ncolor = (red, blue, yellow, green, white, black, orange);  \ncolors = set of color;  \n \nprocedure displayColors(c : colors);  \nconst  \nnames : array [color] of String[7]  \n  = ('red', 'blue', 'yellow', 'green', 'white', 'black', 'orange');  \nvar  \n   cl : color;  \n   s : String;  \n\nbegin  \n   s:= ' ';  \n   for cl:=red to orange do  \n      if cl in c then  \n      begin  \n         if (s<>' ') then s :=s +' , ';  \n         s:=s+names[cl];  \n      end;  \n   writeln('[',s,']');  \nend;  \n \nvar  \n   c : colors;  \n \nbegin  \n   c:= [red, blue, yellow, green, white, black, orange];\n   displayColors(c);\n\n   c:=[red, blue]+[yellow, green]; \n   displayColors(c);  \n\n   c:=[red, blue, yellow, green, white, black, orange] - [green, white];     \n   displayColors(c);    \n\n   c:= [red, blue, yellow, green, white, black, orange]*[green, white];     \n   displayColors(c);  \n\n   c:= [red, blue, yellow, green]><[yellow, green, white, black]; \n   displayColors(c);  \nend.", lang: 'Pascal'}
-                    ]}
+                    ]},
+                    {label: "input.txt", type: "doc", id: "2", content: "", lang: "Text"}
                 ];
                 var myUUID = uuid();
                 var mySession = sessionManager.create(myUUID, tree, function(err) {
@@ -107,7 +113,8 @@ var sessionManager = new SessionManager(function(err) {
         var language = req.body.language;
         var filename = req.body.filename;
         var code = req.body.code;
-        dockerManager.run(code, filename, language, function(error, stderr, stdout) {
+        var input = req.body.input;
+        dockerManager.run(code, filename, language, input, function(error, stderr, stdout) {
             if (error) {
                 error = error.message;
                 let error_split = error.split('\n');
@@ -123,7 +130,8 @@ var sessionManager = new SessionManager(function(err) {
         var language = req.body.language;
         var filename = req.body.filename;
         var code = req.body.code;
-        dockerManager.runAndGetBinary(code, filename, language, function(error, stderr, stdout, uuid, filename) {
+        var input = req.body.input;
+        dockerManager.runAndGetBinary(code, filename, language, input, function(error, stderr, stdout, uuid, filename) {
             if (error) {
                 console.error(error);
                 error = error.message;

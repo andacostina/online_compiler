@@ -7,6 +7,7 @@ const uuidv1 = require('uuid/v1');
 function DockerManager() {
     this.languages = constants.languages;
     this.compiled_languages = constants.compiled_languages;
+    this.inputable_languages = constants.inputable_languages;
     this.codeExamples = constants.codeExamples;
     this.extensions = constants.extensions;
     this.commands = constants.commands;
@@ -22,13 +23,17 @@ DockerManager.prototype.getCompiledLanguages = function() {
     return this.compiled_languages;
 };
 
+DockerManager.prototype.getInputableLanguages = function() {
+    return this.inputable_languages;
+};
+
 DockerManager.prototype.getCodeExamples = function() {
     return this.codeExamples;
 };
 
-DockerManager.prototype.run = function(code, filename, language, callback) {
+DockerManager.prototype.run = function(code, filename, language, input, callback) {
     var self = this;
-    this.createTempImage(code, filename, language, function(error, stderr, stdout, uuid, tempImageHash) {
+    this.createTempImage(code, filename, language, input, function(error, stderr, stdout, uuid, tempImageHash) {
         if (error) {
             exec("rm -r " + uuid);
             self.deleteImage(tempImageHash);
@@ -42,10 +47,10 @@ DockerManager.prototype.run = function(code, filename, language, callback) {
     });
 };
 
-DockerManager.prototype.createTempImage = function(code, filename, language, callback) {
+DockerManager.prototype.createTempImage = function(code, filename, language, input, callback) {
     const uuid = uuidv1();
     fs.mkdirSync(uuid);
-    this.createDockerfile(code, filename, language, uuid);
+    this.createDockerfile(code, filename, language, input, uuid);
     exec("sudo docker build -t " + uuid + " .", {cwd: uuid}, function(error, stdout, stderr) {
         if (error) {
             return callback(error, stderr, null, uuid);
@@ -61,13 +66,14 @@ DockerManager.prototype.createTempImage = function(code, filename, language, cal
     });
 };
 
-DockerManager.prototype.createDockerfile = function(code, filename, language, uuid) {
+DockerManager.prototype.createDockerfile = function(code, filename, language, input, uuid) {
     const i = this.languages.indexOf(language);
     const command = this.commands[i].replace('**', filename.split('.')[0]).replace("*", filename);
     const baseImage = this.images[i];
-    var content = "FROM " + baseImage + "\nCOPY " + filename + " " + filename + "\nCMD " + command;
+    var content = "FROM " + baseImage + "\nCOPY " + filename + " " + filename + "\nCOPY input.txt input.txt\nCMD " + command;
     fs.writeFileSync(uuid + '/Dockerfile', content);
     fs.writeFileSync(uuid + '/' + filename, code);
+    fs.writeFileSync(uuid + '/input.txt', input);
 };
 
 DockerManager.prototype.runContainer = function(tempImage, callback) {
@@ -91,9 +97,9 @@ DockerManager.prototype.deleteExitedContainers = function(callback) {
     exec("sudo docker rm $(sudo docker ps -a -f status=exited -q)", callback);
 };
 
-DockerManager.prototype.runAndGetBinary = function(code, filename, language, callback) {
+DockerManager.prototype.runAndGetBinary = function(code, filename, language, input, callback) {
     var self = this;
-    this.createTempImage(code, filename, language, function(error, stderr, stdout, uuid, tempImageHash) {
+    this.createTempImage(code, filename, language, input, function(error, stderr, stdout, uuid, tempImageHash) {
         if (error) {
             exec("rm -r " + uuid);
             self.deleteImage(tempImageHash);
