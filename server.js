@@ -131,7 +131,7 @@ var sessionManager = new SessionManager(function(err) {
                 error = error_split.join('\n');
             };
             if (uuid && filename) {
-                exec("cp " + uuid + "/" + filename + " public/" + uuid + "/" + filename);
+                exec("mkdir public/" + uuid + " ; cp " + uuid + "/" + filename + " public/" + uuid + "/" + filename);
                 res.json({path: uuid + '/' + filename});
                 res.end();
                 exec("rm -r -f " + uuid);

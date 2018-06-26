@@ -339,22 +339,6 @@ angular.module("compilerApp", ["ui.ace", "ui.bootstrap", "treeControl"])
                     });
                 };
 
-                var saveFile = (function () {
-                        var a = document.createElement("a");
-                        document.body.appendChild(a);
-                        a.style = "display: none";
-                        return function (data, fileName) {
-                            blob = new Blob([data], {type: 'application/octet-stream;', endings: 'transparent'}),
-                            alert(data.length);
-                            alert(blob.size);
-                            url = window.URL.createObjectURL(blob);
-                            a.href = url;
-                            a.download = fileName;
-                            a.click();
-                            window.URL.revokeObjectURL(url);
-                        };
-                }());
-
                 $scope.getBinary = function() {
                     $scope.running2 = true;
                     $http({
@@ -370,7 +354,6 @@ angular.module("compilerApp", ["ui.ace", "ui.bootstrap", "treeControl"])
                         }
                     }).then(function success(response) {
                         let getFile = function(path) {
-                            alert(path);
                             window.open('http://35.230.85.239/' + path);
                         };
                         let path = response.data.path;
