@@ -112,6 +112,9 @@ DockerManager.prototype.runAndGetBinary = function(code, filename, language, cal
         const command = this.commands[i].replace('**', filename.split('.')[0]).replace("*", filename);
         const splits = command.split(' ');
         var binary_name = splits[splits.length - 1];
+        if (binary_name.startsWith('./')) {
+            binary_name = binary_name.substring(2);
+        };
         exec("sudo docker cp " + uuid + ":/" + binary_name + " " + uuid + "/" + binary_name, function(error) {
             if (error) {
                 return callback(error);
