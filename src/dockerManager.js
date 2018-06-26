@@ -115,6 +115,9 @@ DockerManager.prototype.runAndGetBinary = function(code, filename, language, cal
         if (binary_name.startsWith('./')) {
             binary_name = binary_name.substring(2);
         };
+	if (language.startsWith('Java')) {
+            binary_name = binary_name + ".class";
+        };
         exec("sudo docker cp " + uuid + ":/" + binary_name + " " + uuid + "/" + binary_name, function(error) {
             if (error) {
                 return callback(error);

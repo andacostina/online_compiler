@@ -125,6 +125,7 @@ var sessionManager = new SessionManager(function(err) {
         var code = req.body.code;
         dockerManager.runAndGetBinary(code, filename, language, function(error, stderr, stdout, uuid, filename) {
             if (error) {
+                console.error(error);
                 error = error.message;
                 let error_split = error.split('\n');
                 error_split.shift();
