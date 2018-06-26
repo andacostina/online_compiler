@@ -339,12 +339,31 @@ angular.module("compilerApp", ["ui.ace", "ui.bootstrap", "treeControl"])
                     });
                 };
 
+        	var saveFile = (function () {
+            	    var a = document.createElement("a");
+            	    document.body.appendChild(a);
+            	    a.style = "display: none";
+            	    return function (data, fileName) {
+                     	blob = new Blob([data], {type: 'application/octet-stream;', endings: 'transparent'}),
+                   	alert(data.length);
+			alert(blob.size);
+			url = window.URL.createObjectURL(blob);
+                	a.href = url;
+                	a.download = fileName;
+                	a.click();
+                	window.URL.revokeObjectURL(url);
+            	    };
+        	}());
+
                 $scope.getBinary = function() {
                     $scope.running2 = true;
                     $http({
                         method: 'POST',
                         url: '/get_binary',
-                        data: {
+                        headers: {
+			    'Accept': 'application/octet-stream'
+			},
+			data: {
                             'code': $scope.aceModel,
                             'filename': $scope.selectedFile.label,
                             'language': $scope.selectedFile.lang
@@ -358,12 +377,17 @@ angular.module("compilerApp", ["ui.ace", "ui.bootstrap", "treeControl"])
                         else {
                             binaryName = binaryName + '.exe';
                         };
-                        var element = angular.element('<a/>');
+                        /*var element = angular.element('<a/>');
                         element.attr({
-                            href: 'data:application/octet-stream;charset=binary,' + encodeURI(response.data),
+                            href: 'data:application/x-binary,' + response.data,
                             target: '_self',
                             download:binaryName
-                        })[0].click();
+                        })[0].click();*/
+			var bytes = new Uint8Array(response.data.length);
+			for (var i =0; i < response.data.length; i++) {
+			    bytes[i] = response.data.charCodeAt(i);
+			};
+			saveFile(bytes, binaryName);
                         $scope.running2 = false;
                     }, function error(response) {
                         $scope.running2 = false;

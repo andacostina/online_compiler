@@ -141,7 +141,7 @@ var sessionManager = new SessionManager(function(err) {
             else {
                 res.end();
             };
-            exec("rm -r -f " + uuid);
+            //exec("rm -r -f " + uuid);
         });
     });
 
