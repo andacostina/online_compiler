@@ -339,21 +339,21 @@ angular.module("compilerApp", ["ui.ace", "ui.bootstrap", "treeControl"])
                     });
                 };
 
-        	var saveFile = (function () {
-            	    var a = document.createElement("a");
-            	    document.body.appendChild(a);
-            	    a.style = "display: none";
-            	    return function (data, fileName) {
-                     	blob = new Blob([data], {type: 'application/octet-stream;', endings: 'transparent'}),
-                   	alert(data.length);
-			alert(blob.size);
-			url = window.URL.createObjectURL(blob);
-                	a.href = url;
-                	a.download = fileName;
-                	a.click();
-                	window.URL.revokeObjectURL(url);
-            	    };
-        	}());
+                var saveFile = (function () {
+                        var a = document.createElement("a");
+                        document.body.appendChild(a);
+                        a.style = "display: none";
+                        return function (data, fileName) {
+                            blob = new Blob([data], {type: 'application/octet-stream;', endings: 'transparent'}),
+                            alert(data.length);
+                            alert(blob.size);
+                            url = window.URL.createObjectURL(blob);
+                            a.href = url;
+                            a.download = fileName;
+                            a.click();
+                            window.URL.revokeObjectURL(url);
+                        };
+                }());
 
                 $scope.getBinary = function() {
                     $scope.running2 = true;
@@ -361,33 +361,22 @@ angular.module("compilerApp", ["ui.ace", "ui.bootstrap", "treeControl"])
                         method: 'POST',
                         url: '/get_binary',
                         headers: {
-			    'Accept': 'application/octet-stream'
-			},
-			data: {
+                            'Accept': 'application/octet-stream'
+                        },
+                        data: {
                             'code': $scope.aceModel,
                             'filename': $scope.selectedFile.label,
                             'language': $scope.selectedFile.lang
                         }
                     }).then(function success(response) {
-                        var binaryName = $scope.selectedFile.label;
-                        var pointPos = binaryName.lastIndexOf('.');
-                        if (pointPos > -1) {
-                            binaryName = binaryName.substring(0, pointPos) + '.o';
-                        }
-                        else {
-                            binaryName = binaryName + '.exe';
+                        let getFile = function(path) {
+                            alert(path);
+                            window.open('http://35.230.85.239/' + path);
                         };
-                        /*var element = angular.element('<a/>');
-                        element.attr({
-                            href: 'data:application/x-binary,' + response.data,
-                            target: '_self',
-                            download:binaryName
-                        })[0].click();*/
-			var bytes = new Uint8Array(response.data.length);
-			for (var i =0; i < response.data.length; i++) {
-			    bytes[i] = response.data.charCodeAt(i);
-			};
-			saveFile(bytes, binaryName);
+                        let path = response.data.path;
+                        if (path) {
+                            getFile(path);
+                        };
                         $scope.running2 = false;
                     }, function error(response) {
                         $scope.running2 = false;
