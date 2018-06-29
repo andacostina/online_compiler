@@ -115,7 +115,7 @@ DockerManager.prototype.runAndGetBinary = function(code, filename, language, inp
 
     DockerManager.prototype.getBinary = function(uuid, filename, language, callback) {
         const i = this.languages.indexOf(language);
-        const command = this.commands[i].replace('**', filename.split('.')[0]).replace("*", filename);
+        const command = this.commands[i].replace('**', filename.split('.')[0]).replace("*", filename).replace(' < input.txt', '');
         const splits = command.split(' ');
         var binary_name = splits[splits.length - 1];
         if (binary_name.startsWith('./')) {
