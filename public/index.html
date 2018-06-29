@@ -40,7 +40,7 @@
         <div class="wrapper" ng-style="{'border': '1px ' + designThemes[themeIndex].color1}">
             <div class="row">
                 <div class="col-sm-8 editor" ng-style="{'background-color': designThemes[themeIndex].color2, 'border-bottom': '4px solid ' + designThemes[themeIndex].color3, 'border-right': '8px solid ' + designThemes[themeIndex].color3}">
-                    <div class="toolbar" ng-style="{'border-bottom': designThemes[themeIndex].color1 + ' dotted', 'border-width': '2px'}">&nbsp;&nbsp;&nbsp;&nbsp;
+                    <div class="row toolbar" ng-style="{'border-bottom': designThemes[themeIndex].color1 + ' dotted', 'border-width': '2px'}">&nbsp;&nbsp;&nbsp;&nbsp;
                         <span ng-style="{'color': designThemes[themeIndex].color1, 'min-width': '100px', 'display': 'inline-block'}">{{selectedFile.label}}</span>
                         <button type="button" class="btn btn-primary" ng-disabled="runDisabled()" ng-click="runCode()"><span ng-class="{'glyphicon glyphicon-play': !running, 'glyphicon glyphicon-cog gly-spin': running}"></span> Run</button>&nbsp;
                         <button type="button" class="btn btn-primary btn-xs" ng-disabled="downloadBinaryDisabled()" ng-click="getBinary()" tooltip-placement="bottom" uib-tooltip="Download binary"><span ng-class="{'glyphicon glyphicon-forward': !running2, 'glyphicon glyphicon-cog gly-spin': running2}"></span></button>&nbsp;
@@ -53,7 +53,10 @@
                         <button type="button" class="btn btn-primary btn-xs" ng-click="getDocumentationLink()" tooltip-placement="bottom" uib-tooltip="Go to documentation"><span class="glyphicon glyphicon-question-sign"></span> </button>&nbsp;
                         <span ng-style="{'color': designThemes[themeIndex].color1}">Last synced on: {{lastRefreshed | date : "mediumTime"}}</span>
                     </div>
-                    <div ui-ace="aceOption" ng-model="aceModel"></div>
+
+                    <div class="row">
+                    <div ui-ace="aceOption" style="height: 100%" ng-model="aceModel"></div>
+                    </div>
                 </div>
                 <div class="col-sm-4 org" ng-style="{'background-color': designThemes[themeIndex].color2}">
                     <div class="files" ng-style="{'border-bottom': '8px solid ' + designThemes[themeIndex].color3, 'color': designThemes[themeIndex].color1}">

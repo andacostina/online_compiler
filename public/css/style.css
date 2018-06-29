@@ -65,20 +65,12 @@ body {
     overflow:auto;
 }
 
-.ace_editor {
-    overflow-y:auto;
-    overflow-x:auto;
-    min-height: calc(100% - 36px);
-}
 
 .ace_autocomplete {
-    width: 270px;
-    height: 200px;
     z-index: 200000;
     background: #666;
     color: #eee;
     border: 0 lightgray solid;
-    position: fixed;
     box-shadow: 2px 3px 5px rgba(0,0,0,.2);
     line-height: 1.4;
 }
