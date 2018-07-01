@@ -534,14 +534,14 @@ angular.module("compilerApp", ["ui.ace", "ui.bootstrap", "treeControl"])
             if ($scope.selectedNode) {
                 $scope.editorEnabled = true;
 
-                $scope.editableText = $scope.selectedFile.label;
+                $scope.editableText = $scope.selectedNode.label;
                 $scope.disableEditor = function() {
                     $scope.editorEnabled = false;
                     $scope.editableText = '';
                 };
                 $scope.save = function(editableText) {
-                    $scope.selectedFile.label = editableText;
-                    $scope.selectedFile.lang = getLanguageFromExtension(editableText);
+                    $scope.selectedNode.label = editableText;
+                    $scope.selectedNode.lang = getLanguageFromExtension(editableText);
                     $scope.disableEditor();
                 };
             };
