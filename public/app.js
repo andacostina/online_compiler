@@ -621,7 +621,6 @@ angular.module("compilerApp", ["ui.ace", "ui.bootstrap", "treeControl"])
         };
         $scope.remove = function() {
             if ($scope.selectedNode) {
-                $scope.memory -= $scope.selectedNode.content.length;
                 removeNode($scope.selectedNode.id, $scope.treedata);
                 $scope.aceModel = '';
                 $scope.selectedNode = null;
